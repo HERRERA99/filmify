@@ -1,0 +1,192 @@
+/* Contenedor principal de la diapositiva */
+.slide-container {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+/* Fallback si no hay imagen de fondo */
+.fallback-bg {
+    background-color: #333; /* Color oscuro sólido */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+/* Overlay para oscurecer la imagen de fondo */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Color negro semi-transparente */
+    z-index: 1; /* Asegura que esté por encima de la imagen de fondo */
+}
+
+/* Overlay para el difuminado inferior (de oscuro a transparente) */
+.gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%; /* Ajusta la altura del difuminado */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    z-index: 2; /* Por encima del overlay oscuro */
+}
+
+/* Contenedor del contenido principal (texto y póster) */
+.content-wrapper {
+    position: relative; /* Para posicionar sobre los overlays */
+    z-index: 3; /* Asegura que el contenido esté al frente */
+    display: flex; /* Para poner texto a la izquierda y póster a la derecha */
+    align-items: center; /* Alineación vertical */
+    justify-content: space-around; /* Espacio entre los elementos */
+    width: 90%; /* Ancho máximo del contenido */
+    max-width: 1200px; /* Limita el ancho en pantallas grandes */
+    padding: 20px;
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+/* Contenido de texto (título y descripción) */
+.text-content {
+    flex: 1; /* Ocupa el espacio disponible */
+    max-width: 60%; /* Limita el ancho del texto */
+    padding-right: 40px; /* Espacio entre el texto y el póster */
+    text-align: left;
+}
+
+.movie-title {
+    font-size: 3.5em; /* Título grande */
+    margin-bottom: 20px;
+    line-height: 1.2; /* Espaciado de línea */
+}
+
+.movie-overview {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-height: 200px; /* Limita la altura de la descripción */
+    overflow: hidden; /* Oculta el texto extra si es muy largo */
+    text-overflow: ellipsis; /* Añade puntos suspensivos */
+}
+
+/* Contenedor del póster */
+.poster-container {
+    flex-shrink: 0; /* Evita que el póster se encoja */
+    width: 300px; /* Ancho fijo del póster */
+    margin-left: 20px;
+    display: flex; /* Para centrar la imagen dentro del contenedor si fuera necesario */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Imagen del póster */
+.poster-img {
+    width: 100%;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Sombra para que destaque */
+    transition: transform 0.3s ease; /* Pequeña animación al interactuar */
+}
+
+.poster-img:hover {
+    transform: scale(1.02); /* Efecto al pasar el ratón */
+}
+
+/* Estilos para los botones */
+.buttons-container {
+    display: flex;
+    gap: 20px; /* Espacio entre botones */
+    margin-top: 30px;
+}
+
+.trailer-button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.trailer-button {
+    background-color: #e50914; /* Rojo Netflix */
+    color: white;
+}
+
+.trailer-button:hover {
+    background-color: #ff0b18;
+    transform: translateY(-2px);
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 992px) {
+    .movie-title {
+        font-size: 2.8em;
+    }
+    .movie-overview {
+        font-size: 1.1em;
+    }
+    .poster-container {
+        width: 250px;
+    }
+    .content-wrapper {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column; /* Apila el contenido verticalmente */
+        text-align: center;
+        padding: 15px;
+    }
+    .text-content {
+        max-width: 100%;
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+    .movie-title {
+        font-size: 2.5em;
+        margin-bottom: 15px;
+    }
+    .movie-overview {
+        font-size: 1em;
+        max-height: 120px; /* Ajusta la altura para pantallas más pequeñas */
+    }
+    .poster-container {
+        width: 200px;
+        margin-left: 0;
+        margin-bottom: 30px;
+    }
+    .buttons-container {
+        justify-content: center; /* Centra los botones en el modo apilado */
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-title {
+        font-size: 2em;
+    }
+    .movie-overview {
+        font-size: 0.9em;
+    }
+    .poster-container {
+        width: 150px;
+    }
+    .watch-button, .trailer-button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+    .buttons-container {
+        flex-direction: column; /* Apila los botones si la pantalla es muy pequeña */
+        gap: 10px;
+    }
+}

@@ -1,0 +1,56 @@
+/*
+ * 1. Definiciones Globales: Fuentes, reset, y variables.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root {
+    /* Paleta de colores básica para una app de streaming/películas */
+    --color-background-dark: #141414; /* Fondo oscuro principal */
+    --color-text-light: #ffffff;      /* Texto claro */
+    --color-primary-red: #e50914;     /* Color de acento (ej. botones, focus) */
+}
+
+/* Reset básico para el navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* * Aplicar estilos globales al cuerpo y al root de React
+ */
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * Contenedor Principal de la Aplicación
+ */
+.app-container {
+    background-color: var(--color-background-dark);
+    color: var(--color-text-light);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+ * Estilos de Tipografía (Opcional pero útil)
+ */
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-light);
+    line-height: 1.2;
+}
+
+/*
+ * Área de Contenido Principal (donde se montan las Routes)
+ * Esto asegura que el contenido pueda crecer y empujar el footer hacia abajo.
+ */
+.app-container > .routes {
+    flex-grow: 1;
+}

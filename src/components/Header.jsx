@@ -1,18 +1,42 @@
-import {Link} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import "../styles/Header.css"
 
 export function Header() {
     return (
-        <header>
-            <h1>Mi App de Películas</h1>
-            <nav>
-                <Link to="/">Home</Link> |
-                <Link to="/films">Films</Link> |
-                <Link to="/series">Series</Link>
+        <header className="main-header">
+            <h1 className="logo">
+                {/* Usamos Link/NavLink para que el logo vuelva a Home */}
+                <NavLink to="/">FILMIFY</NavLink>
+            </h1>
+            <nav className="main-nav">
+                <ul className="nav-list">
+                    <li>
+                        <NavLink
+                            to="/"
+                            end
+                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                        >
+                            Home
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/films"
+                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                        >
+                            Films
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/series"
+                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                        >
+                            Series
+                        </NavLink>
+                    </li>
+                </ul>
             </nav>
         </header>
     );
 }
-
-/*
-
- */

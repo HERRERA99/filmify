@@ -1,0 +1,96 @@
+/* ---------------------------------------------------- */
+/* BASE DEL HEADER                                      */
+/* ---------------------------------------------------- */
+
+.main-header {
+    /* Usamos Flexbox para el layout de lado a lado */
+    display: flex;
+    justify-content: space-between; /* Título a la izquierda, Nav a la derecha */
+    align-items: center;
+
+    padding: 15px 40px; /* Padding interior */
+
+    /* Estilos visuales de fondo y texto */
+    background-color: var(--color-background-dark, #141414);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra sutil */
+    color: var(--color-text-light, #ffffff);
+    position: sticky; /* Fija el header en la parte superior */
+    top: 0;
+    z-index: 100; /* Asegura que esté por encima de otros contenidos */
+}
+
+/* ---------------------------------------------------- */
+/* LOGO/TÍTULO                                          */
+/* ---------------------------------------------------- */
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 900;
+    margin: 0;
+}
+
+/* Resetear el NavLink dentro del logo */
+.logo a {
+    color: var(--color-primary-red, #e50914); /* Color rojo para el logo */
+    text-decoration: none;
+}
+
+/* ---------------------------------------------------- */
+/* NAVEGACIÓN (SECCIONES)                               */
+/* ---------------------------------------------------- */
+
+.nav-list {
+    display: flex; /* Para poner los ítems en línea */
+    list-style: none; /* Eliminar los puntos */
+    gap: 30px; /* Espacio entre los enlaces */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    /* Resetear estilos de enlace base */
+    color: var(--color-text-light, #ffffff);
+    text-decoration: none;
+    font-size: 1.1em;
+    padding-bottom: 5px; /* Espacio para el subrayado */
+    font-weight: 500;
+
+    /* 🚨 Configuración de la transición para el subrayado */
+    transition: all 0.2s ease-out;
+    position: relative; /* Necesario para la línea de subrayado */
+}
+
+/* ---------------------------------------------------- */
+/* EFECTO DE SUBRAYADO (HOVER y ACTIVO)                 */
+/* ---------------------------------------------------- */
+
+/* Estilo de la línea que se moverá (el subrayado) */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0; /* Empieza con ancho cero */
+    height: 3px;
+    background: var(--color-primary-red, #e50914);
+    left: 50%; /* Inicialmente en el centro */
+    bottom: 0;
+    transition: all 0.2s ease-out;
+    border-radius: 2px;
+}
+
+/* EFECTO HOVER: Aumentar el ancho de la línea y moverla a la izquierda */
+.nav-link:hover::after {
+    width: 100%;
+    left: 0; /* Se extiende desde el centro hacia la izquierda */
+}
+
+/* ESTADO ACTIVO: La línea de subrayado es permanente y roja */
+.nav-link.active {
+    color: var(--color-primary-red, #e50914);
+    font-weight: 700;
+}
+
+/* ESTADO ACTIVO (SUBRAYADO): El subrayado es visible al 100% y centrado */
+.nav-link.active::after {
+    width: 100%;
+    left: 0;
+}

@@ -1,7 +1,7 @@
 /*
  * 1. Definiciones Globales: Fuentes, reset, y variables.
  */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=beVietnam-pro@400,401,500,600,700,701,900,901&display=swap');
 
 :root {
     /* Paleta de colores básica para una app de streaming/películas */
@@ -22,7 +22,7 @@
 html, body, #root {
     height: 100%;
     width: 100%;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

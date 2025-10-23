@@ -27,19 +27,28 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Color negro semi-transparente */
-    z-index: 1; /* Asegura que esté por encima de la imagen de fondo */
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1;
 }
 
-/* Overlay para el difuminado inferior (de oscuro a transparente) */
+/* Overlay para el difuminado inferior y lateral (MODIFICADO) */
 .gradient-overlay {
     position: absolute;
-    bottom: 0;
+    top: 0; /* Cubrimos todo el alto */
     left: 0;
     width: 100%;
-    height: 30%; /* Ajusta la altura del difuminado */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-    z-index: 2; /* Por encima del overlay oscuro */
+    height: 100%; /* Cubrimos todo el alto */
+    z-index: 2;
+
+    background:
+        /* Gradiente Inferior (el más fuerte, de abajo hacia arriba) */
+            linear-gradient(to top, rgba(0, 0, 0, 0.98), transparent 45%),
+
+                /* Gradiente Izquierdo (de izquierda a derecha, empieza fuerte) */
+            linear-gradient(to right, rgba(0, 0, 0, 0.9), transparent 20%),
+
+                /* Gradiente Derecho (de derecha a izquierda, empieza fuerte) */
+            linear-gradient(to left, rgba(0, 0, 0, 0.9), transparent 20%);
 }
 
 /* Contenedor del contenido principal (texto y póster) */
@@ -67,15 +76,15 @@
     font-size: 3.5em; /* Título grande */
     margin-bottom: 20px;
     line-height: 1.2; /* Espaciado de línea */
+    font-weight: 900;
+
 }
 
 .movie-overview {
     font-size: 1.2em;
     line-height: 1.6;
     margin-bottom: 30px;
-    max-height: 200px; /* Limita la altura de la descripción */
-    overflow: hidden; /* Oculta el texto extra si es muy largo */
-    text-overflow: ellipsis; /* Añade puntos suspensivos */
+    text-align: justify;
 }
 
 /* Contenedor del póster */
@@ -103,7 +112,7 @@
 /* Estilos para los botones */
 .buttons-container {
     display: flex;
-    gap: 20px; /* Espacio entre botones */
+    gap: 20px;
     margin-top: 30px;
 }
 
@@ -114,6 +123,9 @@
     font-size: 1.1em;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none; /* Elimina el subrayado */
+    display: inline-block; /* Permite que padding y ancho funcionen correctamente */
+    text-align: center; /* Asegura que el texto esté centrado si el 'a' es más grande */
 }
 
 .trailer-button {

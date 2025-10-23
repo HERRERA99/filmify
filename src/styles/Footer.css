@@ -1,0 +1,85 @@
+/* El footer ocupa todo el ancho */
+.footer-container {
+    width: 100%;
+    background-color: #141414;
+    border-top: 1px solid #2e2e2e;
+    margin-top: 120px;
+    padding: 20px 0;
+}
+
+/* El contenido interno centrado con ancho máximo */
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    max-width: 1200px;
+    margin: 0 auto; /* centra el contenido */
+}
+
+/* Agrupación del Logo y el Copyright a la izquierda */
+.logo-copyright-group {
+    display: flex;
+    flex-direction: column; /* Apila el logo y el copyright */
+    align-items: flex-start; /* Alinea los ítems a la izquierda */
+    gap: 5px; /* Pequeño espacio entre los elementos */
+}
+
+/* Estilo para el texto de copyright */
+.copyright {
+    font-size: 12px;
+    color: #a0a0a0; /* Un color gris más claro para el texto secundario */
+}
+
+/* Estilo para el enlace de la licencia (NUEVO) */
+.license-link {
+    font-size: 12px;
+    color: #61dafb; /* Un color que destaque, típico de enlaces en temas oscuros */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.license-link:hover {
+    color: #ffffff; /* Color blanco al pasar el mouse */
+    text-decoration: underline;
+}
+
+/* Íconos a la derecha */
+.social-links-group {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: gray;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.social-icon:hover {
+    background-color: #2e2e2e; /* Color de fondo sutil al pasar el mouse */
+    color: #ffffff; /* Color de icono blanco al pasar el mouse para contraste */
+}
+
+/* Responsivo */
+@media (max-width: 576px) {
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Centra el logo y copyright en móviles */
+    .logo-copyright-group {
+        align-items: center;
+    }
+
+    .social-links-group {
+        margin-top: 16px;
+    }
+}

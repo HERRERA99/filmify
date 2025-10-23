@@ -1,0 +1,47 @@
+/* Estilo del Contenedor Principal */
+.carrousel-container {
+    /* Es VITAL que el contenedor sea 'relative' para que los botones 'absolute' funcionen */
+    position: relative;
+    width: 100%;
+    /* Asegúrate de que no haya overflow que oculte los botones si están muy al borde */
+    overflow: hidden;
+}
+
+/* Estilos Comunes para los Botones de Carrusel */
+.carrousel-button {
+    position: absolute;
+    top: 0;
+    /* Ajusta la altura para que cubra la altura del ObjectSlide (100vh) */
+    height: 100vh;
+    width: 50px; /* Ancho del área de clic */
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 2em;
+    z-index: 10; /* Asegura que estén por encima de todo el contenido */
+    opacity: 0; /* Ocultar por defecto */
+    transition: opacity 0.3s ease, background 0.3s ease;
+    display: flex; /* Para centrar la flecha */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mostrar botones al pasar el ratón sobre el carrusel */
+.carrousel-container:hover .carrousel-button {
+    opacity: 1;
+}
+
+/* Estilos de Posición */
+.carrousel-button.left {
+    left: 0;
+}
+
+.carrousel-button.right {
+    right: 0;
+}
+
+/* Efecto Hover */
+.carrousel-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+}

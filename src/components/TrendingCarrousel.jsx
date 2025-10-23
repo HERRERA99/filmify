@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
-import {API_BASE_URL, IMAGE_W500_URL, TMDB_API_KEY} from '../constants/api';
+import {API_BASE_URL, TMDB_API_KEY} from '../constants/api';
 import {ObjectSlide} from "./ObjectSlide.jsx";
+import "../styles/TrendingCarrousel.css"
 
 export function TrendingCarrousel() {
     const [items, setItems] = useState([]);
@@ -14,11 +15,9 @@ export function TrendingCarrousel() {
         setCurrentMovieIndex((prevIndex) => (prevIndex + 1) % items.length);
     };
 
-    /*
     const prevSlide = () => {
     setCurrentMovieIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
     };
-     */
 
     // Función de utilidad para intentar la llamada a la API con reintentos
     const fetchWithRetry = async (url, retries = 3) => {
@@ -63,9 +62,9 @@ export function TrendingCarrousel() {
     }, [TRENDING_URL])
 
     useEffect(() => {
-        const intervalId = setInterval(nextSlide, 1000);
+        const intervalId = setInterval(nextSlide, 10000);
         return () => clearInterval(intervalId);
-    }, [items]);
+    }, [items, nextSlide, prevSlide]);
 
     if (loading) {
         return (
@@ -86,6 +85,14 @@ export function TrendingCarrousel() {
 
     return (
         <div className="carrousel-container">
+            <button
+                className="carrousel-button left"
+                onClick={prevSlide}
+                aria-label="Anterior"
+            >
+                &#10094;
+            </button>
+
             <div
                 key={items[currentMovieIndex].id}
                 className="carrousel-item"
@@ -94,6 +101,14 @@ export function TrendingCarrousel() {
                     item={items[currentMovieIndex]}
                 />
             </div>
+
+            <button
+                className="carrousel-button right"
+                onClick={nextSlide}
+                aria-label="Siguiente"
+            >
+                &#10095;
+            </button>
         </div>
     );
 }

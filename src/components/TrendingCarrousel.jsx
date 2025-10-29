@@ -9,7 +9,7 @@ export function TrendingCarrousel() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const TRENDING_URL = `${API_BASE_URL}/trending/all/week?api_key=${TMDB_API_KEY}&language=es-ES`;
+    const TRENDING_URL = `${API_BASE_URL}/trending/all/week?api_key=${TMDB_API_KEY}&language=en-US`;
 
     const nextSlide = () => {
         setCurrentMovieIndex((prevIndex) => (prevIndex + 1) % items.length);

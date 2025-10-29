@@ -1,0 +1,122 @@
+/* Contenedor principal de la diapositiva */
+.details-container {
+    position: relative;
+    height: 75vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+/* Contenedor del contenido principal (texto y póster) */
+.content-details-wrapper {
+    position: relative; /* Para posicionar sobre los overlays */
+    z-index: 3; /* Asegura que el contenido esté al frente */
+    display: flex; /* Para poner texto a la izquierda y póster a la derecha */
+    align-items: center; /* Alineación vertical */
+    justify-content: space-around; /* Espacio entre los elementos */
+    width: 90%; /* Ancho máximo del contenido */
+    max-width: 1200px; /* Limita el ancho en pantallas grandes */
+    padding: 20px;
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+/* Contenido de texto (título y descripción) */
+.details-text-content {
+    flex: 1;
+    max-width: 60%;
+    padding-right: 40px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.details-title {
+    font-size: 3em; /* Título grande */
+    font-weight: 900;
+}
+
+.details-overview {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
+.duration-info {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Contenedor del póster */
+.poster-details-container {
+    flex-shrink: 0; /* Evita que el póster se encoja */
+    width: 300px; /* Ancho fijo del póster */
+    margin-left: 20px;
+    display: flex; /* Para centrar la imagen dentro del contenedor si fuera necesario */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Imagen del póster */
+.poster-details-img {
+    width: 100%;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Sombra para que destaque */
+    transition: transform 0.3s ease; /* Pequeña animación al interactuar */
+}
+
+/* Estilos de Contenedor de Géneros */
+.genres-container {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre géneros */
+    margin-bottom: 15px;
+}
+
+.details-text-content .genre-tag-bordered {
+    background-color: transparent; /* Sin fondo */
+    color: white; /* Texto blanco */
+    border: 1px solid white; /* Borde blanco */
+    padding: 4px 10px;
+    border-radius: 20px; /* Bordes redondeados */
+    font-size: 0.8em; /* Adaptando el tamaño de fuente para géneros */
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    text-transform: uppercase; /* Opcional: para que parezcan más etiquetas */
+}
+
+/* Estilos para la línea de metadatos (fecha y duración) */
+.details-text-content .movie-metadata {
+    font-size: 1em; /* Adaptando el tamaño de fuente */
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Estilos para la puntuación */
+.details-text-content .movie-rating {
+    font-size: 1.1em; /* Reducimos el tamaño de la fuente base del texto de rating */
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.rating-star {
+    /* Usamos el carácter unicode de estrella directamente en el JSX */
+    color: #FFD700; /* Color oro/amarillo brillante */
+    font-size: 1.5em; /* Hacemos la estrella visiblemente más grande que el texto circundante */
+    line-height: 1; /* Esto ayuda a alinear mejor */
+    margin-right: 8px;
+    /* Usamos 'display: block' o 'inline-block' en el span para poder controlar el tamaño y el margen */
+    display: inline-block;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); /* Brillo más fuerte */
+}
+
+/* Fallback: Si no se puede usar content, usamos el carácter unicode directamente */
+.rating-star::before {
+    content: '★';
+}

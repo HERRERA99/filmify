@@ -1,0 +1,42 @@
+.media-card {
+    flex-shrink: 0;
+    width: 300px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.poster-media-card {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.poster-media-card:hover {
+    transform: scale(1.02);
+}
+
+/* Enlace sin subrayado ni cambio de color */
+.media-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título centrado y en blanco */
+.media-card-title {
+    margin-top: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center; /* ✅ centrado */
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,5 +1,11 @@
 export const API_BASE_URL = 'https://api.themoviedb.org/3';
-export const IMAGE_W500_URL = 'https://image.tmdb.org/t/p/w500';
+export const IMAGE_W500_URL = 'https://image.tmdb.org/t/p/w500/';
 export const IMAGE_ORIGINAL_URL = 'https://image.tmdb.org/t/p/original/';
 export const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 export const YOUTUBE_URL = 'https://www.youtube.com/watch?v=';
+export const UPCOMING_MOVIES_URL = 'https://api.themoviedb.org/3/movie/upcoming';
+export const POPULAR_SERIES_URL = 'https://api.themoviedb.org/3/tv/popular';
+export const TOP_RATED_SERIES_URL = 'https://api.themoviedb.org/3/tv/top_rated';
+export const TOP_RATED_MOVIES_URL = 'https://api.themoviedb.org/3/movie/top_rated';
+export const MOVIE_DETAILS_URL = 'https://api.themoviedb.org/3/movie/';
+export const SERIE_DETAILS_URL = 'https://api.themoviedb.org/3/tv/';

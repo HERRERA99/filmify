@@ -3,6 +3,7 @@ import "../styles/ObjectSlide.css"
 import {useEffect, useState} from "react";
 import AnimatedContent from "./AnimatedContent.jsx";
 import FadeContent from "./FadeContent.jsx";
+import {Link} from "react-router-dom";
 
 export function ObjectSlide({item}) {
     const [trailerUrl, setTrailerUrl] = useState(null);
@@ -17,6 +18,8 @@ export function ObjectSlide({item}) {
     const videoUrl = item.media_type === "movie"
         ? `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${TMDB_API_KEY}`
         : `https://api.themoviedb.org/3/tv/${item.id}/videos?api_key=${TMDB_API_KEY}`;
+
+    const detailLink = `/${item.media_type}/${item.id}`
 
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -73,7 +76,7 @@ export function ObjectSlide({item}) {
                                 className="trailer-button"
                                 style={{pointerEvents: trailerUrl ? 'auto' : 'none', opacity: trailerUrl ? 1 : 0.5}}
                             >
-                                Ver tráiler
+                                Watch trailer
                             </a>
                         </div>
                     </FadeContent>
@@ -93,9 +96,15 @@ export function ObjectSlide({item}) {
                         threshold={0.1}
                         delay={0}
                     >
-                        <div className="poster-container">
-                            <img className="poster-img" src={posterImageUrl} alt={item.title || item.name}/>
-                        </div>
+                        <Link
+                            to={detailLink}
+                            title={item.title}
+                            className="media-card-link no-underline text-white"
+                        >
+                            <div className="poster-container">
+                                <img className="poster-img" src={posterImageUrl} alt={item.title || item.name}/>
+                            </div>
+                        </Link>
                     </AnimatedContent>
                 )}
             </div>

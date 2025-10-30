@@ -9,3 +9,4 @@ export const TOP_RATED_SERIES_URL = 'https://api.themoviedb.org/3/tv/top_rated';
 export const TOP_RATED_MOVIES_URL = 'https://api.themoviedb.org/3/movie/top_rated';
 export const MOVIE_DETAILS_URL = 'https://api.themoviedb.org/3/movie/';
 export const SERIE_DETAILS_URL = 'https://api.themoviedb.org/3/tv/';
+export const YOUTUBE_EMBEBED_URL = 'https://www.youtube.com/embed/';

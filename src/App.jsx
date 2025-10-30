@@ -1,3 +1,5 @@
+
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
 import {Header} from "./components/Header.jsx";
@@ -7,10 +9,12 @@ import {MovieDetails} from "./components/MovieDetails.jsx";
 import {SeriesPage} from "./components/SeriesPage.jsx";
 import {SerieDetails} from "./components/SerieDetails.jsx";
 import {Footer} from "./components/Footer.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 function App() {
   return (
       <Router>
+          <ScrollToTop/>
           <div className="app-container">
               <Header />
 

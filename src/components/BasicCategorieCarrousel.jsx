@@ -17,13 +17,14 @@ export function BasicCategorieCarrousel({ title, mediaList, viewMoreLink, mediaT
                 <h2 className="titulo-seccion text-2xl md:text-3xl text-white">
                     {title}
                 </h2>
-
-                <Link
-                    to={viewMoreLink}
-                    className="view-more-button text-sm font-semibold transition-colors whitespace-nowrap"
-                >
-                    View More
-                </Link>
+                {viewMoreLink &&  (
+                    <Link
+                        to={viewMoreLink}
+                        className="view-more-button text-sm font-semibold transition-colors whitespace-nowrap"
+                    >
+                        View More
+                    </Link>
+                )}
             </div>
 
             {/* Carrusel de Posters (Implementado con Swiper) */}

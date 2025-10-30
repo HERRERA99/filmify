@@ -1,0 +1,152 @@
+/* ======================================================= */
+/* Estilos para SeasonItem (Ancho Fluido al 80%, 10% de Márgenes) */
+/* ======================================================= */
+.season-item-main {
+    /* Fondo Negro puro tipo Netflix */
+    background-color: #141414;
+    border: 1px solid #222;
+    border-radius: 10px;
+
+    /* ANCHO FLUIDO SOLICITADO: 80% */
+    width: 80%;
+
+    /* MÁRGENES SOLICITADOS: 10% por ambos lados */
+    margin-top: 25px; /* Margen superior fijo */
+    margin-bottom: 25px; /* Margen inferior fijo */
+    margin-left: 10%; /* 10% del viewport width a la izquierda */
+    margin-right: 10%; /* 10% del viewport width a la derecha */
+
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+
+    /* Prevenir que se estire demasiado en monitores gigantes */
+    max-width: 1400px;
+}
+
+/* Nota: La combinación width: 80% y margin-left/right: 10% es la solución más directa
+   para que el contenedor ocupe el 80% y tenga 10% de espacio a los lados. */
+
+
+.season-header {
+    width: 100%; /* Ocupa el 100% del 80% de ancho del padre */
+    display: flex;
+    align-items: flex-start;
+    gap: 35px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.season-header:hover {
+    background-color: #1e1e1e;
+}
+
+.season-poster-wrapper, .episode-poster-wrapper {
+    flex-shrink: 0;
+}
+
+.season-poster {
+    width: 200px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.season-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.season-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 2.1em;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.season-info {
+    font-size: 1.2em;
+    color: #bbb;
+    margin-bottom: 20px;
+}
+
+.season-overview {
+    font-size: 1.25em;
+    line-height: 1.6;
+    color: #f0f0f0;
+    text-align: left;
+}
+
+.toggle-icon {
+    margin-left: 20px;
+    font-size: 1em;
+    color: #ffffff;
+    transition: transform 0.2s;
+}
+
+/* ======================================================= */
+/* Estilos para EpisodeItem (Manteniendo ancho al 100% del padre fluido) */
+/* ======================================================= */
+
+.episode-list-container {
+    padding-left: 50px;
+    margin-top: 30px;
+    border-left: 4px solid #333;
+    width: auto;
+}
+
+.episode-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.episode-list-item {
+    margin-bottom: 25px;
+}
+
+.episode-item-container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    padding: 15px;
+    background-color: #222222;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.episode-poster {
+    width: 220px;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    flex-shrink: 0;
+}
+
+.episode-details {
+    flex-grow: 1;
+}
+
+.episode-title {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.65em;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.episode-info {
+    font-size: 1.15em;
+    color: #bbb;
+    margin-bottom: 10px;
+}
+
+.episode-overview {
+    font-size: 1.15em;
+    line-height: 1.5;
+    color: #e0e0e0;
+}

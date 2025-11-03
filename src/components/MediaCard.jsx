@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IMAGE_W500_URL } from "../constants/api.js";
+import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../constants/api.js";
 import "../styles/MediaCard.css";
 
 export function MediaCard({ posterUrl, title, mediaId, mediaType }) {
     const detailLink = `/${mediaType}/${mediaId}`;
-    const posterImageUrl = `${IMAGE_W500_URL}${posterUrl}`;
+    const posterImageUrl = posterUrl ? `${IMAGE_W500_URL}${posterUrl}` : POSTER_NO_IMAGE_URL;
 
     return (
         <Link

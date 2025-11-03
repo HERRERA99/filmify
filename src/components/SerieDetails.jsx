@@ -98,6 +98,11 @@ export function SerieDetails() {
                 rating={serie.vote_average}
                 numVotes={serie.vote_count}
             />
+            {trailer && trailer.key && (
+                <TrailerInframe
+                    urlTrailer={`${YOUTUBE_EMBEBED_URL}${trailer.key}`}
+                />
+            )}
             {seasons
                 .filter(seasons => seasons.season_number !== 0)
                 .map((season) => (
@@ -105,14 +110,7 @@ export function SerieDetails() {
                     key={season.id}
                     urlSeason={`${SERIE_DETAILS_URL}${id}/season/${season.season_number}?api_key=${TMDB_API_KEY}&language=en-US`}
                 />
-            ))
-
-            }
-            {trailer && trailer.key && (
-                <TrailerInframe
-                    urlTrailer={`${YOUTUBE_EMBEBED_URL}${trailer.key}`}
-                />
-            )}
+            ))}
             <CreditsSlide
                 url={`${SERIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}
             />

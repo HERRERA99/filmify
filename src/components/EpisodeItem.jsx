@@ -1,4 +1,4 @@
-import {IMAGE_W500_URL} from "../constants/api.js";
+import {EPISODE_NO_IMAGE_URL, IMAGE_W500_URL} from "../constants/api.js";
 import "../styles/SeasonsAndItems.css"
 
 export function EpisodeItem({ episode }) {
@@ -10,7 +10,7 @@ export function EpisodeItem({ episode }) {
     // Formatear la fecha de emisión
     const airDate = episode.air_date ? new Date(episode.air_date).toLocaleDateString() : 'Fecha desconocida';
     // Construir la ruta completa del poster o usar un placeholder
-    const posterUrl = episode.still_path ? `${IMAGE_W500_URL}${episode.still_path}` : 'placeholder_episode.jpg';
+    const posterUrl = episode.still_path ? `${IMAGE_W500_URL}${episode.still_path}` : EPISODE_NO_IMAGE_URL;
 
     return (
         <div className="episode-item-container">

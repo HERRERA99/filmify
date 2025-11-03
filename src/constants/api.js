@@ -10,3 +10,11 @@ export const TOP_RATED_MOVIES_URL = 'https://api.themoviedb.org/3/movie/top_rate
 export const MOVIE_DETAILS_URL = 'https://api.themoviedb.org/3/movie/';
 export const SERIE_DETAILS_URL = 'https://api.themoviedb.org/3/tv/';
 export const YOUTUBE_EMBEBED_URL = 'https://www.youtube.com/embed/';
+export const POSTER_NO_IMAGE_URL = 'https://placehold.co/500x750/141414/ffffff?text=No+Image';
+export const EPISODE_NO_IMAGE_URL = 'https://placehold.co/260x124/141414/ffffff?text=No+Image';
+export const ALL_MOVIE_URL = 'discover/movie';
+export const ALL_TV_URL = 'discover/tv';
+export const UPCOMING_MOVIES_SHORT_URL = 'movie/upcoming';
+export const POPULAR_SERIES_SHORT_URL = 'tv/popular';
+export const TOP_RATED_SERIES_SHORT_URL = 'tv/top_rated';
+export const TOP_RATED_MOVIES_SHORT_URL = 'movie/top_rated';

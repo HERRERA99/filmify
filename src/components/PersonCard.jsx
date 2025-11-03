@@ -1,9 +1,9 @@
-import {IMAGE_W500_URL} from "../constants/api.js";
+import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../constants/api.js";
 import "../styles/PersonCard.css"
 import React from "react";
 
 export function PersonCard({profilePath, name, role}) {
-    const profileImageUrl = profilePath ? `${IMAGE_W500_URL}${profilePath}` : null;
+    const profileImageUrl = profilePath ? `${IMAGE_W500_URL}${profilePath}` : POSTER_NO_IMAGE_URL;
 
     return (
         <>

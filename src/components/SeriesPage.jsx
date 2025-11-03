@@ -1,7 +1,14 @@
+import {InfiniteMediaGallery} from "./InfiniteMediaGallery.jsx";
+import {ALL_TV_URL} from "../constants/api.js";
+
 export function SeriesPage() {
     return (
         <>
-            <p>Series Page</p>
+            <InfiniteMediaGallery
+                title={"Series"}
+                apiPath={ALL_TV_URL}
+                mediaType={"tv"}
+            />
         </>
     )
 }

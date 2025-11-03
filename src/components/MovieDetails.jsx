@@ -4,7 +4,7 @@ import {
     TMDB_API_KEY,
     MOVIE_DETAILS_URL,
     IMAGE_W500_URL,
-    IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL
+    IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL, POSTER_NO_IMAGE_URL
 } from "../constants/api.js";
 import {ObjectDetailsHero} from "./ObjectDetailsHero.jsx";
 import {CreditsSlide} from "./CreditsSlide.jsx";
@@ -13,7 +13,7 @@ import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
 
 export function MovieDetails() {
-    const { id } = useParams();
+    const {id} = useParams();
 
     const [movie, setMovie] = useState([]);
     const [trailer, setTrailer] = useState([]);
@@ -79,7 +79,7 @@ export function MovieDetails() {
         fetchMovie();
         fetchVideos();
         fetchSimilar();
-    },[id])
+    }, [id])
 
     return (
         <>
@@ -87,7 +87,10 @@ export function MovieDetails() {
                 title={movie.original_title}
                 overview={movie.overview}
                 genres={movie.genres}
-                posterUrl={`${IMAGE_W500_URL}${movie.poster_path}`}
+                posterUrl={movie.poster_path ?
+                    `${IMAGE_W500_URL}${movie.poster_path}` :
+                    POSTER_NO_IMAGE_URL
+                }
                 backgroundImage={`${IMAGE_ORIGINAL_URL}${movie.backdrop_path}`}
                 runtime={movie.runtime}
                 first_air_date={movie.release_date}

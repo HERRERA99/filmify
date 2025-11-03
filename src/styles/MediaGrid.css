@@ -1,0 +1,105 @@
+.media-container {
+    min-height: 100vh;
+    background-color: #141414; /* bg-gray-900 */
+    padding: 2rem 10%; /* 10% a los lados */
+    box-sizing: border-box;
+}
+
+.media-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2rem;
+    border-bottom: 4px solid #dc2626; /* rojo */
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.media-error {
+    background-color: #7f1d1d;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    justify-items: center; /* centra los ítems en cada celda */
+    align-items: start;    /* evita solapamientos verticales */
+}
+
+/* Asegura que cada poster (MediaCard) tenga un tamaño consistente */
+.media-grid .media-card {
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 2 / 3; /* mantiene proporción tipo póster */
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: #1f2937; /* tono gris oscuro de fondo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.media-grid .media-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* evita deformaciones */
+    display: block;
+}
+
+/* Hover suave con zoom */
+.media-grid .media-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+    z-index: 2; /* evita que el zoom tape otros elementos */
+}
+
+
+.media-loading,
+.media-end,
+.media-empty {
+    text-align: center;
+    color: #9ca3af; /* text-gray-500 */
+    padding: 2rem 0;
+}
+
+.media-loading span {
+    color: #ef4444; /* rojo */
+    font-weight: 600;
+}
+
+.media-loading svg {
+    animation: spin 1s linear infinite;
+    height: 20px;
+    width: 20px;
+    margin-right: 0.5rem;
+    color: #ef4444;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mejor visualización en pantallas grandes */
+@media (min-width: 1024px) {
+    .media-title {
+        font-size: 3rem;
+    }
+}
+
+/* Pequeños ajustes para pantallas más angostas */
+@media (max-width: 640px) {
+    .media-container {
+        padding: 1rem 5%;
+    }
+    .media-grid {
+        gap: 1rem;
+    }
+}

@@ -1,0 +1,113 @@
+/* search-bar-container */
+.search-bar-container {
+    position: relative;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* search-input */
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #444;
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+.search-input::placeholder {
+    color: #aaa;
+}
+
+/* search-results-list */
+.search-results-list {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    right: 20px;
+    z-index: 1000;
+
+    /* Mantenemos los estilos de presentación */
+    list-style-type: none;
+    padding: 0;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    max-height: 400px; /* Limita la altura de la lista */
+    overflow-y: scroll; /* Asegura que el scroll funcione */
+
+    /* OCULTAR BARRA DE SCROLL PARA WEBKIT (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    /* OCULTAR BARRA DE SCROLL PARA IE y Edge */
+    -ms-overflow-style: none;  /* IE and Edge */
+    /* OCULTAR BARRA DE SCROLL PARA Firefox */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* search-list-item */
+.search-list-item {
+    border-bottom: 1px solid #444;
+}
+.search-list-item:last-child {
+    border-bottom: none;
+}
+
+/* search-item-link */
+.search-item-link {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s;
+}
+.search-item-link:hover {
+    background-color: #444; /* Resaltar al pasar el ratón */
+    color: #fff;
+}
+
+/* search-item-content */
+.search-item-content {
+    display: flex;
+    align-items: center;
+}
+
+/* search-item-poster */
+.search-item-poster {
+    width: 50px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+/* search-item-info */
+.search-item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* search-item-title */
+.search-item-title {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* search-item-type */
+.search-item-type {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+/* Mensajes de estado */
+.no-results, .no-query {
+    text-align: center;
+    color: #aaa;
+    margin-top: 20px;
+}

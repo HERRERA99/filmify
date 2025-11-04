@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "../styles/Header.css"
+import {SearchBar} from "./SearchBar.jsx";
 
 export function Header() {
     return (
@@ -8,6 +9,7 @@ export function Header() {
                 {/* Usamos Link/NavLink para que el logo vuelva a Home */}
                 <NavLink to="/">FILMIFY</NavLink>
             </h1>
+            <SearchBar/>
             <nav className="main-nav">
                 <ul className="nav-list">
                     <li>

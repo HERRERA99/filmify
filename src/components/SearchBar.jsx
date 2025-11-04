@@ -29,7 +29,6 @@ export function SearchBar() {
             res => {
                 const rawResults = res.data.results;
 
-                // Filtrar personas y mapear a los campos deseados
                 const finalResults = rawResults
                     .filter(item => (item.media_type === "tv" || item.media_type === "movie") && (item.poster_path !== null))
                     .map(item => ({

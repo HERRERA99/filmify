@@ -1,16 +1,84 @@
-# React + Vite
+# 🎬 Filmify
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Filmify es una aplicación web moderna para explorar y descubrir información sobre películas y series de televisión. Desarrollada con React y Vite, ofrece una experiencia de usuario fluida y atractiva para los amantes del cine y la televisión.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🎥 Exploración de películas y series populares
+- 📺 Detalles completos de películas y series
+- 🔍 Búsqueda avanzada de contenido
+- 🎭 Información sobre actores y créditos
+- 📅 Películas próximas a estrenarse
+- ⭐ Listados de contenido mejor valorado
+- 📺 Visualización de trailers
+- 🔄 Carruseles interactivos
+- 💫 Animaciones fluidas con GSAP
 
-## React Compiler
+## 🛠️ Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite 7
+- React Router DOM 7
+- Mantine UI
+- GSAP para animaciones
+- Axios para peticiones HTTP
+- Swiper para carruseles
+- React Icons
 
-## Expanding the ESLint configuration
+## 🚀 Instalación
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clona el repositorio:
+```bash
+git clone https://github.com/HERRERA99/filmify.git
+```
+
+2. Instala las dependencias:
+```bash
+cd filmify
+npm install
+```
+
+3. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
+
+## 🔧 Scripts Disponibles
+
+- `npm run dev`: Inicia el servidor de desarrollo
+- `npm run build`: Construye la aplicación para producción
+- `npm run preview`: Previsualiza la versión de producción
+- `npm run lint`: Ejecuta el linter
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── assets/         # Recursos estáticos
+├── components/     # Componentes React
+├── constants/      # Constantes y utilidades
+└── styles/        # Archivos CSS por componente
+```
+
+## 🎯 Componentes Principales
+
+- `HomePage`: Página principal de la aplicación
+- `MovieDetails`: Vista detallada de películas
+- `SerieDetails`: Vista detallada de series
+- `SearchBar`: Componente de búsqueda
+- `TrendingCarrousel`: Carrusel de contenido trending
+- `MediaCard`: Tarjeta de presentación de películas/series
+- `ObjectDetailsHero`: Héroe para detalles de contenido
+- `TrailerInframe`: Reproductor de trailers
+
+## 🤝 Contribuir
+
+Las contribuciones son siempre bienvenidas. Por favor, lee las guías de contribución antes de enviar un pull request.
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+Desarrollado con ❤️ por [HERRERA99](https://github.com/HERRERA99)

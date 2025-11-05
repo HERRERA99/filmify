@@ -8,6 +8,7 @@ export function SeriesPage() {
                 title={"Series"}
                 apiPath={ALL_TV_URL}
                 mediaType={"tv"}
+                filter={true}
             />
         </>
     )

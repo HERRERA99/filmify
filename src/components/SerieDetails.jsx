@@ -19,7 +19,6 @@ export function SerieDetails() {
 
     const [serie, setSerie] = useState([]);
     const [trailer, setTrailer] = useState([]);
-    const [videos, setVideos] = useState([]);
     const [similar, setSimilar] = useState([]);
     const [seasons, setSeasons] = useState([]);
 
@@ -54,7 +53,6 @@ export function SerieDetails() {
 
             const data = await response.json();
 
-            setVideos(data.results);
             setTrailer(obtenerTrailerMasAntiguo(data.results));
         } catch (error) {
             console.error("Error fetching movie:", error);

@@ -1,7 +1,11 @@
+/* ---------------------------------------------------- */
+/* MEDIA CONTAINER & TÍTULO (Base)                      */
+/* ---------------------------------------------------- */
+
 .media-container {
     min-height: 100vh;
     background-color: #141414; /* bg-gray-900 */
-    padding: 2rem 10%; /* 10% a los lados */
+    padding: 2rem 10%; /* 10% a los lados para escritorio */
     box-sizing: border-box;
 }
 
@@ -24,23 +28,30 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
+/* ---------------------------------------------------- */
+/* MEDIA GRID (Base / PC)                               */
+/* ---------------------------------------------------- */
 .media-grid {
     display: grid;
+    /* Columnas flexibles: mínimo 180px para escritorio/tablet grande */
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1.5rem;
     width: 100%;
-    justify-items: center; /* centra los ítems en cada celda */
-    align-items: start;    /* evita solapamientos verticales */
+    justify-items: center;
+    align-items: start;
 }
 
-/* Asegura que cada poster (MediaCard) tenga un tamaño consistente */
+/* ---------------------------------------------------- */
+/* MEDIA CARD (Base / PC)                               */
+/* ---------------------------------------------------- */
+
 .media-grid .media-card {
     width: 100%;
-    max-width: 200px;
-    aspect-ratio: 2 / 3; /* mantiene proporción tipo póster */
+    max-width: 200px; /* Tamaño máximo para las tarjetas */
+    aspect-ratio: 2 / 3;
     overflow: hidden;
     border-radius: 0.75rem;
-    background-color: #1f2937; /* tono gris oscuro de fondo */
+    background-color: #1f2937;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -48,28 +59,30 @@
 .media-grid .media-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* evita deformaciones */
+    object-fit: cover;
     display: block;
 }
 
-/* Hover suave con zoom */
 .media-grid .media-card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-    z-index: 2; /* evita que el zoom tape otros elementos */
+    z-index: 2;
 }
 
+/* ---------------------------------------------------- */
+/* ESTADOS (Loading, Error, etc.)                       */
+/* ---------------------------------------------------- */
 
 .media-loading,
 .media-end,
 .media-empty {
     text-align: center;
-    color: #9ca3af; /* text-gray-500 */
+    color: #9ca3af;
     padding: 2rem 0;
 }
 
 .media-loading span {
-    color: #ef4444; /* rojo */
+    color: #ef4444;
     font-weight: 600;
 }
 
@@ -81,25 +94,96 @@
     color: #ef4444;
 }
 
+.media-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.sort-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort-label {
+    font-weight: 600;
+    color: #fff;
+}
+
+.sort-select {
+    background-color: #141414; /* gris oscuro */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.sort-select option {
+    background-color: #141414; /* fondo oscuro en el desplegable */
+    color: #fff; /* texto blanco */
+}
+
+.sort-select:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-/* Mejor visualización en pantallas grandes */
+/* ==================================================== */
+/* 💻 MEDIA QUERY: Mejor visualización en pantallas grandes */
+/* ==================================================== */
 @media (min-width: 1024px) {
     .media-title {
         font-size: 3rem;
     }
 }
 
-/* Pequeños ajustes para pantallas más angostas */
+/* ==================================================== */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 640px) */
+/* ==================================================== */
 @media (max-width: 640px) {
     .media-container {
+        /* 💡 Reducimos el padding lateral para aprovechar el espacio en móvil */
         padding: 1rem 5%;
     }
+
+    .media-title {
+        /* 💡 Título más pequeño para pantallas compactas */
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
     .media-grid {
-        gap: 1rem;
+        gap: 1rem; /* Espacio reducido entre los ítems */
+        /* 💡 Ajustamos el tamaño mínimo de columna. 
+           120px asegura que en un móvil de 320px quepan 2 tarjetas fácilmente. */
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    /* 💡 Aseguramos que el tamaño máximo del card sea adecuado para las nuevas columnas */
+    .media-grid .media-card {
+        max-width: 150px;
+        border-radius: 0.5rem; /* Menos redondeado para más impacto */
+    }
+
+    .media-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .sort-dropdown {
+        width: 100%;
+    }
+    .sort-select {
+        width: 100%;
     }
 }

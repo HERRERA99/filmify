@@ -8,6 +8,7 @@ export function MoviessPage() {
                 title={"Movies"}
                 apiPath={ALL_MOVIE_URL}
                 mediaType={"movie"}
+                filter={true}
             />
         </>
     )

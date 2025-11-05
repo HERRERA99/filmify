@@ -1,9 +1,31 @@
+/* ---------------------------------------------------- */
+/* ENCABEZADO DE LA SECCIÓN DE REPARTO (Base / PC)      */
+/* ---------------------------------------------------- */
+
 .cast-section-header {
+    /* Padding amplio para escritorio */
     padding: 3rem 2rem 0 2rem;
 }
 
 .cast-titulo-seccion {
+    /* Título grande para escritorio */
     font-size: 2.5em;
     line-height: 1.2;
     font-weight: 900;
+}
+
+/* ==================================================== */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
+/* ==================================================== */
+@media (max-width: 768px) {
+    /* 💡 Reducción de padding en el encabezado de la sección */
+    .cast-section-header {
+        /* Padding más compacto para móvil */
+        padding: 1.5rem 1rem 0 1rem;
+    }
+
+    /* 💡 Título más pequeño y compacto en móvil */
+    .cast-titulo-seccion {
+        font-size: 1.8em;
+    }
 }

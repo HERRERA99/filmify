@@ -1,9 +1,9 @@
 /* search-bar-container */
 .search-bar-container {
     position: relative;
-    padding: 20px;
-    max-width: 800px;
+    padding: 0;
     margin: 0 auto;
+    width: 50%;
 }
 
 /* search-input */
@@ -15,7 +15,7 @@
     background-color: #333; /* Fondo oscuro */
     color: #fff; /* Texto blanco */
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 .search-input::placeholder {
     color: #aaa;
@@ -24,9 +24,9 @@
 /* search-results-list */
 .search-results-list {
     position: absolute;
-    top: 60px;
-    left: 20px;
-    right: 20px;
+    top: 50px;
+    left: 0;
+    right: 0;
     z-index: 1000;
 
     /* Mantenemos los estilos de presentación */
@@ -36,7 +36,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     max-height: 400px; /* Limita la altura de la lista */
-    overflow-y: scroll; /* Asegura que el scroll funcione */
+    overflow-y: auto; /* Asegura que el scroll funcione */
 
     /* OCULTAR BARRA DE SCROLL PARA WEBKIT (Chrome, Safari) */
     &::-webkit-scrollbar {

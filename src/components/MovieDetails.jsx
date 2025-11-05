@@ -17,7 +17,6 @@ export function MovieDetails() {
 
     const [movie, setMovie] = useState([]);
     const [trailer, setTrailer] = useState([]);
-    const [videos, setVideos] = useState([]);
     const [similar, setSimilar] = useState([]);
 
     const fetchMovie = async () => {
@@ -50,7 +49,6 @@ export function MovieDetails() {
 
             const data = await response.json();
 
-            setVideos(data.results);
             setTrailer(obtenerTrailerMasAntiguo(data.results));
         } catch (error) {
             console.error("Error fetching movie:", error);

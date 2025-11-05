@@ -11,10 +11,10 @@
     width: 80%;
 
     /* MÁRGENES SOLICITADOS: 10% por ambos lados */
-    margin-top: 25px; /* Margen superior fijo */
-    margin-bottom: 25px; /* Margen inferior fijo */
-    margin-left: 10%; /* 10% del viewport width a la izquierda */
-    margin-right: 10%; /* 10% del viewport width a la derecha */
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 10%;
+    margin-right: 10%;
 
     padding: 25px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
@@ -23,12 +23,8 @@
     max-width: 1400px;
 }
 
-/* Nota: La combinación width: 80% y margin-left/right: 10% es la solución más directa
-   para que el contenedor ocupe el 80% y tenga 10% de espacio a los lados. */
-
-
 .season-header {
-    width: 100%; /* Ocupa el 100% del 80% de ancho del padre */
+    width: 100%;
     display: flex;
     align-items: flex-start;
     gap: 35px;
@@ -149,4 +145,99 @@
     font-size: 1.15em;
     line-height: 1.5;
     color: #e0e0e0;
+}
+
+/* ======================================================= */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
+/* ======================================================= */
+@media (max-width: 768px) {
+    /* 💡 Contenedor principal de la temporada */
+    .season-item-main {
+        /* Ocupa todo el ancho disponible */
+        width: 95%;
+        /* Eliminamos los márgenes laterales del 10% y usamos un margen fijo y más pequeño */
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 15px; /* Reducimos el padding interno */
+    }
+
+    /* 💡 Encabezado de la temporada (Poster y Texto) */
+    .season-header {
+        flex-direction: column; /* Apilamos el póster y los detalles */
+        align-items: center; /* Centramos los ítems apilados */
+        gap: 15px; /* Reducimos el espacio entre ítems */
+        text-align: center;
+    }
+
+    .season-poster {
+        width: 150px; /* Reducimos el tamaño del póster de la temporada */
+    }
+
+    .season-details {
+        text-align: center;
+    }
+
+    /* Reducción de tipografía de la temporada */
+    .season-title {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+    .season-info {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+
+    .season-overview {
+        /* Limitamos el resumen para que no ocupe demasiado espacio en móvil */
+        font-size: 1em;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .toggle-icon {
+        /* Colocamos el icono de toggle debajo y centrado */
+        margin: 10px auto 0 auto;
+        display: block;
+    }
+
+    /* 💡 Lista de Episodios */
+    .episode-list-container {
+        /* Eliminamos el padding y el borde lateral que es problemático en móvil */
+        padding-left: 0;
+        border-left: none;
+        margin-top: 20px;
+    }
+
+    /* 💡 Contenedor de Episodio Individual */
+    .episode-item-container {
+        flex-direction: column; /* Apilamos la imagen del episodio y el texto */
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .episode-list-item {
+        margin-bottom: 15px;
+    }
+
+    .episode-poster {
+        width: 100%;
+        max-width: 200px; /* Tamaño máximo para el póster del episodio */
+        margin-bottom: 5px;
+    }
+
+    /* Reducción de tipografía del episodio */
+    .episode-title {
+        font-size: 1.3em;
+    }
+
+    .episode-info,
+    .episode-overview {
+        font-size: 1em;
+        text-align: center;
+    }
 }

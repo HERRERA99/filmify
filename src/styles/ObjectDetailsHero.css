@@ -1,7 +1,11 @@
+/* ---------------------------------------------------- */
+/* DETALLES: BASE (Escritorio / Tablet grande)          */
+/* ---------------------------------------------------- */
+
 /* Contenedor principal de la diapositiva */
 .details-container {
     position: relative;
-    height: 80vh;
+    height: 80vh; /* Alto para que sea una "diapositiva" grande */
     width: 100%;
     display: flex;
     align-items: center;
@@ -13,21 +17,22 @@
 
 /* Contenedor del contenido principal (texto y póster) */
 .content-details-wrapper {
-    position: relative; /* Para posicionar sobre los overlays */
-    z-index: 3; /* Asegura que el contenido esté al frente */
-    display: flex; /* Para poner texto a la izquierda y póster a la derecha */
-    align-items: center; /* Alineación vertical */
-    justify-content: space-around; /* Espacio entre los elementos */
-    width: 90%; /* Ancho máximo del contenido */
-    max-width: 1200px; /* Limita el ancho en pantallas grandes */
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 1200px;
     padding: 20px;
-    box-sizing: border-box; /* Incluye padding en el ancho */
+    box-sizing: border-box;
+    margin: 0 auto; /* Centramos el wrapper */
 }
 
 /* Contenido de texto (título y descripción) */
 .details-text-content {
     flex: 1;
-    max-width: 60%;
+    max-width: 60%; /* Ancho máximo para que el texto no sea demasiado largo */
     padding-right: 40px;
     text-align: left;
     display: flex;
@@ -35,7 +40,7 @@
     gap: 20px;
 }
 .details-title {
-    font-size: 3em; /* Título grande */
+    font-size: 3em;
     font-weight: 900;
 }
 
@@ -53,10 +58,10 @@
 
 /* Contenedor del póster */
 .poster-details-container {
-    flex-shrink: 0; /* Evita que el póster se encoja */
-    width: 350px; /* Ancho fijo del póster */
+    flex-shrink: 0;
+    width: 350px; /* Ancho fijo del póster en PC */
     margin-left: 20px;
-    display: flex; /* Para centrar la imagen dentro del contenedor si fuera necesario */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -64,42 +69,43 @@
 /* Imagen del póster */
 .poster-details-img {
     width: 100%;
-    border-radius: 15px; /* Bordes redondeados */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Sombra para que destaque */
-    transition: transform 0.3s ease; /* Pequeña animación al interactuar */
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
 }
 
 /* Estilos de Contenedor de Géneros */
 .genres-container {
     display: flex;
     align-items: center;
-    gap: 12px; /* Espacio entre géneros */
+    gap: 12px;
     margin-bottom: 15px;
+    flex-wrap: wrap; /* Permite que los géneros pasen a la siguiente línea si no caben */
 }
 
 .details-text-content .genre-tag-bordered {
-    background-color: transparent; /* Sin fondo */
-    color: white; /* Texto blanco */
-    border: 1px solid white; /* Borde blanco */
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
     padding: 4px 10px;
-    border-radius: 20px; /* Bordes redondeados */
-    font-size: 0.8em; /* Adaptando el tamaño de fuente para géneros */
+    border-radius: 20px;
+    font-size: 0.8em;
     font-weight: 600;
     margin: 0;
     white-space: nowrap;
-    text-transform: uppercase; /* Opcional: para que parezcan más etiquetas */
+    text-transform: uppercase;
 }
 
 /* Estilos para la línea de metadatos (fecha y duración) */
 .details-text-content .movie-metadata {
-    font-size: 1em; /* Adaptando el tamaño de fuente */
+    font-size: 1em;
     font-weight: 600;
     margin-bottom: 8px;
 }
 
 /* Estilos para la puntuación */
 .details-text-content .movie-rating {
-    font-size: 1.1em; /* Reducimos el tamaño de la fuente base del texto de rating */
+    font-size: 1.1em;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -108,23 +114,105 @@
 .valoration-container {
     display: flex;
     flex-direction: row;
-    align-items: center; /* Alinea verticalmente la estrella y el texto */
-    gap: 8px; /* Pequeño espacio entre la estrella y el texto */
-    font-size: 1.2em; /* Hace que el texto de la valoración sea más visible y ajusta el tamaño relativo de la estrella */
-    font-weight: 600; /* Hace el texto más audaz */
+    align-items: center;
+    gap: 8px;
+    font-size: 1.2em;
+    font-weight: 600;
 }
 
-/* Modificación específica para la estrella SVG dentro del contenedor */
 .valoration-container svg {
-    /* El tamaño de la estrella se define por font-size o width/height. Usaremos font-size para que sea relativo al texto. */
-    font-size: 1.5em; /* Aumenta el tamaño de la estrella, haciéndolo un poco más grande que el texto circundante (1.2em * 1.5 = 1.8em) */
-    color: #FFD700; /* Color amarillo oro */
-    /* Aseguramos que la estrella se alinee bien con el texto */
+    font-size: 1.5em;
+    color: #FFD700;
     vertical-align: middle;
 }
 
-/* Modificación para el texto de la valoración para asegurar que se herede correctamente el tamaño */
 .valoration-container p {
-    margin: 0; /* Elimina márgenes por defecto */
-    font-size: 1em; /* Asegura que el texto use el tamaño definido en .valoration-container */
+    margin: 0;
+    font-size: 1em;
+}
+
+/* ==================================================== */
+/* 💻 MEDIA QUERY: TABLETS Y MÓVILES GRANDES (Max-width: 900px) */
+/* ==================================================== */
+@media (max-width: 900px) {
+    .details-container {
+        /* Reducimos la altura y ya no centramos a la izquierda */
+        height: auto;
+        padding: 40px 0; /* Padding vertical para el contenido apilado */
+    }
+
+    /* 💡 CAMBIO CLAVE: Cambiamos a disposición vertical (columna) */
+    .content-details-wrapper {
+        flex-direction: column;
+        width: 100%;
+        max-width: 600px; /* Limitamos el ancho del contenido en móvil */
+        padding: 0 20px;
+        align-items: center; /* Centramos todo */
+    }
+
+    /* 💡 Ajustes del Póster (Ahora arriba) */
+    .poster-details-container {
+        width: 60%; /* El póster ocupa un buen ancho en la parte superior */
+        max-width: 300px; /* Aseguramos que no sea enorme */
+        margin: 0 0 30px 0; /* Espacio inferior para separarlo del texto */
+    }
+
+    /* 💡 Ajustes del Contenido de Texto (Ahora abajo) */
+    .details-text-content {
+        max-width: 100%; /* Ocupa el ancho completo del wrapper */
+        padding-right: 0;
+        text-align: center; /* Centramos el texto para una mejor lectura vertical */
+        gap: 15px; /* Reducimos el espacio entre párrafos */
+    }
+
+    /* 💡 Centramos el título y reducimos el tamaño */
+    .details-title {
+        font-size: 2.2em;
+        /* Aseguramos que el display: inline-block del título no rompa el centrado.
+           Si el título es muy largo, seguirá alineado a la izquierda. */
+        display: block;
+    }
+
+    /* 💡 Reducimos la fuente del resumen */
+    .details-overview {
+        font-size: 1em;
+        text-align: center; /* Centramos */
+        margin-bottom: 20px;
+    }
+
+    /* 💡 Centramos y ajustamos los metadatos */
+    .genres-container,
+    .valoration-container {
+        justify-content: center; /* Centra los géneros y la valoración */
+    }
+}
+
+/* 📲 Media Query para Móviles Muy Pequeños (Max-width: 480px) */
+@media (max-width: 480px) {
+    /* 💡 Reducción de tamaño del póster */
+    .poster-details-container {
+        width: 80%;
+        max-width: 250px;
+        margin-bottom: 20px;
+    }
+
+    /* 💡 Título más compacto */
+    .details-title {
+        font-size: 1.8em;
+    }
+
+    /* 💡 Géneros y Rating */
+    .genres-container {
+        gap: 8px;
+    }
+    .details-text-content .genre-tag-bordered {
+        font-size: 0.75em;
+        padding: 3px 8px;
+    }
+    .valoration-container {
+        font-size: 1em;
+    }
+    .valoration-container svg {
+        font-size: 1.3em;
+    }
 }

@@ -25,7 +25,7 @@ export function CreditsSlide({url}) {
 
     useEffect(() => {
         fetchPersons();
-    }, []);
+    }, [url]);
 
     return (
         <>

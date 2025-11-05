@@ -1,16 +1,20 @@
+/* ---------------------------------------------------- */
+/* CARRUSEL DE MEDIOS (Base / PC)                       */
+/* ---------------------------------------------------- */
+
 .media-carrousel {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     overflow-x: auto;
     gap: 1rem;
-    padding: 1rem;
-    cursor: grab; /* 👈 indica que se puede arrastrar */
+    padding: 1rem; /* Padding base alrededor de los ítems */
+    cursor: grab;
     scroll-behavior: smooth;
 }
 
 .media-carrousel:active {
-    cursor: grabbing; /* cambia el cursor al arrastrar */
+    cursor: grabbing;
 }
 
 /* Ocultar scrollbars */
@@ -22,8 +26,12 @@
     scrollbar-width: none;     /* Firefox */
 }
 
+/* ---------------------------------------------------- */
+/* ENCABEZADO DE SECCIÓN (Título y Botón)               */
+/* ---------------------------------------------------- */
+
 .titulo-seccion {
-    font-size: 2.5em;
+    font-size: 2.5em; /* Título grande para PC */
     line-height: 1.2;
     font-weight: 900;
 }
@@ -33,11 +41,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 3rem 2rem 0 2rem;
+    padding: 3rem 2rem 0 2rem; /* Padding amplio para PC */
 }
 
 .swiper-slide {
-    padding: 1rem 0 1rem 0;
+    padding: 1rem 0 1rem 0; /* Padding vertical para deslizable */
 }
 
 .view-more-button {
@@ -54,4 +62,39 @@
 .view-more-button:hover {
     background-color: white;
     color: #1f2937;
+}
+
+/* ==================================================== */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
+/* ==================================================== */
+@media (max-width: 768px) {
+    /* 💡 Título más pequeño y compacto en móvil */
+    .titulo-seccion {
+        font-size: 1.8em;
+    }
+
+    /* 💡 Reducción de padding en el carrusel y el encabezado */
+    .media-carrousel {
+        padding: 0.5rem; /* Menos padding en el carrusel para maximizar espacio */
+    }
+
+    .section-header {
+        /* Reducimos el padding general en el encabezado de la sección */
+        padding: 1.5rem 1rem 0 1rem;
+    }
+
+    /* 💡 Botón de "Ver Más" más compacto */
+    .view-more-button {
+        /* Reducimos el padding para que el botón sea más pequeño */
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9em;
+        /* Hacemos el borde más fino, de 2px a 1px */
+        border: 1px solid white;
+    }
+
+    /* Opcional: Si el header ya tiene un padding horizontal reducido,
+       podrías considerar reducir el padding de los slides también */
+    .swiper-slide {
+        padding: 0.5rem 0 0.5rem 0;
+    }
 }

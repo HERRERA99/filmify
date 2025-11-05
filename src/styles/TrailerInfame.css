@@ -1,9 +1,13 @@
+/* ---------------------------------------------------- */
+/* TRAILER SECTION: BASE (Escritorio / PC)              */
+/* ---------------------------------------------------- */
+
 /* Contenedor principal centrado */
 .trailer-section-container {
-    margin: 40px auto;
+    margin: 40px auto; /* Margen superior e inferior amplio */
     width: 90%;
     max-width: 1200px;
-    padding: 0 20px;
+    padding: 0 20px; /* Padding lateral */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,6 +17,7 @@
 /* Contenedor del video con tamaño proporcional */
 .video-responsive {
     width: 100%;
+    /* Mantiene la proporción 16:9, crucial para la responsividad */
     aspect-ratio: 16 / 9;
 }
 
@@ -23,4 +28,17 @@
     border: none;
     display: block;
     border-radius: 8px;
+}
+
+/* ==================================================== */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
+/* ==================================================== */
+@media (max-width: 768px) {
+    .trailer-section-container {
+        /* 💡 Reducimos el margen vertical para acercar el video al contenido */
+        margin: 20px auto;
+
+        /* 💡 Reducimos el padding horizontal para maximizar el área del video */
+        padding: 0 10px;
+    }
 }

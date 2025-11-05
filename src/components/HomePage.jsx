@@ -2,24 +2,20 @@ import {TrendingCarrousel} from "./TrendingCarrousel.jsx";
 import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
 import React, { useState, useEffect } from 'react';
 import {TMDB_API_KEY, UPCOMING_MOVIES_URL, POPULAR_SERIES_URL, TOP_RATED_SERIES_URL, TOP_RATED_MOVIES_URL} from "../constants/api.js";
+import {PageLoader} from "./PageLoader.jsx";
 
 export function HomePage() {
     const NUM_ITEMS_SLIDER = 20;
-
     const [upcomingMovies, setUpcomingMovies] = useState([]);
-    const [isLoadingUpcomingMovies, setIsLoadingUpcomingMovies] = useState(true);
-
     const [popularSeries, setPopularSeries] = useState([]);
-    const [isLoadingPopularSeries, setIsLoadingPopularSeries] = useState(true);
-
     const [topRatedSeries, setTopRatedSeries] = useState([]);
-    const [isLoadingTopRatedSeries, setIsLoadingTopRatedSeries] = useState(true);
-
     const [topRatedMovies, setTopRatedMovies] = useState([]);
-    const [isLoadingTopRatedMovies, setIsLoadingTopRatedMovies] = useState(true);
+    const [isPageLoading, setIsPageLoading] = useState(() => {
+        return sessionStorage.getItem("hasSeenLoader") !== "true";
+    });
+
 
     const fetchUpcomingMovies = async () => {
-        setIsLoadingUpcomingMovies(true);
         try {
             const url = `${UPCOMING_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
 
@@ -35,13 +31,10 @@ export function HomePage() {
 
         } catch (error) {
             console.error("Error fetching upcoming movies:", error);
-        } finally {
-            setIsLoadingUpcomingMovies(false);
         }
     };
 
     const fetchPopularSeries = async () => {
-        setIsLoadingPopularSeries(true);
         try {
             const url = `${POPULAR_SERIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
 
@@ -57,13 +50,10 @@ export function HomePage() {
 
         } catch (error) {
             console.error("Error fetching upcoming movies:", error);
-        } finally {
-            setIsLoadingPopularSeries(false);
         }
     }
 
     const fetchTopRatedSeries = async () => {
-        setIsLoadingTopRatedSeries(true);
         try {
             const url = `${TOP_RATED_SERIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
 
@@ -79,13 +69,10 @@ export function HomePage() {
 
         } catch (error) {
             console.error("Error fetching upcoming movies:", error);
-        } finally {
-            setIsLoadingTopRatedSeries(false);
         }
     }
 
     const fetchTopRatedMovies = async () => {
-        setIsLoadingTopRatedMovies(true);
         try {
             const url = `${TOP_RATED_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
 
@@ -101,27 +88,53 @@ export function HomePage() {
 
         } catch (error) {
             console.error("Error fetching upcoming movies:", error);
-        } finally {
-            setIsLoadingTopRatedMovies(false);
         }
     }
 
     useEffect(() => {
-        fetchUpcomingMovies();
-        fetchPopularSeries();
-        fetchTopRatedSeries();
-        fetchTopRatedMovies();
+        const loadAllData = async () => {
+            const start = Date.now();
+
+            await Promise.all([
+                fetchUpcomingMovies(),
+                fetchPopularSeries(),
+                fetchTopRatedSeries(),
+                fetchTopRatedMovies()
+            ]);
+
+            const elapsed = Date.now() - start;
+            const minDisplayTime = 1000;
+
+            // Asegura que el loader esté visible al menos el tiempo mínimo
+            const remaining = Math.max(0, minDisplayTime - elapsed);
+
+            setTimeout(() => {
+                setIsPageLoading(false);
+                sessionStorage.setItem("hasSeenLoader", "true"); // 👈 Guarda que ya lo vio
+            }, remaining);
+        };
+
+        loadAllData();
     }, []);
+
+    useEffect(() => {
+        if (!isPageLoading) {
+            const loader = document.querySelector(".page-loader");
+            if (loader) {
+                loader.classList.add("fade-out");
+                setTimeout(() => loader.remove(), 600); // quita el loader del DOM tras el fade
+            }
+        }
+    }, [isPageLoading]);
+
+    if (isPageLoading) {
+        return <PageLoader />;
+    }
 
     return (
         <>
             <TrendingCarrousel/>
-
-            {isLoadingUpcomingMovies && (
-                <div className="text-white text-center py-8">Loading upcoming movies...</div>
-            )}
-
-            {!isLoadingUpcomingMovies && upcomingMovies.length > 0 && (
+            {upcomingMovies.length > 0 && (
                 <BasicCategorieCarrousel
                     title="Upcoming movies"
                     mediaList={upcomingMovies}
@@ -130,11 +143,7 @@ export function HomePage() {
                 />
             )}
 
-            {isLoadingPopularSeries && (
-                <div className="text-white text-center py-8">Loading popular series...</div>
-            )}
-
-            {!isLoadingPopularSeries && popularSeries.length > 0 && (
+            {popularSeries.length > 0 && (
                 <BasicCategorieCarrousel
                     title="Popular series"
                     mediaList={popularSeries}
@@ -143,11 +152,7 @@ export function HomePage() {
                 />
             )}
 
-            {isLoadingTopRatedSeries && (
-                <div className="text-white text-center py-8">Loading popular series...</div>
-            )}
-
-            {!isLoadingTopRatedSeries && topRatedSeries.length > 0 && (
+            {topRatedSeries.length > 0 && (
                 <BasicCategorieCarrousel
                     title="Top rated series"
                     mediaList={topRatedSeries}
@@ -156,11 +161,7 @@ export function HomePage() {
                 />
             )}
 
-            {isLoadingTopRatedMovies && (
-                <div className="text-white text-center py-8">Loading popular series...</div>
-            )}
-
-            {!isLoadingTopRatedMovies && topRatedMovies.length > 0 && (
+            {topRatedMovies.length > 0 && (
                 <BasicCategorieCarrousel
                     title="Top rated movies"
                     mediaList={topRatedMovies}

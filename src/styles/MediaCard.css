@@ -1,6 +1,10 @@
+/* ---------------------------------------------------- */
+/* MEDIA CARD: BASE (Escritorio / PC)                   */
+/* ---------------------------------------------------- */
+
 .media-card {
     flex-shrink: 0;
-    width: 300px;
+    width: 300px; /* Ancho amplio para escritorio */
     margin-left: 20px;
     display: flex;
     flex-direction: column;
@@ -36,10 +40,40 @@
     text-align: center;
     width: 100%;
     display: -webkit-box;
-    -webkit-line-clamp: 2;          /* máximo 2 líneas */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.3;
-    min-height: calc(1em * 2.6);    /* altura fija para 2 líneas */
+    min-height: calc(1em * 2.6); /* altura fija para 2 líneas */
+}
+
+/* ==================================================== */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
+/* ==================================================== */
+@media (max-width: 768px) {
+    .media-card {
+        /* 💡 Reducimos el ancho de la tarjeta para que sea más compacta */
+        width: 170px;
+        /* Reducimos el margen lateral para aprovechar el espacio */
+        margin-left: 10px;
+    }
+
+    .media-card-title {
+        /* 💡 Reducimos el tamaño de la fuente del título */
+        font-size: 0.9rem;
+
+        /* Ajustamos la altura mínima para la nueva fuente */
+        line-height: 1.2;
+        min-height: calc(0.9em * 2.4);
+    }
+}
+
+/* 📲 Media Query para Móviles Muy Pequeños (Max-width: 480px) */
+@media (max-width: 480px) {
+    .media-card {
+        /* 💡 Reducimos aún más el ancho si la pantalla es muy pequeña */
+        width: 150px;
+        margin-left: 8px;
+    }
 }

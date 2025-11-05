@@ -1,18 +1,22 @@
+/* ---------------------------------------------------- */
+/* FOOTER: BASE (Escritorio / PC)                       */
+/* ---------------------------------------------------- */
+
 /* El footer ocupa todo el ancho */
 .footer-container {
     width: 100%;
     background-color: #141414;
     border-top: 1px solid #2e2e2e;
-    margin-top: 120px;
+    margin-top: 120px; /* Margen superior para separarlo del contenido principal */
     padding: 20px 0;
 }
 
 /* El contenido interno centrado con ancho máximo */
 .footer-inner {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Logo/Copyright a la izquierda, Íconos a la derecha */
     align-items: center;
-    padding: 0 24px;
+    padding: 0 24px; /* Padding horizontal para evitar que toque los bordes */
     max-width: 1200px;
     margin: 0 auto; /* centra el contenido */
 }
@@ -28,19 +32,19 @@
 /* Estilo para el texto de copyright */
 .copyright {
     font-size: 12px;
-    color: #a0a0a0; /* Un color gris más claro para el texto secundario */
+    color: #a0a0a0;
 }
 
-/* Estilo para el enlace de la licencia (NUEVO) */
+/* Estilo para el enlace de la licencia */
 .license-link {
     font-size: 12px;
-    color: #61dafb; /* Un color que destaque, típico de enlaces en temas oscuros */
+    color: #61dafb;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .license-link:hover {
-    color: #ffffff; /* Color blanco al pasar el mouse */
+    color: #ffffff;
     text-decoration: underline;
 }
 
@@ -63,23 +67,38 @@
 }
 
 .social-icon:hover {
-    background-color: #2e2e2e; /* Color de fondo sutil al pasar el mouse */
-    color: #ffffff; /* Color de icono blanco al pasar el mouse para contraste */
+    background-color: #2e2e2e;
+    color: #ffffff;
 }
 
-/* Responsivo */
+
+/* ==================================================== */
+/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 576px) */
+/* ==================================================== */
 @media (max-width: 576px) {
-    .footer-inner {
-        flex-direction: column;
-        text-align: center;
+    /* 💡 Separación reducida del contenido en móviles */
+    .footer-container {
+        margin-top: 60px; /* Reducimos el margen superior en pantallas pequeñas */
+        padding: 15px 0; /* Un poco menos de padding vertical */
     }
 
-    /* Centra el logo y copyright en móviles */
+    /* 💡 El contenido interno se apila */
+    .footer-inner {
+        flex-direction: column; /* Apila los grupos (Logo/Copyright y Social Links) */
+        text-align: center;
+        padding: 0 15px; /* Reducimos el padding horizontal para aprovechar el espacio */
+    }
+
+    /* 💡 Centra el logo y copyright en móviles */
     .logo-copyright-group {
         align-items: center;
+        /* Añadimos un margen inferior para separarlo de los íconos sociales */
+        margin-bottom: 16px;
     }
 
+    /* 💡 Los íconos se mantienen centrados */
     .social-links-group {
-        margin-top: 16px;
+        /* Eliminamos el margin-top y confiamos en el margin-bottom del grupo de arriba */
+        margin-top: 0;
     }
 }

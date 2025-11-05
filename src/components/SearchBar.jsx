@@ -1,7 +1,9 @@
 import {useCallback, useEffect, useState} from "react";
-import {useDebounce} from "./UseDebounce.jsx";
 import axios from "axios";
+
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL, SEARCH_URL, TMDB_API_KEY} from "../constants/api.js";
+
+import {useDebounce} from "./UseDebounce.jsx";
 import {SearchItem} from "./SearchItem.jsx";
 import "../styles/Search.css"
 

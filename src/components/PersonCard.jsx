@@ -1,4 +1,5 @@
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../constants/api.js";
+
 import "../styles/PersonCard.css"
 import React from "react";
 

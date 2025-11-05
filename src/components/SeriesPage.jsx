@@ -1,5 +1,6 @@
-import {InfiniteMediaGallery} from "./InfiniteMediaGallery.jsx";
 import {ALL_TV_URL} from "../constants/api.js";
+
+import {InfiniteMediaGallery} from "./InfiniteMediaGallery.jsx";
 
 export function SeriesPage() {
     return (

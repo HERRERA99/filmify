@@ -1,15 +1,17 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+
 import {
     TMDB_API_KEY,
     MOVIE_DETAILS_URL,
     IMAGE_W500_URL,
     IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL, POSTER_NO_IMAGE_URL
 } from "../constants/api.js";
+import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
+
 import {ObjectDetailsHero} from "./ObjectDetailsHero.jsx";
 import {CreditsSlide} from "./CreditsSlide.jsx";
 import {TrailerInframe} from "./TrailerInframe.jsx";
-import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
 
 export function MovieDetails() {

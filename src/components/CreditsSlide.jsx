@@ -1,5 +1,6 @@
 import {Swiper, SwiperSlide} from "swiper/react";
 import React, {useEffect, useState} from "react";
+
 import {PersonCard} from "./PersonCard.jsx";
 import "../styles/CreditsSlide.css"
 

@@ -1,5 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from "react";
+
 import {API_BASE_URL, TMDB_API_KEY} from "../constants/api.js";
+
 import {MediaCard} from "./MediaCard.jsx";
 import "../styles/MediaGrid.css"
 

@@ -1,7 +1,9 @@
+import React, { useState, useEffect } from 'react';
+
+import {TMDB_API_KEY, UPCOMING_MOVIES_URL, POPULAR_SERIES_URL, TOP_RATED_SERIES_URL, TOP_RATED_MOVIES_URL} from "../constants/api.js";
+
 import {TrendingCarrousel} from "./TrendingCarrousel.jsx";
 import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
-import React, { useState, useEffect } from 'react';
-import {TMDB_API_KEY, UPCOMING_MOVIES_URL, POPULAR_SERIES_URL, TOP_RATED_SERIES_URL, TOP_RATED_MOVIES_URL} from "../constants/api.js";
 import {PageLoader} from "./PageLoader.jsx";
 
 export function HomePage() {

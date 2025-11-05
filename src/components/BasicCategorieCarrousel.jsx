@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { MediaCard } from "./MediaCard.jsx";
+
 import "../styles/BasicCategorieCarrousel.css";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';

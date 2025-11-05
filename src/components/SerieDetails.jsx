@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+
 import {
     IMAGE_ORIGINAL_URL,
     IMAGE_W500_URL, MOVIE_DETAILS_URL,
@@ -7,10 +8,11 @@ import {
     TMDB_API_KEY,
     YOUTUBE_EMBEBED_URL
 } from "../constants/api.js";
+import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
+
 import {ObjectDetailsHero} from "./ObjectDetailsHero.jsx";
 import {CreditsSlide} from "./CreditsSlide.jsx";
 import {TrailerInframe} from "./TrailerInframe.jsx";
-import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
 import {SeasonItem} from "./SeasonItem.jsx";
 

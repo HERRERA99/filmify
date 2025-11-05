@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../constants/api.js";
 import "../styles/MediaCard.css";
 

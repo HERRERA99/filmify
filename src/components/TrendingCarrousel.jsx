@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
+
 import {API_BASE_URL, TMDB_API_KEY} from '../constants/api';
+
 import {ObjectSlide} from "./ObjectSlide.jsx";
 import "../styles/TrendingCarrousel.css"
 

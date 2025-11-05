@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
-import {EpisodeItem} from "./EpisodeItem.jsx";
+
 import {IMAGE_W500_URL} from "../constants/api.js";
+
+import {EpisodeItem} from "./EpisodeItem.jsx";
 import "../styles/SeasonsAndItems.css"
 
 export function SeasonItem({urlSeason}) {

@@ -3,13 +3,13 @@ import axios from "axios";
 
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL, SEARCH_URL, TMDB_API_KEY} from "../constants/api.js";
 
-import {useDebounce} from "./UseDebounce.jsx";
+import {UseDebounce} from "./UseDebounce.jsx";
 import {SearchItem} from "./SearchItem.jsx";
 import "../styles/Search.css"
 
 export function SearchBar() {
     const [query, setQuery] = useState("");
-    const debounceQuery = useDebounce(query, 500);
+    const debounceQuery = UseDebounce(query, 500);
     const [result, setResult] = useState([]);
     const [isLoading, setIsLoading] = useState(false); // Estado para la carga
     const [isFocused, setIsFocused] = useState(false);
@@ -21,7 +21,7 @@ export function SearchBar() {
     }, []);
 
     const handleBlur = () => {
-        // Usamos setTimeout para permitir que el click en el SearchItem se ejecute primero
+        // Usamos setTimeout para permitir que el clic en el SearchItem se ejecute primero
         setTimeout(() => {
             setIsFocused(false);
         }, 150);

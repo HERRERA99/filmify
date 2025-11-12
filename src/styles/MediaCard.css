@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
 }
 
 .poster-media-card {
@@ -17,6 +17,7 @@
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
+    display: block;
 }
 
 .poster-media-card:hover {
@@ -29,7 +30,10 @@
     color: inherit;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px;
+    align-items: stretch;
 }
 
 .media-card-title {
@@ -39,13 +43,19 @@
     font-weight: 600;
     text-align: center;
     width: 100%;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
-    min-height: calc(1em * 2.6); /* altura fija para 2 líneas */
+    box-sizing: border-box;
+    padding: 0 6px;
+    display: block;            /* permitir salto de línea normal */
+    white-space: normal;       /* permitir wrapping */
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    max-width: 100%;           /* no superar el ancho del contenedor (póster) */
+    line-height: 1.25;
+    /* eliminar truncado por línea */
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: unset;
+    text-overflow: unset;
+    overflow: visible;
 }
 
 /* ==================================================== */
@@ -53,27 +63,32 @@
 /* ==================================================== */
 @media (max-width: 768px) {
     .media-card {
-        /* 💡 Reducimos el ancho de la tarjeta para que sea más compacta */
         width: 170px;
-        /* Reducimos el margen lateral para aprovechar el espacio */
         margin-left: 10px;
     }
 
-    .media-card-title {
-        /* 💡 Reducimos el tamaño de la fuente del título */
-        font-size: 0.9rem;
+    .media-card-link {
+        padding: 4px;
+    }
 
-        /* Ajustamos la altura mínima para la nueva fuente */
+    .media-card-title {
+        font-size: 0.9rem;
         line-height: 1.2;
-        min-height: calc(0.9em * 2.4);
     }
 }
 
-/* 📲 Media Query para Móviles Muy Pequeños (Max-width: 480px) */
 @media (max-width: 480px) {
     .media-card {
-        /* 💡 Reducimos aún más el ancho si la pantalla es muy pequeña */
         width: 150px;
         margin-left: 8px;
+    }
+
+    .media-card-link {
+        padding: 3px;
+    }
+
+    .media-card-title {
+        font-size: 0.85rem;
+        line-height: 1.15;
     }
 }

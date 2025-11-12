@@ -1,4 +1,4 @@
-import "../styles/TrailerInfame.css"
+import "../../styles/TrailerInfame.css"
 
 export function TrailerInframe({urlTrailer}) {
     return (

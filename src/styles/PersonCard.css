@@ -4,12 +4,13 @@
 
 .person-card {
     flex-shrink: 0;
-    width: 300px; /* Ancho fijo para escritorio */
+    width: 300px;
     margin-left: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .poster-person-card {
@@ -39,11 +40,14 @@
     font-size: 1rem;
     font-weight: 600;
     text-align: center;
-    width: 100%;
-    /* Mantenemos el nowrap, overflow, y ellipsis para nombres largos */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 100%;             /* se limita al ancho de .person-card */
+    box-sizing: border-box;
+    padding: 0 6px;          /* evitar que el texto toque los bordes */
+    white-space: normal;     /* permitir saltos de línea */
+    overflow: visible;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    max-width: 100%;
 }
 
 .person-card-role {
@@ -56,29 +60,24 @@
 /* ==================================================== */
 @media (max-width: 768px) {
     .person-card {
-        /* 💡 Reducimos el ancho de la tarjeta */
         width: 150px;
-        /* Reducimos el margen lateral para aprovechar el espacio en carruseles */
         margin-left: 10px;
     }
 
     .poster-person-name, .person-card-role {
-        /* 💡 Reducimos el tamaño de la fuente para móviles */
         font-size: 0.9rem;
-        margin-top: 5px; /* Menos espacio vertical */
+        margin-top: 5px;
     }
 }
 
 /* 📲 Media Query para Móviles Muy Pequeños (Max-width: 480px) */
 @media (max-width: 480px) {
     .person-card {
-        /* 💡 Si el móvil es muy pequeño, un ancho de 120px funciona bien en un carrusel */
         width: 120px;
         margin-left: 8px;
     }
 
     .poster-person-name, .person-card-role {
-        /* Reducción sutil de fuente en las pantallas más pequeñas */
         font-size: 0.85rem;
     }
 }

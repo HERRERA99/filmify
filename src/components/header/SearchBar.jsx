@@ -1,11 +1,11 @@
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 
-import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL, SEARCH_URL, TMDB_API_KEY} from "../constants/api.js";
+import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL, SEARCH_URL, TMDB_API_KEY} from "../../constants/api.js";
 
-import {UseDebounce} from "./UseDebounce.jsx";
+import {UseDebounce} from "../tools/UseDebounce.jsx";
 import {SearchItem} from "./SearchItem.jsx";
-import "../styles/Search.css"
+import "../../styles/Search.css"
 
 export function SearchBar() {
     const [query, setQuery] = useState("");

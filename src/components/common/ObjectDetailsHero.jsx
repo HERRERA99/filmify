@@ -1,5 +1,5 @@
-import "../styles/ObjectDetailsHero.css"
-import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../constants/api.js";
+import "../../styles/ObjectDetailsHero.css"
+import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../../constants/api.js";
 
 export function ObjectDetailsHero({title, overview, genres = [], posterUrl, backgroundImage, number_of_seasons, runtime, first_air_date, rating, numVotes}) {
     const isMovie = runtime != null;

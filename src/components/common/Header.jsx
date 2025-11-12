@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
-import "../styles/Header.css"
-import {SearchBar} from "./SearchBar.jsx";
+import "../../styles/Header.css"
+import {SearchBar} from "../header/SearchBar.jsx";
 
 export function Header() {
     return (

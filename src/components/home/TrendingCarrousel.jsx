@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 
-import {API_BASE_URL, TMDB_API_KEY} from '../constants/api';
+import {API_BASE_URL, TMDB_API_KEY} from '../../constants/api.js';
 
-import {ObjectSlide} from "./ObjectSlide.jsx";
-import "../styles/TrendingCarrousel.css"
+import {ObjectSlide} from "../common/ObjectSlide.jsx";
+import "../../styles/TrendingCarrousel.css"
 
 export function TrendingCarrousel() {
     const [items, setItems] = useState([]);

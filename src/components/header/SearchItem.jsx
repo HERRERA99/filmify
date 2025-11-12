@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import "../styles/Search.css"
+import "../../styles/Search.css"
 
 
 export function SearchItem({ id, title, poster_path, type, onSelect }) {

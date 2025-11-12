@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import {TMDB_API_KEY, UPCOMING_MOVIES_URL, POPULAR_SERIES_URL, TOP_RATED_SERIES_URL, TOP_RATED_MOVIES_URL} from "../constants/api.js";
 
-import {TrendingCarrousel} from "./TrendingCarrousel.jsx";
-import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
-import {PageLoader} from "./PageLoader.jsx";
+import {TrendingCarrousel} from "../components/home/TrendingCarrousel.jsx";
+import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
+import {PageLoader} from "../components/tools/PageLoader.jsx";
 
 export function HomePage() {
     const NUM_ITEMS_SLIDER = 20;

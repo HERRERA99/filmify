@@ -1,6 +1,6 @@
 import {UPCOMING_MOVIES_SHORT_URL} from "../constants/api.js";
 
-import {InfiniteMediaGallery} from "./InfiniteMediaGallery.jsx";
+import {InfiniteMediaGallery} from "../components/common/InfiniteMediaGallery.jsx";
 
 export function UpcomingMoviesPage() {
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconBrandTwitter, IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
-import '../styles/Footer.css';
+import '../../styles/Footer.css';
 
 const SimpleAppLogo = ({ size }) => (
     <span style={{ fontSize: size, fontWeight: 'bold' }}>FILMIFY</span>

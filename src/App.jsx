@@ -3,18 +3,18 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './App.css'
-import {Header} from "./components/Header.jsx";
-import {HomePage} from "./components/HomePage.jsx";
-import {MoviessPage} from "./components/MoviessPage.jsx";
-import {MovieDetails} from "./components/MovieDetails.jsx";
-import {SeriesPage} from "./components/SeriesPage.jsx";
-import {SerieDetails} from "./components/SerieDetails.jsx";
-import {Footer} from "./components/Footer.jsx";
-import ScrollToTop from "./components/ScrollToTop.jsx";
-import {UpcomingMoviesPage} from "./components/UpcomingMoviesPage.jsx";
-import {PopularSeriesPage} from "./components/PopularSeriesPage.jsx";
-import {TopRatedMoviesPage} from "./components/TopRatedMoviesPage.jsx";
-import {TopRatedSeriesPage} from "./components/TopRatedSeriesPage.jsx";
+import {Header} from "./components/common/Header.jsx";
+import {HomePage} from "./pages/HomePage.jsx";
+import {MoviessPage} from "./pages/MoviessPage.jsx";
+import {MovieDetails} from "./pages/MovieDetails.jsx";
+import {SeriesPage} from "./pages/SeriesPage.jsx";
+import {SerieDetails} from "./pages/SerieDetails.jsx";
+import {Footer} from "./components/common/Footer.jsx";
+import ScrollToTop from "./components/tools/ScrollToTop.jsx";
+import {UpcomingMoviesPage} from "./pages/UpcomingMoviesPage.jsx";
+import {PopularSeriesPage} from "./pages/PopularSeriesPage.jsx";
+import {TopRatedMoviesPage} from "./pages/TopRatedMoviesPage.jsx";
+import {TopRatedSeriesPage} from "./pages/TopRatedSeriesPage.jsx";
 
 function App() {
   return (

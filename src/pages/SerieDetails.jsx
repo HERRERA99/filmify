@@ -10,11 +10,11 @@ import {
 } from "../constants/api.js";
 import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 
-import {ObjectDetailsHero} from "./ObjectDetailsHero.jsx";
-import {CreditsSlide} from "./CreditsSlide.jsx";
-import {TrailerInframe} from "./TrailerInframe.jsx";
-import {BasicCategorieCarrousel} from "./BasicCategorieCarrousel.jsx";
-import {SeasonItem} from "./SeasonItem.jsx";
+import {ObjectDetailsHero} from "../components/common/ObjectDetailsHero.jsx";
+import {CreditsSlide} from "../components/common/CreditsSlide.jsx";
+import {TrailerInframe} from "../components/common/TrailerInframe.jsx";
+import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
+import {SeasonItem} from "../components/serie/SeasonItem.jsx";
 
 export function SerieDetails() {
     const {id} = useParams();

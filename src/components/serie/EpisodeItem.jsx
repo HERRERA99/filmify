@@ -1,5 +1,5 @@
-import {EPISODE_NO_IMAGE_URL, IMAGE_W500_URL} from "../constants/api.js";
-import "../styles/SeasonsAndItems.css"
+import {EPISODE_NO_IMAGE_URL, IMAGE_W500_URL} from "../../constants/api.js";
+import "../../styles/SeasonsAndItems.css"
 
 export function EpisodeItem({ episode }) {
     // Si no hay episodio, no se renderiza nada.

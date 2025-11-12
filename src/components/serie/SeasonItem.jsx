@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 
-import {IMAGE_W500_URL} from "../constants/api.js";
+import {IMAGE_W500_URL} from "../../constants/api.js";
 
 import {EpisodeItem} from "./EpisodeItem.jsx";
-import "../styles/SeasonsAndItems.css"
+import "../../styles/SeasonsAndItems.css"
 
 export function SeasonItem({urlSeason}) {
     // Estado para manejar si los episodios están visibles

@@ -1,10 +1,10 @@
-import {IMAGE_ORIGINAL_URL, IMAGE_W500_URL, TMDB_API_KEY, YOUTUBE_URL} from "../constants/api.js";
+import {IMAGE_ORIGINAL_URL, IMAGE_W500_URL, TMDB_API_KEY, YOUTUBE_URL} from "../../constants/api.js";
 
-import "../styles/ObjectSlide.css"
+import "../../styles/ObjectSlide.css"
 import {useEffect, useState} from "react";
 
-import AnimatedContent from "./AnimatedContent.jsx";
-import FadeContent from "./FadeContent.jsx";
+import AnimatedContent from "../tools/AnimatedContent.jsx";
+import FadeContent from "../tools/FadeContent.jsx";
 
 import {Link} from "react-router-dom";
 

@@ -19,7 +19,14 @@ export function Footer() {
                     <span className="copyright">
                         &copy; {currentYear} FILMIFY. Todos los derechos reservados.
                     </span>
-                    <a href="/ruta-a-la-licencia" className="license-link">Licencia MIT</a>
+                    <a
+                        href="https://mit-license.org/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="license-link"
+                    >
+                        Licencia MIT
+                    </a>
                 </div>
 
                 <div className="social-links-group"> {/* Se va a la derecha */}

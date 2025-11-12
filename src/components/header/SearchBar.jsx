@@ -1,17 +1,23 @@
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import axios from "axios";
 
-import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL, SEARCH_URL, TMDB_API_KEY} from "../../constants/api.js";
+import {
+    IMAGE_W500_URL,
+    POSTER_NO_IMAGE_URL,
+    SEARCH_URL,
+    TMDB_API_KEY
+} from "../../constants/api.js";
+import { UseDebounce } from "../tools/UseDebounce.jsx";
 
-import {UseDebounce} from "../tools/UseDebounce.jsx";
-import {SearchItem} from "./SearchItem.jsx";
-import "../../styles/Search.css"
+import { SearchItem } from "./SearchItem.jsx";
+import "../../styles/Search.css";
 
 export function SearchBar() {
     const [query, setQuery] = useState("");
     const debounceQuery = UseDebounce(query, 500);
     const [result, setResult] = useState([]);
-    const [isLoading, setIsLoading] = useState(false); // Estado para la carga
+    const [isLoading, setIsLoading] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
     const handleItemSelect = useCallback(() => {
@@ -21,14 +27,11 @@ export function SearchBar() {
     }, []);
 
     const handleBlur = () => {
-        // Usamos setTimeout para permitir que el clic en el SearchItem se ejecute primero
-        setTimeout(() => {
-            setIsFocused(false);
-        }, 150);
+        setTimeout(() => setIsFocused(false), 150);
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
             setQuery("");
             setResult([]);
             setIsFocused(false);
@@ -41,64 +44,95 @@ export function SearchBar() {
             return;
         }
 
-        setIsLoading(true); // Inicia la carga
+        setIsLoading(true);
         const fullUrl = `${SEARCH_URL}&query=${debounceQuery}&api_key=${TMDB_API_KEY}`;
 
-        axios.get(fullUrl).then(
-            res => {
-                const rawResults = res.data.results;
-
-                const finalResults = rawResults
-                    .filter(item => (item.media_type === "tv" || item.media_type === "movie") && (item.poster_path !== null))
-                    .map(item => ({
+        axios
+            .get(fullUrl)
+            .then((res) => {
+                const finalResults = res.data.results
+                    .filter(
+                        (item) =>
+                            (item.media_type === "tv" || item.media_type === "movie") &&
+                            item.poster_path !== null
+                    )
+                    .map((item) => ({
                         id: item.id,
                         name: item.title || item.name,
                         media_type: item.media_type,
-                        poster_path: item.poster_path ? IMAGE_W500_URL + item.poster_path : POSTER_NO_IMAGE_URL
+                        poster_path: item.poster_path
+                            ? IMAGE_W500_URL + item.poster_path
+                            : POSTER_NO_IMAGE_URL
                     }));
 
                 setResult(finalResults);
-                setIsLoading(false); // Finaliza la carga
-            }).catch(
-            err => {
+                setIsLoading(false);
+            })
+            .catch((err) => {
                 console.error("Error en la búsqueda:", err);
-                setIsLoading(false); // Finaliza la carga en caso de error
+                setIsLoading(false);
                 setResult([]);
-            }
-        );
+            });
     }, [debounceQuery]);
 
-    return (
-        <div className="search-bar-container">
+    // Render principal del input
+    const searchInput = (
+        <div className="search-bar-container" id="search-bar-anchor">
             <input
                 type="text"
                 placeholder="Search series or movies..."
-                onChange={e => setQuery(e.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 value={query}
                 className="search-input"
             />
-
-            {/* Mostrar lista de resultados o mensajes de estado */}
-            {(isFocused && (isLoading || result.length > 0)) && (
-                <ul className="search-results-list">
-                    {isLoading && <p>Cargando resultados...</p>}
-
-                    {!isLoading && result.length > 0 && result.map((item) => (
-                        <li key={item.id} className="search-list-item">
-                            <SearchItem
-                                id={item.id}
-                                title={item.name}
-                                poster_path={item.poster_path}
-                                type={item.media_type}
-                                onSelect={handleItemSelect}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            )}
         </div>
-    )
+    );
+
+    // Render de resultados, pero fuera del header
+    const searchResults =
+        isFocused && (isLoading || result.length > 0)
+            ? (() => {
+                const anchor = document.getElementById("search-bar-anchor");
+                const rect = anchor ? anchor.getBoundingClientRect() : null;
+
+                const styles = rect
+                    ? {
+                        position: "fixed",
+                        top: rect.bottom + 4 + "px", // justo debajo del input
+                        left: rect.left + "px",
+                        width: rect.width + "px",
+                    }
+                    : {};
+
+                return createPortal(
+                    <ul className="search-results-list" style={styles}>
+                        {isLoading && <p>Cargando resultados...</p>}
+
+                        {!isLoading &&
+                            result.map((item) => (
+                                <li key={item.id} className="search-list-item">
+                                    <SearchItem
+                                        id={item.id}
+                                        title={item.name}
+                                        poster_path={item.poster_path}
+                                        type={item.media_type}
+                                        onSelect={handleItemSelect}
+                                    />
+                                </li>
+                            ))}
+                    </ul>,
+                    document.body
+                );
+            })()
+            : null;
+
+    return (
+        <>
+            {searchInput}
+            {searchResults}
+        </>
+    );
 }

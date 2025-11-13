@@ -75,6 +75,17 @@ export function SearchBar() {
             });
     }, [debounceQuery]);
 
+    useEffect(() => {
+        if (isFocused) {
+            document.body.classList.add("no-horizontal-scroll");
+        } else {
+            document.body.classList.remove("no-horizontal-scroll");
+        }
+        return () => {
+            document.body.classList.remove("no-horizontal-scroll");
+        };
+    }, [isFocused]);
+
     // Render principal del input
     const searchInput = (
         <div className="search-bar-container" id="search-bar-anchor">

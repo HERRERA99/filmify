@@ -111,3 +111,24 @@
     color: #aaa;
     margin-top: 20px;
 }
+
+/* Evita el scroll horizontal del body cuando la búsqueda está activa */
+.no-horizontal-scroll {
+    overflow-x: hidden;
+}
+
+/* Limitar ancho y mejorar comportamiento táctil para móviles */
+.search-results-list {
+    max-width: 100vw;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y; /* permite solo scroll vertical */
+    overscroll-behavior-x: contain; /* evita el bounce/scroll horizontal */
+}
+
+/* Opcional: asegurar que las imágenes no provoquen overflow */
+.search-item-poster {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

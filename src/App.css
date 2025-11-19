@@ -7,7 +7,7 @@
     /* Paleta de colores básica para una app de streaming/películas */
     --color-background-dark: #141414; /* Fondo oscuro principal */
     --color-text-light: #ffffff;      /* Texto claro */
-    --color-primary-red: #e50914;     /* Color de acento (ej. botones, focus) */
+        --color-primary-red: #e50914;     /* Color de acento (ej. botones, focus) */
 }
 
 /* Reset básico para el navegador */

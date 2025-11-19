@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import { IMAGE_W500_URL } from "../../constants/api";
+import "../../styles/SeasonsAndItems.css";
 
 export function SeasonItem({ urlSeason, serieId, seasonNumber }) {
     const [episodes, setEpisodes] = useState([]);
@@ -43,7 +45,9 @@ export function SeasonItem({ urlSeason, serieId, seasonNumber }) {
                                             <>
                                                 <div className="episode-video-full">
                                                     <iframe
-                                                        src={`https://vidlink.pro/tv/${serieId}/${seasonNumber}/${episode.episode_number}`}
+                                                        //https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}
+                                                        //https://www.vidking.net/embed/tv/${serieId}/${seasonNumber}/${episode.episode_number}?color=e50914&autoPlay=true&episodeSelector=true
+                                                        src={`https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}`}
                                                         frameBorder="0"
                                                         allowFullScreen
                                                         title={`Episode ${episode.episode_number}`}

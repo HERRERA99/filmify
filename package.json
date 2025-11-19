@@ -12,7 +12,9 @@
   "dependencies": {
     "@mantine/core": "^8.3.5",
     "@mantinex/mantine-logo": "^2.0.0",
+    "@supabase/supabase-js": "^2.83.0",
     "@tabler/icons-react": "^3.35.0",
+    "@vercel/edge": "^1.2.2",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "gsap": "^3.13.0",

@@ -109,7 +109,9 @@ export function MovieDetails() {
                 boxShadow: '0px 10px 30px rgba(0,0,0,0.5)'
             }}>
                 <iframe
-                    src={`https://vidlink.pro/movie/${id}`}
+                    //https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true
+                    //https://multiembed.mov/?video_id=${id}&tmdb=1
+                    src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true`}
                     frameBorder="0"
                     allowFullScreen
                     style={{ width: '100%', height: '100%' }}

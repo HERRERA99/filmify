@@ -1,7 +1,7 @@
 import "../../styles/ObjectDetailsHero.css"
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../../constants/api.js";
 
-export function ObjectDetailsHero({title, overview, genres = [], posterUrl, backgroundImage, number_of_seasons, runtime, first_air_date, rating, numVotes}) {
+export function ObjectDetailsHero({title, overview, genres = [], posterUrl, backgroundImage, number_of_seasons, runtime, first_air_date, rating, numVotes, trailerUrl}) {
     const isMovie = runtime != null;
 
     return (
@@ -45,6 +45,17 @@ export function ObjectDetailsHero({title, overview, genres = [], posterUrl, back
                             </p>
                         )}
                         <p className="details-overview">{overview}</p>
+                        <div className="buttons-container">
+                            <a
+                                href={trailerUrl || '#'}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="trailer-button"
+                                style={{pointerEvents: trailerUrl ? 'auto' : 'none', opacity: trailerUrl ? 1 : 0.5}}
+                            >
+                                Watch trailer
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

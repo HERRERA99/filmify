@@ -147,6 +147,229 @@
     color: #e0e0e0;
 }
 
+/* Contenedor de la zona multimedia (Imagen o Video) */
+.media-zone {
+    width: 220px; /* Ancho fijo en escritorio */
+    flex-shrink: 0;
+}
+
+/* --- ESTILOS DEL VIDEO --- */
+.episode-video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.episode-video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* --- ESTILOS DE LA IMAGEN Y EL HOVER --- */
+.episode-poster-wrapper.clickable {
+    position: relative; /* Necesario para posicionar el overlay encima */
+    width: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.episode-poster {
+    width: 100%;
+    height: auto;
+    display: block; /* Elimina espacios extra debajo de la imagen */
+    transition: transform 0.3s ease;
+}
+
+/* El Overlay (Capa oscura invisible por defecto) */
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Oscurece la imagen un poco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Invisible al principio */
+    transition: opacity 0.3s ease;
+}
+
+/* El circulo del botón Play */
+.play-circle {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.8); /* Un poco más pequeño al inicio */
+    transition: transform 0.3s ease, background-color 0.3s;
+}
+
+.play-icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+    margin-left: 2px; /* Corrección visual para centrar el triángulo */
+}
+
+/* --- ANIMACIONES HOVER --- */
+
+/* Cuando pasas el mouse sobre el wrapper, aparece el overlay */
+.episode-poster-wrapper.clickable:hover .play-overlay {
+    opacity: 1;
+}
+
+/* Zoom sutil a la imagen de fondo */
+.episode-poster-wrapper.clickable:hover .episode-poster {
+    transform: scale(1.05);
+}
+
+/* Efecto al pasar sobre el botón play específico */
+.episode-poster-wrapper.clickable:hover .play-circle {
+    transform: scale(1); /* Crece a tamaño normal */
+    background-color: rgba(229, 9, 20, 0.9); /* Rojo Netflix al hacer hover activo */
+    border-color: rgba(229, 9, 20, 0.9);
+}
+
+/* Contenedor del Episodio */
+.episode-item-container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    padding: 15px;
+    background-color: #222222;
+    border: 1px solid #333;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* ========================================== */
+/* MODO VIDEO EXPANDIDO (CLASE NUEVA)         */
+/* ========================================== */
+.episode-item-container.active-video {
+    display: block; /* Cambia de Flex a Bloque para que los elementos se apilen */
+    background-color: #000; /* Fondo más oscuro para resaltar el cine */
+    border-color: #e50914; /* Un borde rojo sutil para indicar que está activo */
+}
+
+.episode-video-full {
+    width: 100%; /* Ocupa todo el ancho del contenedor padre */
+    aspect-ratio: 16 / 9; /* Mantiene formato cine */
+    background: #000;
+    margin-bottom: 20px; /* Espacio entre el video y el texto de abajo */
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.episode-video-full iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* Ajuste del texto cuando está debajo del video */
+.episode-details.mt-video {
+    padding: 0 10px; /* Un poco de margen interno para el texto */
+}
+
+/* Botón pequeño para cerrar el video si el usuario quiere */
+.close-video-btn {
+    margin-top: 15px;
+    background: transparent;
+    border: 1px solid #666;
+    color: #ccc;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.2s;
+}
+.close-video-btn:hover {
+    border-color: white;
+    color: white;
+}
+
+/* ========================================== */
+/* ESTILOS MODO NORMAL (HOVER Y PLAY)         */
+/* ========================================== */
+
+.media-zone {
+    width: 220px;
+    flex-shrink: 0;
+    position: relative; /* Para el overlay */
+}
+
+.episode-poster-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.episode-poster {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+/* Overlay Hover */
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+/* Círculo Play */
+.play-circle {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(0,0,0,0.6);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.8);
+    transition: all 0.3s;
+}
+
+.play-icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+    margin-left: 3px;
+}
+
+/* Acciones Hover */
+.media-zone.clickable:hover .play-overlay {
+    opacity: 1;
+}
+.media-zone.clickable:hover .episode-poster {
+    transform: scale(1.05);
+}
+.media-zone.clickable:hover .play-circle {
+    background-color: #e50914;
+    border-color: #e50914;
+    transform: scale(1);
+}
+
 /* ======================================================= */
 /* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
 /* ======================================================= */
@@ -239,5 +462,36 @@
     .episode-overview {
         font-size: 1em;
         text-align: center;
+    }
+
+    .media-zone {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* En móvil, mostramos el icono de play siempre visible pero sutil,
+       para que el usuario sepa que se puede tocar */
+    .play-overlay {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .play-circle {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .episode-item-container {
+        flex-direction: column;
+    }
+    .media-zone {
+        width: 100%;
+    }
+    /* En móvil siempre mostramos un poco el play para que sepan que es clickeable */
+    .play-overlay {
+        opacity: 1;
+        background: rgba(0,0,0,0.1);
     }
 }

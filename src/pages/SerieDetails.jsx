@@ -6,7 +6,7 @@ import {
     IMAGE_W500_URL, MOVIE_DETAILS_URL,
     SERIE_DETAILS_URL,
     TMDB_API_KEY,
-    YOUTUBE_EMBEBED_URL
+    YOUTUBE_EMBEBED_URL, YOUTUBE_URL
 } from "../constants/api.js";
 import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 
@@ -97,20 +97,18 @@ export function SerieDetails() {
                 first_air_date={serie.first_air_date}
                 rating={serie.vote_average}
                 numVotes={serie.vote_count}
+                trailerUrl={`${YOUTUBE_URL}${trailer.key}`}
             />
-            {trailer && trailer.key && (
-                <TrailerInframe
-                    urlTrailer={`${YOUTUBE_EMBEBED_URL}${trailer.key}`}
-                />
-            )}
             {seasons
                 .filter(seasons => seasons.season_number !== 0)
                 .map((season) => (
-                <SeasonItem
-                    key={season.id}
-                    urlSeason={`${SERIE_DETAILS_URL}${id}/season/${season.season_number}?api_key=${TMDB_API_KEY}&language=en-US`}
-                />
-            ))}
+                    <SeasonItem
+                        key={season.id}
+                        serieId={id}
+                        seasonNumber={season.season_number}
+                        urlSeason={`${SERIE_DETAILS_URL}${id}/season/${season.season_number}?api_key=${TMDB_API_KEY}&language=en-US`}
+                    />
+                ))}
             <CreditsSlide
                 url={`${SERIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}
             />

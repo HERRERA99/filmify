@@ -5,7 +5,7 @@ import {
     TMDB_API_KEY,
     MOVIE_DETAILS_URL,
     IMAGE_W500_URL,
-    IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL, POSTER_NO_IMAGE_URL
+    IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL, POSTER_NO_IMAGE_URL, YOUTUBE_URL
 } from "../constants/api.js";
 import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 
@@ -96,12 +96,26 @@ export function MovieDetails() {
                 first_air_date={movie.release_date}
                 rating={movie.vote_average}
                 numVotes={movie.vote_count}
+                trailerUrl={`${YOUTUBE_URL}${trailer.key}`}
             />
-            {trailer && trailer.key && (
-                <TrailerInframe
-                    urlTrailer={`${YOUTUBE_EMBEBED_URL}${trailer.key}`}
-                />
-            )}
+            <div style={{
+                width: '90%',
+                maxWidth: '1100px',
+                margin: '40px auto',
+                aspectRatio: '16/9',
+                backgroundColor: '#000',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0px 10px 30px rgba(0,0,0,0.5)'
+            }}>
+                <iframe
+                    src={`https://vidlink.pro/movie/${id}`}
+                    frameBorder="0"
+                    allowFullScreen
+                    style={{ width: '100%', height: '100%' }}
+                    title="Movie Player"
+                ></iframe>
+            </div>
             <CreditsSlide
                 url={`${MOVIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}
             />

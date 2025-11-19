@@ -7,6 +7,7 @@
     vertical-align: top;
     box-sizing: border-box;
     margin-left: 20px;
+    max-width: 300px;
 }
 
 .poster-media-card {

@@ -1,25 +1,122 @@
 /* ======================================================= */
-/* Estilos para SeasonItem (Ancho Fluido al 80%, 10% de Márgenes) */
+/* 1. PANTALLA DE BLOQUEO (LOCK SCREEN)                    */
 /* ======================================================= */
+
+/* --- Estilos Base (Escritorio) --- */
+.lock-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #222222;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    border-radius: inherit;
+    box-sizing: border-box; /* Vital para que el padding no desborde */
+    padding: 20px;
+}
+
+.lock-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.lock-screen h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.lock-screen p {
+    margin: 10px 0 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.btn-login {
+    background-color: #e50914;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-login:hover {
+    background-color: #c10811;
+}
+
+/* --- AJUSTE LOCK SCREEN: MÓVILES ESTÁNDAR (Menos de 600px) --- */
+@media (max-width: 600px) {
+    .lock-screen {
+        padding: 10px;
+    }
+    .lock-icon {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
+    }
+    .lock-screen h3 {
+        font-size: 1.2rem;
+    }
+    .lock-screen p {
+        font-size: 0.8rem;
+        max-width: 95%;
+    }
+    .btn-login {
+        padding: 0.7rem 1.4rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* --- AJUSTE LOCK SCREEN: MÓVILES MUY PEQUEÑOS (Menos de 380px) --- */
+@media (max-width: 380px) {
+    .lock-screen {
+        padding: 5px;
+    }
+    .lock-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .lock-screen h3 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    /* OCULTAMOS EL TEXTO GRIS PARA GANAR ESPACIO */
+    .lock-screen p {
+        display: none;
+    }
+    .btn-login {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        width: 90%; /* Botón ancho para facilitar el click */
+    }
+}
+
+
+/* ======================================================= */
+/* 2. LISTA DE TEMPORADAS Y EPISODIOS                      */
+/* ======================================================= */
+
+/* --- Contenedor Principal de Temporada --- */
 .season-item-main {
-    /* Fondo Negro puro tipo Netflix */
     background-color: #141414;
     border: 1px solid #222;
     border-radius: 10px;
-
-    /* ANCHO FLUIDO SOLICITADO: 80% */
-    width: 80%;
-
-    /* MÁRGENES SOLICITADOS: 10% por ambos lados */
+    width: 80%; /* Ancho Fluido */
     margin-top: 25px;
     margin-bottom: 25px;
     margin-left: 10%;
     margin-right: 10%;
-
     padding: 25px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
-
-    /* Prevenir que se estire demasiado en monitores gigantes */
     max-width: 1400px;
 }
 
@@ -83,10 +180,7 @@
     transition: transform 0.2s;
 }
 
-/* ======================================================= */
-/* Estilos para EpisodeItem (Manteniendo ancho al 100% del padre fluido) */
-/* ======================================================= */
-
+/* --- Lista de Episodios --- */
 .episode-list-container {
     padding-left: 50px;
     margin-top: 30px;
@@ -104,6 +198,7 @@
     margin-bottom: 25px;
 }
 
+/* Contenedor individual del episodio */
 .episode-item-container {
     width: 100%;
     display: flex;
@@ -113,14 +208,7 @@
     background-color: #222222;
     border: 1px solid #333;
     border-radius: 8px;
-}
-
-.episode-poster {
-    width: 220px;
-    height: auto;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    flex-shrink: 0;
+    transition: all 0.3s ease;
 }
 
 .episode-details {
@@ -147,58 +235,48 @@
     color: #e0e0e0;
 }
 
-/* Contenedor de la zona multimedia (Imagen o Video) */
+/* --- Zona Multimedia (Imagen/Video) --- */
 .media-zone {
     width: 220px; /* Ancho fijo en escritorio */
     flex-shrink: 0;
+    position: relative;
 }
 
-/* --- ESTILOS DEL VIDEO --- */
-.episode-video-wrapper {
+.episode-poster-wrapper {
+    position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #000;
     border-radius: 4px;
     overflow: hidden;
 }
 
-.episode-video-wrapper iframe {
-    width: 100%;
-    height: 100%;
-}
-
-/* --- ESTILOS DE LA IMAGEN Y EL HOVER --- */
+/* Interactividad Clickable */
 .episode-poster-wrapper.clickable {
-    position: relative; /* Necesario para posicionar el overlay encima */
     width: 100%;
     cursor: pointer;
-    overflow: hidden;
-    border-radius: 4px;
 }
 
 .episode-poster {
     width: 100%;
     height: auto;
-    display: block; /* Elimina espacios extra debajo de la imagen */
+    display: block;
     transition: transform 0.3s ease;
 }
 
-/* El Overlay (Capa oscura invisible por defecto) */
+/* Overlay y Botón Play */
 .play-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Oscurece la imagen un poco */
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0; /* Invisible al principio */
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-/* El circulo del botón Play */
 .play-circle {
     width: 50px;
     height: 50px;
@@ -208,7 +286,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: scale(0.8); /* Un poco más pequeño al inicio */
+    transform: scale(0.8);
     transition: transform 0.3s ease, background-color 0.3s;
 }
 
@@ -216,55 +294,34 @@
     width: 24px;
     height: 24px;
     color: white;
-    margin-left: 2px; /* Corrección visual para centrar el triángulo */
+    margin-left: 2px;
 }
 
-/* --- ANIMACIONES HOVER --- */
-
-/* Cuando pasas el mouse sobre el wrapper, aparece el overlay */
+/* Hover Effects */
 .episode-poster-wrapper.clickable:hover .play-overlay {
     opacity: 1;
 }
-
-/* Zoom sutil a la imagen de fondo */
 .episode-poster-wrapper.clickable:hover .episode-poster {
     transform: scale(1.05);
 }
-
-/* Efecto al pasar sobre el botón play específico */
 .episode-poster-wrapper.clickable:hover .play-circle {
-    transform: scale(1); /* Crece a tamaño normal */
-    background-color: rgba(229, 9, 20, 0.9); /* Rojo Netflix al hacer hover activo */
+    transform: scale(1);
+    background-color: rgba(229, 9, 20, 0.9);
     border-color: rgba(229, 9, 20, 0.9);
 }
 
-/* Contenedor del Episodio */
-.episode-item-container {
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    gap: 25px;
-    padding: 15px;
-    background-color: #222222;
-    border: 1px solid #333;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-/* ========================================== */
-/* MODO VIDEO EXPANDIDO (CLASE NUEVA)         */
-/* ========================================== */
+/* --- Modo Video Expandido --- */
 .episode-item-container.active-video {
-    display: block; /* Cambia de Flex a Bloque para que los elementos se apilen */
-    background-color: #000; /* Fondo más oscuro para resaltar el cine */
-    border-color: #e50914; /* Un borde rojo sutil para indicar que está activo */
+    display: block;
+    background-color: #000;
+    border-color: #e50914;
 }
 
 .episode-video-full {
-    width: 100%; /* Ocupa todo el ancho del contenedor padre */
-    aspect-ratio: 16 / 9; /* Mantiene formato cine */
+    width: 100%;
+    aspect-ratio: 16 / 9;
     background: #000;
-    margin-bottom: 20px; /* Espacio entre el video y el texto de abajo */
+    margin-bottom: 20px;
     border-radius: 4px;
     overflow: hidden;
 }
@@ -274,12 +331,10 @@
     height: 100%;
 }
 
-/* Ajuste del texto cuando está debajo del video */
 .episode-details.mt-video {
-    padding: 0 10px; /* Un poco de margen interno para el texto */
+    padding: 0 10px;
 }
 
-/* Botón pequeño para cerrar el video si el usuario quiere */
 .close-video-btn {
     margin-top: 15px;
     background: transparent;
@@ -296,202 +351,95 @@
     color: white;
 }
 
-/* ========================================== */
-/* ESTILOS MODO NORMAL (HOVER Y PLAY)         */
-/* ========================================== */
-
-.media-zone {
-    width: 220px;
-    flex-shrink: 0;
-    position: relative; /* Para el overlay */
-}
-
-.episode-poster-wrapper {
-    position: relative;
-    width: 100%;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.episode-poster {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-/* Overlay Hover */
-.play-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    cursor: pointer;
-}
-
-/* Círculo Play */
-.play-circle {
-    width: 45px;
-    height: 45px;
-    background-color: rgba(0,0,0,0.6);
-    border: 2px solid #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0.8);
-    transition: all 0.3s;
-}
-
-.play-icon {
-    width: 20px;
-    height: 20px;
-    color: white;
-    margin-left: 3px;
-}
-
-/* Acciones Hover */
-.media-zone.clickable:hover .play-overlay {
-    opacity: 1;
-}
-.media-zone.clickable:hover .episode-poster {
-    transform: scale(1.05);
-}
-.media-zone.clickable:hover .play-circle {
-    background-color: #e50914;
-    border-color: #e50914;
-    transform: scale(1);
-}
 
 /* ======================================================= */
-/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 768px) */
+/* 3. MEDIA QUERY FINAL: AJUSTES TEMPORADAS EN MÓVIL       */
+/* (Max-width: 768px)                                      */
 /* ======================================================= */
 @media (max-width: 768px) {
-    /* 💡 Contenedor principal de la temporada */
+
+    /* Ajustes generales del contenedor */
     .season-item-main {
-        /* Ocupa todo el ancho disponible */
         width: 95%;
-        /* Eliminamos los márgenes laterales del 10% y usamos un margen fijo y más pequeño */
+        margin: 20px auto;
+        padding: 15px;
         margin-left: 2.5%;
         margin-right: 2.5%;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        padding: 15px; /* Reducimos el padding interno */
     }
 
-    /* 💡 Encabezado de la temporada (Poster y Texto) */
+    /* Encabezado de temporada */
     .season-header {
-        flex-direction: column; /* Apilamos el póster y los detalles */
-        align-items: center; /* Centramos los ítems apilados */
-        gap: 15px; /* Reducimos el espacio entre ítems */
+        flex-direction: column;
+        align-items: center;
         text-align: center;
+        gap: 15px;
     }
 
     .season-poster {
-        width: 150px; /* Reducimos el tamaño del póster de la temporada */
+        width: 150px;
     }
 
-    .season-details {
-        text-align: center;
-    }
-
-    /* Reducción de tipografía de la temporada */
     .season-title {
         font-size: 1.5em;
         margin-bottom: 5px;
     }
 
-    .season-info {
+    .season-info, .season-overview {
         font-size: 1em;
-        margin-bottom: 10px;
-    }
-
-    .season-overview {
-        /* Limitamos el resumen para que no ocupe demasiado espacio en móvil */
-        font-size: 1em;
-        line-height: 1.4;
         text-align: center;
     }
 
     .toggle-icon {
-        /* Colocamos el icono de toggle debajo y centrado */
         margin: 10px auto 0 auto;
         display: block;
     }
 
-    /* 💡 Lista de Episodios */
+    /* Lista de episodios */
     .episode-list-container {
-        /* Eliminamos el padding y el borde lateral que es problemático en móvil */
         padding-left: 0;
         border-left: none;
         margin-top: 20px;
     }
 
-    /* 💡 Contenedor de Episodio Individual */
+    /* --- EPISODIO INDIVIDUAL (CENTRADO) --- */
     .episode-item-container {
-        flex-direction: column; /* Apilamos la imagen del episodio y el texto */
-        align-items: center;
+        flex-direction: column; /* Apilar elementos */
+        align-items: center;    /* Centrar elementos */
         gap: 15px;
-        padding: 10px;
+        padding: 15px 10px;
         text-align: center;
     }
 
-    .episode-list-item {
-        margin-bottom: 15px;
-    }
-
-    .episode-poster {
+    /* Zona multimedia centrada */
+    .media-zone {
         width: 100%;
-        max-width: 200px; /* Tamaño máximo para el póster del episodio */
-        margin-bottom: 5px;
+        display: flex;
+        justify-content: center; /* Centra la imagen horizontalmente */
+        margin-bottom: 10px;
     }
 
-    /* Reducción de tipografía del episodio */
+    .episode-poster-wrapper {
+        width: 100%;
+        max-width: 220px; /* Tamaño controlado */
+    }
+
     .episode-title {
         font-size: 1.3em;
     }
 
-    .episode-info,
-    .episode-overview {
+    .episode-info, .episode-overview {
         font-size: 1em;
         text-align: center;
     }
 
-    .media-zone {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 10px;
-    }
-
-    /* En móvil, mostramos el icono de play siempre visible pero sutil,
-       para que el usuario sepa que se puede tocar */
+    /* Botón Play siempre visible pero suave en móvil */
     .play-overlay {
         opacity: 1;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.1);
     }
-
     .play-circle {
         width: 40px;
         height: 40px;
         background-color: rgba(0, 0, 0, 0.6);
-    }
-
-    .episode-item-container {
-        flex-direction: column;
-    }
-    .media-zone {
-        width: 100%;
-    }
-    /* En móvil siempre mostramos un poco el play para que sepan que es clickeable */
-    .play-overlay {
-        opacity: 1;
-        background: rgba(0,0,0,0.1);
     }
 }

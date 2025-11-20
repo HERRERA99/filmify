@@ -1,15 +1,18 @@
-/* Pantalla de Bloqueo (Lock Screen) */
+/* --- ESTILOS BASE (Escritorio) --- */
+/* Mantenemos tu estructura original */
 .lock-screen {
     width: 100%;
     height: 100%;
-    background-color: #222222; /* Fondo muy oscuro casi negro */
+    background-color: #222222;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     text-align: center;
-    border-radius: inherit; /* Hereda el borde del padre */
+    border-radius: inherit;
+    box-sizing: border-box; /* Importante para que el padding no desborde */
+    padding: 20px;
 }
 
 .lock-icon {
@@ -30,9 +33,8 @@
     font-size: 0.9rem;
 }
 
-/* Botón de Login con tu color */
 .btn-login {
-    background-color: #e50914; /* TU COLOR ROJO */
+    background-color: #e50914;
     color: white;
     padding: 0.8rem 1.5rem;
     border: none;
@@ -45,5 +47,41 @@
 }
 
 .btn-login:hover {
-    background-color: #c10811; /* Un rojo un poco más oscuro al pasar el ratón */
+    background-color: #c10811;
+}
+
+/* --- AJUSTE MÓVIL (Hacer todo pequeño) --- */
+@media (max-width: 600px) {
+    .lock-screen {
+        padding: 5px; /* Casi sin relleno alrededor */
+    }
+
+    .lock-icon {
+        font-size: 1.8rem; /* Icono a casi la mitad de tamaño */
+        margin-bottom: 0.5rem; /* Reducimos el espacio debajo */
+    }
+
+    .lock-screen h3 {
+        font-size: 1.1rem; /* Título más pequeño */
+    }
+
+    .lock-screen p {
+        font-size: 0.75rem; /* Texto muy pequeño */
+        margin: 5px 0 0; /* Mínimo margen */
+        line-height: 1.2;
+        max-width: 90%;
+    }
+
+    .btn-login {
+        padding: 0.6rem 1.2rem; /* Botón más delgado */
+        font-size: 0.9rem; /* Letra del botón más chica */
+        margin-top: 0.8rem; /* Lo acercamos más al texto de arriba */
+        width: auto; /* Dejamos que el botón tenga su tamaño natural o puedes poner 80% */
+    }
+}
+
+@media (max-width: 380px) {
+    .lock-icon {
+        display: none;
+    }
 }

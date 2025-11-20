@@ -126,7 +126,7 @@ export function MovieDetails() {
                     <iframe
                         //https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true
                         //https://multiembed.mov/?video_id=${id}&tmdb=1
-                        src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true`}
+                        src={`https://multiembed.mov/?video_id=${id}&tmdb=1`}
                         frameBorder="0"
                         allowFullScreen
                         style={{width: '100%', height: '100%'}}

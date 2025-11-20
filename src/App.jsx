@@ -16,6 +16,7 @@ import {PopularSeriesPage} from "./pages/PopularSeriesPage.jsx";
 import {TopRatedMoviesPage} from "./pages/TopRatedMoviesPage.jsx";
 import {TopRatedSeriesPage} from "./pages/TopRatedSeriesPage.jsx";
 import {AuthPage} from "./pages/AuthPage.jsx";
+import {ProfilePage} from "./pages/ProfilePage.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                   <Route path="/series/topRated" element={<TopRatedSeriesPage />} />
                   <Route path="/movies/topRated" element={<TopRatedMoviesPage />} />
                   <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
               </Routes>
 
               <Footer />

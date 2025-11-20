@@ -18,7 +18,7 @@ import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrou
 
 export function MovieDetails() {
     const {id} = useParams();
-    const {user, signOut} = useAuth();
+    const {user} = useAuth();
     const isUserLoggedIn = !!user;
 
     const userPath = isUserLoggedIn ? "/profile" : "/auth";
@@ -30,13 +30,6 @@ export function MovieDetails() {
     const [similar, setSimilar] = useState([]);
 
     const navigate = useNavigate();
-
-    // *** CÓDIGO TEMPORAL PARA LIMPIAR TU NAVEGADOR ***
-    // Descomenta la siguiente línea, guarda, deja que recargue la página una vez y luego vuelve a comentarla.
-    useEffect(() => {
-        signOut();
-    }, []);
-    // ************************************************
 
     const fetchMovie = async () => {
         try {

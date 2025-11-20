@@ -9,6 +9,21 @@ export function AuthProvider({ children }) {
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // Función auxiliar para chequear el perfil
+    const checkUserStatus = async (userId) => {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', userId)
+            .single();
+
+        if (error) {
+            console.error("Error fetching profile:", error);
+            return null;
+        }
+        return data;
+    };
+
     useEffect(() => {
         // 1. Verificar sesión actual al cargar la app
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -25,10 +40,49 @@ export function AuthProvider({ children }) {
         return () => subscription.unsubscribe();
     }, []);
 
+    // Función de Registro
+    const signUp = async (email, password, firstName, lastName) => {
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    first_name: firstName,
+                    last_name: lastName,
+                },
+            },
+        });
+        if (error) throw error;
+        return data;
+    }
+
+    // Función de Login manual
+    const signIn = async (email, password) => {
+        // 1. Intentar loguear en Auth
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) throw error;
+
+        // 2. Verificar status inmediatamente después del login exitoso
+        if (data.user) {
+            const profile = await checkUserStatus(data.user.id);
+            if (profile && profile.approved !== true) {
+                await supabase.auth.signOut();
+                throw new Error("Your account is pending approval by an administrator.");
+            }
+        }
+        return data;
+    };
+
     // Función expuesta para obtener los datos
     const value = {
         session,
         user: session?.user,
+        signUp,
+        signIn, // Usamos nuestra versión modificada de signIn
         signOut: () => supabase.auth.signOut(),
     };
 

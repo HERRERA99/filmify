@@ -1,18 +1,77 @@
 import "../styles/AuthPage.css"
 import {useState} from "react";
 import {IoEye, IoEyeOff} from "react-icons/io5";
+import {useNavigate} from "react-router-dom";
 
-
+import {useAuth} from "../components/Auth/AuthContext.jsx";
 
 export function AuthPage() {
+    const { signIn, signUp } = useAuth(); // Funciones del contexto
     const [isLogin, setIsLogin] = useState(true);
+    
+    const navigate = useNavigate();
 
-    // Estados para controlar la visibilidad de las contraseñas
+    // Estados del formulario
+    const [formData, setFormData] = useState({
+        name: "",
+        surname: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState(""); // Para mensajes de éxito
+    const [loading, setLoading] = useState(false);
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const toggleAuthMode = () => {
         setIsLogin(!isLogin);
+        setError("");
+        setMessage("");
+    };
+
+    // Manejar cambios en los inputs
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value // Usa el ID del input (name, surname, email, etc)
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        setMessage("");
+        setLoading(true);
+
+        try {
+            if (isLogin) {
+                // LOGICA DE LOGIN
+                await signIn(formData.email, formData.password);
+                navigate('/');
+            } else {
+                // LOGICA DE REGISTRO
+                if (formData.password !== formData.confirmPassword) {
+                    throw new Error("Passwords do not match");
+                }
+                if (!formData.name || !formData.surname) {
+                    throw new Error("Please fill in all fields");
+                }
+
+                await signUp(formData.email, formData.password, formData.name, formData.surname);
+
+                setMessage("Registration successful! Please wait for an admin to approve your request.");
+                setFormData({ name: "", surname: "", email: "", password: "", confirmPassword: "" });
+                setIsLogin(true); // Volver al login
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -23,13 +82,15 @@ export function AuthPage() {
                 <div className="auth-header">
                     <h2>{isLogin ? "Sign In" : "Create Account"}</h2>
                     <p className="auth-subtitle">
-                        {isLogin
-                            ? "Welcome back to Filmify"
-                            : "Join us to enjoy all content"}
+                        {isLogin ? "Welcome back to Filmify" : "Join us to enjoy all content"}
                     </p>
                 </div>
 
-                <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
+                {/* Mensajes de Feedback */}
+                {error && <div style={{color: 'red', marginBottom: '10px', textAlign: 'center'}}>{error}</div>}
+                {message && <div style={{color: 'green', marginBottom: '10px', textAlign: 'center'}}>{message}</div>}
+
+                <form className="auth-form" onSubmit={handleSubmit}>
 
                     {!isLogin && (
                         <div className="form-row">
@@ -39,14 +100,18 @@ export function AuthPage() {
                                     type="text"
                                     id="name"
                                     placeholder="Your name"
+                                    value={formData.name}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="surname">Last Name</label>
                                 <input
                                     type="text"
-                                    id="surname"
+                                    id="surname" // Coincide con formData.surname
                                     placeholder="Your surname"
+                                    value={formData.surname}
+                                    onChange={handleChange}
                                 />
                             </div>
                         </div>
@@ -58,6 +123,9 @@ export function AuthPage() {
                             type="email"
                             id="email"
                             placeholder="name@example.com"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
                         />
                     </div>
 
@@ -68,12 +136,14 @@ export function AuthPage() {
                                 type={showPassword ? "text" : "password"}
                                 id="password"
                                 placeholder="••••••••"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
                             />
                             <button
                                 type="button"
                                 className="password-toggle-btn"
                                 onClick={() => setShowPassword(!showPassword)}
-                                aria-label="Toggle password visibility"
                             >
                                 {showPassword ? <IoEyeOff /> : <IoEye />}
                             </button>
@@ -82,18 +152,19 @@ export function AuthPage() {
 
                     {!isLogin && (
                         <div className="form-group">
-                            <label htmlFor="confirm-password">Confirm Password</label>
+                            <label htmlFor="confirmPassword">Confirm Password</label>
                             <div className="password-wrapper">
                                 <input
                                     type={showConfirmPassword ? "text" : "password"}
-                                    id="confirm-password"
+                                    id="confirmPassword" // Cambiado de confirm-password a confirmPassword para coincidir con state
                                     placeholder="••••••••"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
                                 />
                                 <button
                                     type="button"
                                     className="password-toggle-btn"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    aria-label="Toggle confirm password visibility"
                                 >
                                     {showConfirmPassword ? <IoEyeOff /> : <IoEye />}
                                 </button>
@@ -101,8 +172,8 @@ export function AuthPage() {
                         </div>
                     )}
 
-                    <button className="auth-submit-btn">
-                        {isLogin ? "Sign In" : "Sign Up"}
+                    <button className="auth-submit-btn" disabled={loading}>
+                        {loading ? "Loading..." : (isLogin ? "Sign In" : "Sign Up")}
                     </button>
                 </form>
 

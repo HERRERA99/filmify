@@ -19,3 +19,4 @@ export const POPULAR_SERIES_SHORT_URL = 'tv/popular';
 export const TOP_RATED_SERIES_SHORT_URL = 'tv/top_rated';
 export const TOP_RATED_MOVIES_SHORT_URL = 'movie/top_rated';
 export const SEARCH_URL = 'https://api.themoviedb.org/3/search/multi?language=en-US';
+export const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY;

@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
-import { IMAGE_W500_URL } from "../../constants/api";
+import {IMAGE_W500_URL} from "../../constants/api";
 import "../../styles/SeasonsAndItems.css";
+import '../../styles/StreamingContainer.css';
+import { FaLock } from "react-icons/fa";
 
-export function SeasonItem({ urlSeason, serieId, seasonNumber }) {
+export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
     const [episodes, setEpisodes] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [playingEpisode, setPlayingEpisode] = useState(null);
@@ -14,6 +16,10 @@ export function SeasonItem({ urlSeason, serieId, seasonNumber }) {
             .then(data => setEpisodes(data.episodes || []))
             .catch(err => console.error(err));
     }, [urlSeason]);
+
+    function handleLoginClick() {
+
+    }
 
     return (
         <div className="season-item-main">
@@ -44,14 +50,26 @@ export function SeasonItem({ urlSeason, serieId, seasonNumber }) {
                                             /* ================================= */
                                             <>
                                                 <div className="episode-video-full">
-                                                    <iframe
-                                                        //https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}
-                                                        //https://www.vidking.net/embed/tv/${serieId}/${seasonNumber}/${episode.episode_number}?color=e50914&autoPlay=true&episodeSelector=true
-                                                        src={`https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}`}
-                                                        frameBorder="0"
-                                                        allowFullScreen
-                                                        title={`Episode ${episode.episode_number}`}
-                                                    ></iframe>
+                                                    {user ? (
+                                                        <iframe
+                                                            //https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}
+                                                            //https://www.vidking.net/embed/tv/${serieId}/${seasonNumber}/${episode.episode_number}?color=e50914&autoPlay=true&episodeSelector=true
+                                                            src={`https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}`}
+                                                            frameBorder="0"
+                                                            allowFullScreen
+                                                            title={`Episode ${episode.episode_number}`}
+                                                        ></iframe>
+                                                    ) : (
+                                                        <div className="lock-screen">
+                                                            <div className="lock-icon"><FaLock /></div>
+                                                            <h3>Exclusive Content</h3>
+                                                            <p>This episode is only available to invited users.</p>
+                                                            <p>You need guest access to watch this episode.</p>
+                                                            <button onClick={handleLoginClick} className="btn-login">
+                                                                Log in
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="episode-details mt-video">
                                                     <h4 className="episode-title">
@@ -92,8 +110,9 @@ export function SeasonItem({ urlSeason, serieId, seasonNumber }) {
                                                         {hasImage && (
                                                             <div className="play-overlay">
                                                                 <div className="play-circle">
-                                                                    <svg viewBox="0 0 24 24" fill="currentColor" className="play-icon">
-                                                                        <path d="M8 5v14l11-7z" />
+                                                                    <svg viewBox="0 0 24 24" fill="currentColor"
+                                                                         className="play-icon">
+                                                                        <path d="M8 5v14l11-7z"/>
                                                                     </svg>
                                                                 </div>
                                                             </div>

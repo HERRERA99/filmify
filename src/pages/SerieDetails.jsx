@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
+import {useAuth} from "../components/Auth/AuthContext.jsx";
 import {
     IMAGE_ORIGINAL_URL,
     IMAGE_W500_URL, MOVIE_DETAILS_URL,
@@ -9,15 +10,16 @@ import {
     YOUTUBE_EMBEBED_URL, YOUTUBE_URL
 } from "../constants/api.js";
 import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
-
 import {ObjectDetailsHero} from "../components/common/ObjectDetailsHero.jsx";
 import {CreditsSlide} from "../components/common/CreditsSlide.jsx";
 import {TrailerInframe} from "../components/common/TrailerInframe.jsx";
 import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
 import {SeasonItem} from "../components/serie/SeasonItem.jsx";
+import {ContentLock} from "../components/common/ContentLock.jsx";
 
 export function SerieDetails() {
     const {id} = useParams();
+    const {user} = useAuth();
 
     const [serie, setSerie] = useState([]);
     const [trailer, setTrailer] = useState([]);
@@ -99,6 +101,7 @@ export function SerieDetails() {
                 numVotes={serie.vote_count}
                 trailerUrl={`${YOUTUBE_URL}${trailer.key}`}
             />
+
             {seasons
                 .filter(seasons => seasons.season_number !== 0)
                 .map((season) => (
@@ -107,8 +110,10 @@ export function SerieDetails() {
                         serieId={id}
                         seasonNumber={season.season_number}
                         urlSeason={`${SERIE_DETAILS_URL}${id}/season/${season.season_number}?api_key=${TMDB_API_KEY}&language=en-US`}
+                        user={user}
                     />
                 ))}
+
             <CreditsSlide
                 url={`${SERIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}
             />

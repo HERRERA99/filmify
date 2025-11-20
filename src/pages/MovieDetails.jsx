@@ -1,6 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
+import {useAuth} from "../components/Auth/AuthContext.jsx";
+import '../styles/StreamingContainer.css';
 import {
     TMDB_API_KEY,
     MOVIE_DETAILS_URL,
@@ -8,18 +10,28 @@ import {
     IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL, POSTER_NO_IMAGE_URL, YOUTUBE_URL
 } from "../constants/api.js";
 import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
-
 import {ObjectDetailsHero} from "../components/common/ObjectDetailsHero.jsx";
 import {CreditsSlide} from "../components/common/CreditsSlide.jsx";
 import {TrailerInframe} from "../components/common/TrailerInframe.jsx";
 import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
+import {ContentLock} from "../components/common/ContentLock.jsx";
+import {FaLock} from "react-icons/fa";
 
 export function MovieDetails() {
     const {id} = useParams();
+    const {user, signOut} = useAuth();
+    console.log("Este es el user: ", user);
 
     const [movie, setMovie] = useState([]);
     const [trailer, setTrailer] = useState([]);
     const [similar, setSimilar] = useState([]);
+
+    // *** CÓDIGO TEMPORAL PARA LIMPIAR TU NAVEGADOR ***
+    // Descomenta la siguiente línea, guarda, deja que recargue la página una vez y luego vuelve a comentarla.
+    useEffect(() => {
+        signOut();
+    }, []);
+    // ************************************************
 
     const fetchMovie = async () => {
         try {
@@ -81,6 +93,10 @@ export function MovieDetails() {
         fetchSimilar();
     }, [id])
 
+    function handleLoginClick() {
+
+    }
+
     return (
         <>
             <ObjectDetailsHero
@@ -108,15 +124,27 @@ export function MovieDetails() {
                 overflow: 'hidden',
                 boxShadow: '0px 10px 30px rgba(0,0,0,0.5)'
             }}>
-                <iframe
-                    //https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true
-                    //https://multiembed.mov/?video_id=${id}&tmdb=1
-                    src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true`}
-                    frameBorder="0"
-                    allowFullScreen
-                    style={{ width: '100%', height: '100%' }}
-                    title="Movie Player"
-                ></iframe>
+                {user ? (
+                    <iframe
+                        //https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true
+                        //https://multiembed.mov/?video_id=${id}&tmdb=1
+                        src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true`}
+                        frameBorder="0"
+                        allowFullScreen
+                        style={{width: '100%', height: '100%'}}
+                        title="Movie Player"
+                    ></iframe>
+                ) : (
+                    <div className="lock-screen">
+                        <div className="lock-icon"><FaLock/></div>
+                        <h3>Exclusive Content</h3>
+                        <p>This movie is only available to invited users.</p>
+                        <p>You need guest access to watch this movie.</p>
+                        <button onClick={handleLoginClick} className="btn-login">
+                            Log in
+                        </button>
+                    </div>
+                )}
             </div>
             <CreditsSlide
                 url={`${MOVIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}

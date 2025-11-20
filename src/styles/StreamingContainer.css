@@ -1,0 +1,49 @@
+/* Pantalla de Bloqueo (Lock Screen) */
+.lock-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #222222; /* Fondo muy oscuro casi negro */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    border-radius: inherit; /* Hereda el borde del padre */
+}
+
+.lock-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.lock-screen h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.lock-screen p {
+    margin: 10px 0 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Botón de Login con tu color */
+.btn-login {
+    background-color: #e50914; /* TU COLOR ROJO */
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-login:hover {
+    background-color: #c10811; /* Un rojo un poco más oscuro al pasar el ratón */
+}

@@ -91,7 +91,7 @@ export function SearchBar() {
         <div className="search-bar-container" id="search-bar-anchor">
             <input
                 type="text"
-                placeholder="Search series or movies..."
+                placeholder="Search"
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={handleBlur}

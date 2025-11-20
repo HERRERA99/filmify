@@ -1,6 +1,7 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
+import {FaLock} from "react-icons/fa";
 import {useAuth} from "../components/Auth/AuthContext.jsx";
 import '../styles/StreamingContainer.css';
 import {
@@ -14,17 +15,21 @@ import {ObjectDetailsHero} from "../components/common/ObjectDetailsHero.jsx";
 import {CreditsSlide} from "../components/common/CreditsSlide.jsx";
 import {TrailerInframe} from "../components/common/TrailerInframe.jsx";
 import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
-import {ContentLock} from "../components/common/ContentLock.jsx";
-import {FaLock} from "react-icons/fa";
 
 export function MovieDetails() {
     const {id} = useParams();
     const {user, signOut} = useAuth();
+    const isUserLoggedIn = !!user;
+
+    const userPath = isUserLoggedIn ? "/profile" : "/auth";
+
     console.log("Este es el user: ", user);
 
     const [movie, setMovie] = useState([]);
     const [trailer, setTrailer] = useState([]);
     const [similar, setSimilar] = useState([]);
+
+    const navigate = useNavigate();
 
     // *** CÓDIGO TEMPORAL PARA LIMPIAR TU NAVEGADOR ***
     // Descomenta la siguiente línea, guarda, deja que recargue la página una vez y luego vuelve a comentarla.
@@ -94,7 +99,7 @@ export function MovieDetails() {
     }, [id])
 
     function handleLoginClick() {
-
+        navigate(userPath);
     }
 
     return (

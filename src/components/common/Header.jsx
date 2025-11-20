@@ -1,17 +1,24 @@
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 import "../../styles/Header.css"
 
-import { IoSearchSharp , IoMenu , IoClose } from "react-icons/io5";
+import {IoSearchSharp, IoMenu, IoClose, IoPersonCircleOutline} from "react-icons/io5";
 import {useState} from "react";
 
 import {SearchBar} from "../header/SearchBar.jsx";
-
+import {useAuth} from "../Auth/AuthContext.jsx";
 
 
 export function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    const {user} = useAuth();
+
+    const isUserLoggedIn = !!user;
+
+    const userPath = isUserLoggedIn ? "/profile" : "/auth";
+    const userLabel = isUserLoggedIn ? "Mi Perfil" : "Iniciar Sesión";
 
     // Función para cerrar ambos modales, por ejemplo al hacer clic en el logo
     const closeAllModals = () => {
@@ -43,6 +50,20 @@ export function Header() {
         ${isSearchOpen ? 'search-open' : ''}
     `;
 
+    // Componente reutilizable para el icono (sin cambios)
+    const UserIconLink = ({className}) => (
+        <NavLink
+            to={userPath}
+            className={({isActive}) => isActive ? `${className} active` : className}
+            onClick={closeAllModals}
+            aria-label={userLabel}
+            // Opcional: Añadir un title para que al pasar el ratón sepa qué hará
+            title={userLabel}
+        >
+            <IoPersonCircleOutline/>
+        </NavLink>
+    );
+
     return (
         // Usamos <header> como contenedor principal, sin <Fragment> extra
         <header className={headerClasses}>
@@ -53,7 +74,7 @@ export function Header() {
             {/* El contenedor de la searchbar mantiene su clase para el CSS desktop */}
             {/* y gana una clase activa para el CSS móvil */}
             <div className={`search-bar-container ${isSearchOpen ? 'mobile-search-active' : ''}`}>
-                <SearchBar />
+                <SearchBar/>
             </div>
 
             {/* La navegación también gana una clase activa para el CSS móvil */}
@@ -63,7 +84,7 @@ export function Header() {
                         <NavLink
                             to="/"
                             end
-                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                            className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
                             Home
@@ -72,7 +93,7 @@ export function Header() {
                     <li>
                         <NavLink
                             to="/films"
-                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                            className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
                             Films
@@ -81,7 +102,7 @@ export function Header() {
                     <li>
                         <NavLink
                             to="/series"
-                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                            className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
                             Series
@@ -90,15 +111,23 @@ export function Header() {
                 </ul>
             </nav>
 
+            <div className="desktop-user-actions">
+                <UserIconLink className="user-icon-link"/>
+            </div>
+
             {/* --- BOTONES DE TOGGLE PARA MÓVIL --- */}
             <div className="mobile-toggles">
+                <div className="mobile-user-action">
+                    <UserIconLink className="mobile-toggle"/>
+                </div>
+
                 <button
                     className="mobile-toggle mobile-search-toggle"
                     onClick={toggleSearch}
                     aria-label="Toggle search"
                 >
                     {/* Mostramos 'Cerrar' si está abierto, 'Buscar' si está cerrado */}
-                    {isSearchOpen ? <IoClose /> : <IoSearchSharp />}
+                    {isSearchOpen ? <IoClose/> : <IoSearchSharp/>}
                 </button>
 
                 <button
@@ -107,7 +136,7 @@ export function Header() {
                     aria-label="Toggle navigation"
                 >
                     {/* Mostramos 'Cerrar' si está abierto, 'Menú' si está cerrado */}
-                    {isNavOpen ? <IoClose /> : <IoMenu />}
+                    {isNavOpen ? <IoClose/> : <IoMenu/>}
                 </button>
             </div>
 

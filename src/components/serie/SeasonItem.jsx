@@ -1,11 +1,19 @@
 import {useEffect, useState} from "react";
 
+// eslint-disable-next-line import/order
 import {IMAGE_W500_URL} from "../../constants/api";
+
 import "../../styles/SeasonsAndItems.css";
 import '../../styles/StreamingContainer.css';
 import { FaLock } from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 
 export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
+    const isUserLoggedIn = !!user;
+
+    const userPath = isUserLoggedIn ? "/profile" : "/auth";
+    const navigate = useNavigate();
+
     const [episodes, setEpisodes] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [playingEpisode, setPlayingEpisode] = useState(null);
@@ -18,7 +26,7 @@ export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
     }, [urlSeason]);
 
     function handleLoginClick() {
-
+        navigate(userPath);
     }
 
     return (

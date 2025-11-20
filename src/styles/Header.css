@@ -3,10 +3,10 @@
 /* ---------------------------------------------------- */
 
 .main-header {
-    /* Estructura principal con CSS Grid: Logo | SearchBar | Nav */
+    /* Estructura principal con CSS Grid: Logo | SearchBar | Nav | User */
     display: grid;
-    /* Define 3 columnas: auto (Logo) | 1fr (SearchBar - flexible) | auto (Nav) */
-    grid-template-columns: auto 1fr auto;
+    /* MODIFICADO: 4 columnas: Logo | SearchBar | Nav | UserIcon */
+    grid-template-columns: auto 1fr auto auto;
     align-items: center;
     gap: 40px; /* Espacio horizontal entre las columnas del grid */
     padding: 15px 40px;
@@ -30,6 +30,34 @@
 
 .search-bar-container {
     padding: 0;
+}
+
+/* ---------------------------------------------------- */
+/* NUEVO: ESTILOS DEL USUARIO (ESCRITORIO)              */
+/* ---------------------------------------------------- */
+
+.desktop-user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon-link {
+    color: var(--color-text-light, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem; /* Tamaño del icono */
+    transition: color 0.2s ease;
+}
+
+.user-icon-link:hover,
+.user-icon-link.active {
+    color: var(--color-primary-red, #e50914);
+}
+
+/* Por defecto ocultamos la versión móvil del usuario en escritorio */
+.mobile-user-action {
+    display: none;
 }
 
 /* ---------------------------------------------------- */
@@ -106,7 +134,8 @@
 
 .mobile-toggles {
     display: none; /* Ocultos por defecto en escritorio */
-    gap: 15px;
+    gap: 10px; /* Reducido un poco para que quepan 3 iconos */
+    align-items: center;
 }
 
 .mobile-toggle {
@@ -116,6 +145,8 @@
     cursor: pointer;
     padding: 5px;
     z-index: 210; /* Por encima de todo, excepto el menú activo */
+    display: flex;
+    align-items: center;
 }
 
 .mobile-toggle svg {
@@ -137,6 +168,8 @@
     .main-header {
         /* mantener la estructura de grid pero controlar altura */
         grid-template-rows: auto auto;
+        /* MODIFICADO: En móvil volvemos a 2 columnas: Logo | Toggles */
+        grid-template-columns: auto 1fr;
         max-height: 72px;                 /* altura contraída por defecto */
         overflow: hidden;                 /* oculta la segunda fila hasta abrir */
         transition: max-height 280ms ease, padding 280ms ease;
@@ -148,9 +181,10 @@
         transition: max-height 280ms ease, padding 280ms ease;
     }
 
-    /* 2. OCULTAR NAVEGACIÓN DE ESCRITORIO */
-    /* Ocultamos la Nav (que está en la pos 3 del grid desktop) */
-    .main-nav {
+    /* 2. OCULTAR ELEMENTOS DE ESCRITORIO */
+    /* MODIFICADO: Ocultamos Nav Y el contenedor de usuario de escritorio */
+    .main-nav,
+    .desktop-user-actions {
         display: none;
     }
 
@@ -158,7 +192,16 @@
     /* Mostramos los botones de toggle */
     .mobile-toggles {
         display: flex;
-        /* Se posiciona automáticamente en la Col 2, Fila 1 del grid */
+        /* MODIFICADO: Se posiciona en la Columna 2 */
+        grid-column: 2 / 3;
+        justify-self: end;
+        padding-right: 0;
+    }
+
+    /* NUEVO: Mostrar el usuario en versión móvil */
+    .mobile-user-action {
+        display: block;
+        margin-right: 5px;
     }
 
     /* 4. ESTILAR LOS ELEMENTOS ACTIVOS (MODALES) */
@@ -277,17 +320,6 @@
     .search-bar-container {
         position: relative; /* o 'absolute' si prefieres overlay */
         transition: all 0.18s ease-out;
-    }
-
-    .mobile-toggles {
-        display: flex;
-        grid-column: 3 / 4;                      /* forzar que estén en la columna derecha */
-        grid-row: 1 / 2;
-        justify-self: end;                       /* alineados a la derecha */
-        align-self: center;
-        gap: 12px;
-        padding-right: 8px;                      /* separación respecto al borde/título */
-        z-index: 210;
     }
 
     .main-header.search-open {

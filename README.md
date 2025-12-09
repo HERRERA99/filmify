@@ -1,6 +1,6 @@
 # 🎬 Filmify
 
-Filmify es una aplicación web moderna para explorar y descubrir información sobre películas y series de televisión. Desarrollada con React y Vite, ofrece una experiencia de usuario fluida y atractiva para los amantes del cine y la televisión.  <br>[Visita Filmify](https://filmify-5kaqo07ul-aitors-projects-6000ecdd.vercel.app/)
+Filmify es una aplicación web moderna para explorar y descubrir información sobre películas y series de televisión. Desarrollada con React y Vite, ofrece una experiencia de usuario fluida y atractiva para los amantes del cine y la televisión.  <br>[Visita Filmify](https://filmify-jet.vercel.app/)
 
 ## ✨ Características
 

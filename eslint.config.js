@@ -9,6 +9,12 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
     globalIgnores(['dist']),
     {
+        files: ['api/**/*.js'],
+        languageOptions: {
+            globals: globals.node,
+        },
+    },
+    {
         files: ['**/*.{js,jsx}'],
         plugins: {
             import: importPlugin,
@@ -31,7 +37,8 @@ export default defineConfig([
             'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
 
             // 🚨 Evita errores de imports con mayúsculas/minúsculas incorrectas
-            'import/no-unresolved': 'error',
+            // Swiper expone subrutas mediante "exports"; Vite las resuelve correctamente.
+            'import/no-unresolved': ['error', { ignore: ['^swiper/'] }],
 
             // ⚠️ No permitas imports duplicados o redundantes
             'import/no-duplicates': 'error',

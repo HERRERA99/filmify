@@ -8,22 +8,16 @@ import {
     TMDB_API_KEY,
     MOVIE_DETAILS_URL,
     IMAGE_W500_URL,
-    IMAGE_ORIGINAL_URL, SERIE_DETAILS_URL, YOUTUBE_EMBEBED_URL, POSTER_NO_IMAGE_URL, YOUTUBE_URL
+    IMAGE_ORIGINAL_URL, POSTER_NO_IMAGE_URL, YOUTUBE_URL
 } from "../constants/api.js";
 import {obtenerTrailerMasAntiguo} from "../constants/utils.js";
 import {ObjectDetailsHero} from "../components/common/ObjectDetailsHero.jsx";
 import {CreditsSlide} from "../components/common/CreditsSlide.jsx";
-import {TrailerInframe} from "../components/common/TrailerInframe.jsx";
 import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
 
 export function MovieDetails() {
     const {id} = useParams();
-    const {user} = useAuth();
-    const isUserLoggedIn = !!user;
-
-    const userPath = isUserLoggedIn ? "/profile" : "/auth";
-
-    console.log("Este es el user: ", user);
+    const {hasAccess} = useAuth();
 
     const [movie, setMovie] = useState([]);
     const [trailer, setTrailer] = useState([]);
@@ -92,7 +86,7 @@ export function MovieDetails() {
     }, [id])
 
     function handleLoginClick() {
-        navigate(userPath);
+        navigate('/auth');
     }
 
     return (
@@ -122,7 +116,7 @@ export function MovieDetails() {
                 overflow: 'hidden',
                 boxShadow: '0px 10px 30px rgba(0,0,0,0.5)'
             }}>
-                {user ? (
+                {hasAccess ? (
                     <iframe
                         //https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true&episodeSelector=true
                         //https://multiembed.mov/?video_id=${id}&tmdb=1
@@ -139,7 +133,7 @@ export function MovieDetails() {
                         <p>This movie is only available to invited users.</p>
                         <p>You need guest access to watch this movie.</p>
                         <button onClick={handleLoginClick} className="btn-login">
-                            Log in
+                            Introducir código
                         </button>
                     </div>
                 )}

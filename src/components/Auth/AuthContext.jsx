@@ -1,94 +1,51 @@
 // src/context/AuthContext.jsx
-import { createContext, useContext, useEffect, useState } from "react";
-
-import { supabase } from "./supabaseClient";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    const [session, setSession] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    // Función auxiliar para chequear el perfil
-    const checkUserStatus = async (userId) => {
-        const { data, error } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', userId)
-            .single();
-
-        if (error) {
-            console.error("Error fetching profile:", error);
-            return null;
-        }
-        return data;
-    };
+    const [access, setAccess] = useState(() => {
+        try {
+            const saved = JSON.parse(localStorage.getItem('filmify-access'));
+            return saved?.expiresAt > Date.now() ? saved : null;
+        } catch { return null; }
+    });
 
     useEffect(() => {
-        // 1. Verificar sesión actual al cargar la app
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session);
-            setLoading(false);
-        });
-
-        // 2. Escuchar cambios (login, logout, etc.)
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-            setLoading(false);
-        });
-
-        return () => subscription.unsubscribe();
-    }, []);
-
-    // Función de Registro
-    const signUp = async (email, password, firstName, lastName) => {
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                },
-            },
-        });
-        if (error) throw error;
-        return data;
-    }
-
-    // Función de Login manual
-    const signIn = async (email, password) => {
-        // 1. Intentar loguear en Auth
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) throw error;
-
-        // 2. Verificar status inmediatamente después del login exitoso
-        if (data.user) {
-            const profile = await checkUserStatus(data.user.id);
-            if (profile && profile.approved !== true) {
-                await supabase.auth.signOut();
-                throw new Error("Your account is pending approval by an administrator.");
-            }
+        if (access?.expiresAt <= Date.now()) {
+            localStorage.removeItem('filmify-access');
+            setAccess(null);
         }
-        return data;
+    }, [access]);
+
+    const unlock = async (code) => {
+        const response = await fetch('/api/verify-access', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({code}),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || 'No se pudo validar el código.');
+        const nextAccess = { expiresAt: data.expiresAt };
+        localStorage.setItem('filmify-access', JSON.stringify(nextAccess));
+        setAccess(nextAccess);
     };
 
-    // Función expuesta para obtener los datos
-    const value = {
-        session,
-        user: session?.user,
-        signUp,
-        signIn, // Usamos nuestra versión modificada de signIn
-        signOut: () => supabase.auth.signOut(),
+    const lock = () => {
+        localStorage.removeItem('filmify-access');
+        setAccess(null);
     };
+
+    const value = useMemo(() => ({
+        hasAccess: Boolean(access),
+        accessExpiresAt: access?.expiresAt ?? null,
+        unlock,
+        lock,
+    }), [access]);
 
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     );
 }

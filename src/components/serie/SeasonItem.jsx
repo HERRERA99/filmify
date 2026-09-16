@@ -8,10 +8,7 @@ import '../../styles/StreamingContainer.css';
 import { FaLock } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 
-export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
-    const isUserLoggedIn = !!user;
-
-    const userPath = isUserLoggedIn ? "/profile" : "/auth";
+export function SeasonItem({urlSeason, serieId, seasonNumber, hasAccess}) {
     const navigate = useNavigate();
 
     const [episodes, setEpisodes] = useState([]);
@@ -26,7 +23,7 @@ export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
     }, [urlSeason]);
 
     function handleLoginClick() {
-        navigate(userPath);
+        navigate('/auth');
     }
 
     return (
@@ -58,7 +55,7 @@ export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
                                             /* ================================= */
                                             <>
                                                 <div className="episode-video-full">
-                                                    {user ? (
+                                                    {hasAccess ? (
                                                         <iframe
                                                             //https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}
                                                             //https://www.vidking.net/embed/tv/${serieId}/${seasonNumber}/${episode.episode_number}?color=e50914&autoPlay=true&episodeSelector=true
@@ -74,7 +71,7 @@ export function SeasonItem({urlSeason, serieId, seasonNumber, user}) {
                                                             <p>This episode is only available to invited users.</p>
                                                             <p>You need guest access to watch this episode.</p>
                                                             <button onClick={handleLoginClick} className="btn-login">
-                                                                Log in
+                                                                Introducir código
                                                             </button>
                                                         </div>
                                                     )}

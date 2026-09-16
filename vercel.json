@@ -1,0 +1,3 @@
+{
+  "functions": { "api/verify-access.js": { "maxDuration": 10 } }
+}

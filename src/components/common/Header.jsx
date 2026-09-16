@@ -1,24 +1,19 @@
+import {useState} from "react";
+import {IoSearchSharp, IoMenu, IoClose, IoKeyOutline} from "react-icons/io5";
 import {NavLink} from "react-router-dom";
 
-import "../../styles/Header.css"
-
-import {IoSearchSharp, IoMenu, IoClose, IoPersonCircleOutline} from "react-icons/io5";
-import {useState} from "react";
-
-import {SearchBar} from "../header/SearchBar.jsx";
 import {useAuth} from "../Auth/AuthContext.jsx";
+import {SearchBar} from "../header/SearchBar.jsx";
+import "../../styles/Header.css";
 
 
 export function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    const {user} = useAuth();
-
-    const isUserLoggedIn = !!user;
-
-    const userPath = isUserLoggedIn ? "/profile" : "/auth";
-    const userLabel = isUserLoggedIn ? "Mi Perfil" : "Iniciar Sesión";
+    const {hasAccess} = useAuth();
+    const userPath = "/auth";
+    const userLabel = hasAccess ? "Gestionar acceso" : "Introducir código de acceso";
 
     // Función para cerrar ambos modales, por ejemplo al hacer clic en el logo
     const closeAllModals = () => {
@@ -60,7 +55,7 @@ export function Header() {
             // Opcional: Añadir un title para que al pasar el ratón sepa qué hará
             title={userLabel}
         >
-            <IoPersonCircleOutline/>
+            <IoKeyOutline/>
         </NavLink>
     );
 

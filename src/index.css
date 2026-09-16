@@ -1,0 +1,5 @@
+@import url('https://api.fontshare.com/v2/css?f[]=beVietnam-pro@400,500,600,700,900&display=swap');
+
+:root { --color-background-dark: #09090b; --color-text-light: #fafafa; --color-primary-red: #f43f5e; font-family: 'Be Vietnam Pro', sans-serif; color: var(--color-text-light); background: var(--color-background-dark); font-synthesis: none; }
+* { box-sizing: border-box; } html { min-width: 320px; background: var(--color-background-dark); scroll-behavior: smooth; } body { min-width: 320px; min-height: 100dvh; margin: 0; overflow-x: hidden; } #root { min-height: 100dvh; } img { max-width: 100%; } button, input, select { font: inherit; } h1, h2, h3, h4, h5, h6 { color: var(--color-text-light); line-height: 1.2; }
+.app-container { min-height: 100dvh; display: flex; flex-direction: column; background: radial-gradient(ellipse at top, #1b1118 0%, #09090b 38rem); }.app-container > *:not(.main-header):not(.main-footer) { min-width: 0; }.app-container > .main-footer { margin-top: auto; }

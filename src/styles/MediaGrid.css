@@ -8,7 +8,7 @@
 .media-kicker { display: block; margin-bottom: .65rem; color: #e50914; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .media-title { margin: 0; color: #fff; font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -.055em; line-height: .98; }
 .media-subtitle { margin: .9rem 0 0; color: #929292; font-size: clamp(.86rem, 1.4vw, 1rem); line-height: 1.65; }
-.media-grid { position: relative; display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: clamp(1rem, 2.2vw, 1.65rem); width: 100%; align-items: start; }
+.media-grid { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(1rem, 2.2vw, 1.65rem); width: 100%; align-items: start; }
 .media-grid.is-loading { opacity: .38; pointer-events: none; transition: opacity .2s; }
 .media-grid .media-card-link { width: 100%; min-width: 0; }
 
@@ -38,7 +38,7 @@
 .media-pagination .pagination-direction { display: inline-flex; gap: .35rem; min-width: 104px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-@media (min-width: 1440px) { .media-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); } }
+@media (max-width: 1100px) and (min-width: 701px) { .media-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 @media (max-width: 700px) {
     .media-container { padding: 2.25rem 1rem 4rem; }

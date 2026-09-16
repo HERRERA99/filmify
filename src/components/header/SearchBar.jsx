@@ -6,12 +6,14 @@ import {useNavigate} from 'react-router-dom';
 
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL, SEARCH_URL, TMDB_API_KEY} from '../../constants/api.js';
 import {UseDebounce} from '../tools/UseDebounce.jsx';
+import {useLanguage} from '../Language/LanguageContext.jsx';
 
 import {SearchItem} from './SearchItem.jsx';
 
 import '../../styles/Search.css';
 
 export function SearchBar({autoFocus = false}) {
+    const {language, t} = useLanguage();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [status, setStatus] = useState('idle');
@@ -78,7 +80,7 @@ export function SearchBar({autoFocus = false}) {
         setStatus('loading');
         setActiveIndex(-1);
 
-        axios.get(`${SEARCH_URL}&query=${encodeURIComponent(debouncedQuery)}&api_key=${TMDB_API_KEY}`, {signal: controller.signal})
+        axios.get(`${SEARCH_URL}&language=${language}&query=${encodeURIComponent(debouncedQuery)}&api_key=${TMDB_API_KEY}`, {signal: controller.signal})
             .then(({data}) => {
                 const items = (data.results || [])
                     .filter((item) => ['movie', 'tv'].includes(item.media_type))
@@ -102,7 +104,7 @@ export function SearchBar({autoFocus = false}) {
             });
 
         return () => controller.abort();
-    }, [debouncedQuery]);
+    }, [debouncedQuery, language]);
 
     const selectResult = (item) => {
         navigate(`/${item.type}/${item.id}`);
@@ -131,17 +133,17 @@ export function SearchBar({autoFocus = false}) {
     const showPanel = isOpen && query.trim().length >= 2;
     const panel = showPanel ? createPortal(
         <section id={listId} className="search-results-list" style={panelStyle} aria-live="polite">
-            {status === 'loading' && <div className="search-state"><span className="search-spinner" />Buscando títulos…</div>}
-            {status === 'empty' && <div className="search-state"><IoSparklesOutline /><span>No hay resultados para <strong>“{query}”</strong></span></div>}
-            {status === 'error' && <div className="search-state search-state-error">No se pudo completar la búsqueda. Inténtalo de nuevo.</div>}
+            {status === 'loading' && <div className="search-state"><span className="search-spinner" />{t("searching")}</div>}
+            {status === 'empty' && <div className="search-state"><IoSparklesOutline /><span>{t("noResultsFor")} <strong>“{query}”</strong></span></div>}
+            {status === 'error' && <div className="search-state search-state-error">{t("searchError")}</div>}
             {status === 'success' && <>
-                <div className="search-results-heading"><span>Películas y series</span><span>{results.length} resultados</span></div>
+                <div className="search-results-heading"><span>{t("searchResults")}</span><span>{results.length} {t("results")}</span></div>
                 <ul role="listbox">
                     {results.map((item, index) => <li key={`${item.type}-${item.id}`} role="option" aria-selected={activeIndex === index}>
                         <SearchItem {...item} isActive={activeIndex === index} onSelect={closeSearch} onMouseEnter={() => setActiveIndex(index)} />
                     </li>)}
                 </ul>
-                <p className="search-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> para navegar · <kbd>Enter</kbd> para abrir</p>
+                <p className="search-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> {t("navigateHint")}</p>
             </>}
         </section>,
         document.body
@@ -153,7 +155,7 @@ export function SearchBar({autoFocus = false}) {
             <input
                 ref={inputRef}
                 type="search"
-                placeholder="Películas y series"
+                placeholder={t("searchPlaceholder")}
                 value={query}
                 onChange={(event) => { setQuery(event.target.value); setIsOpen(true); }}
                 onFocus={() => { setIsOpen(true); updatePanelPosition(); }}
@@ -165,7 +167,7 @@ export function SearchBar({autoFocus = false}) {
                 aria-autocomplete="list"
                 role="combobox"
             />
-            {query && <button className="search-clear" type="button" onClick={clearQuery} aria-label="Borrar búsqueda"><IoClose /></button>}
+            {query && <button className="search-clear" type="button" onClick={clearQuery} aria-label={t("clearSearch")}><IoClose /></button>}
         </div>
         {panel}
     </>;

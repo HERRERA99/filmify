@@ -4,6 +4,8 @@ import {NavLink} from "react-router-dom";
 
 import {useAuth} from "../Auth/AuthContext.jsx";
 import {SearchBar} from "../header/SearchBar.jsx";
+import {LanguageSelector} from "../Language/LanguageSelector.jsx";
+import {useLanguage} from "../Language/LanguageContext.jsx";
 import "../../styles/Header.css";
 
 
@@ -12,8 +14,9 @@ export function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const {hasAccess} = useAuth();
+    const {t} = useLanguage();
     const userPath = "/auth";
-    const userLabel = hasAccess ? "Gestionar acceso" : "Introducir código de acceso";
+    const userLabel = hasAccess ? t("manageAccess") : t("enterAccessCode");
 
     useEffect(() => {
         if (!isNavOpen) return;
@@ -81,6 +84,7 @@ export function Header() {
 
             {/* La navegación también gana una clase activa para el CSS móvil */}
             <nav className={`main-nav ${isNavOpen ? 'mobile-nav-active' : ''}`}>
+                <span className="mobile-nav-label">{t("explore")}</span>
                 <ul className="nav-list">
                     <li>
                         <NavLink
@@ -90,7 +94,7 @@ export function Header() {
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
                             <IoHomeOutline aria-hidden="true" />
-                            <span><strong>Inicio</strong><small>Descubre qué ver hoy</small></span>
+                            <span><strong>{t("home")}</strong><small>{t("homeHint")}</small></span>
                         </NavLink>
                     </li>
                     <li>
@@ -100,7 +104,7 @@ export function Header() {
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
                             <IoFilmOutline aria-hidden="true" />
-                            <span><strong>Películas</strong><small>Todos los largometrajes</small></span>
+                            <span><strong>{t("movies")}</strong><small>{t("moviesHint")}</small></span>
                         </NavLink>
                     </li>
                     <li>
@@ -110,13 +114,14 @@ export function Header() {
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
                             <IoTvOutline aria-hidden="true" />
-                            <span><strong>Series</strong><small>Temporadas para maratonear</small></span>
+                            <span><strong>{t("series")}</strong><small>{t("seriesHint")}</small></span>
                         </NavLink>
                     </li>
                 </ul>
             </nav>
 
             <div className="desktop-user-actions">
+                <LanguageSelector />
                 <UserIconLink className="user-icon-link"/>
             </div>
 
@@ -126,10 +131,12 @@ export function Header() {
                     <UserIconLink className="mobile-toggle"/>
                 </div>
 
+                <LanguageSelector className="language-selector-mobile" />
+
                 <button
                     className="mobile-toggle mobile-search-toggle"
                     onClick={toggleSearch}
-                    aria-label={isSearchOpen ? "Cerrar búsqueda" : "Abrir búsqueda"}
+                    aria-label={isSearchOpen ? t("closeSearch") : t("openSearch")}
                     aria-expanded={isSearchOpen}
                 >
                     {/* Mostramos 'Cerrar' si está abierto, 'Buscar' si está cerrado */}
@@ -139,7 +146,7 @@ export function Header() {
                 <button
                     className="mobile-toggle mobile-nav-toggle"
                     onClick={toggleNav}
-                    aria-label={isNavOpen ? "Cerrar menú" : "Abrir menú"}
+                    aria-label={isNavOpen ? t("closeMenu") : t("openMenu")}
                     aria-expanded={isNavOpen}
                 >
                     {/* Mostramos 'Cerrar' si está abierto, 'Menú' si está cerrado */}

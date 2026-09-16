@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import {IoArrowForward} from 'react-icons/io5';
 
+import {useLanguage} from '../Language/LanguageContext.jsx';
 import {IMAGE_W500_URL, POSTER_NO_IMAGE_URL} from "../../constants/api.js";
 import "../../styles/MediaCard.css";
 
 export function MediaCard({ posterUrl, title, mediaId, mediaType }) {
+    const {t} = useLanguage();
     const detailLink = `/${mediaType}/${mediaId}`;
     const posterImageUrl = posterUrl ? `${IMAGE_W500_URL}${posterUrl}` : POSTER_NO_IMAGE_URL;
 
@@ -23,7 +25,7 @@ export function MediaCard({ posterUrl, title, mediaId, mediaType }) {
                 <div className="media-card-overlay" aria-hidden="true" />
                 <div className="media-card-info">
                     <p className="media-card-title">{title}</p>
-                    <span className="media-card-action">Ver detalles <IoArrowForward /></span>
+                    <span className="media-card-action">{t("details")} <IoArrowForward /></span>
                 </div>
             </article>
         </Link>

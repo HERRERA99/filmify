@@ -4,36 +4,26 @@ import {Link} from "react-router-dom";
 import {IMAGE_ORIGINAL_URL, IMAGE_W500_URL, TMDB_API_KEY} from "../../constants/api.js";
 import AnimatedContent from "../tools/AnimatedContent.jsx";
 import FadeContent from "../tools/FadeContent.jsx";
+import {useLanguage} from "../Language/LanguageContext.jsx";
 
 import "../../styles/ObjectSlide.css"
 
 export function ObjectSlide({item}) {
+    const {language, t} = useLanguage();
     const [trailerUrl, setTrailerUrl] = useState(null);
 
-    // Asegúrate de que 'item' existe antes de acceder a sus propiedades
-    if (!item || !item.backdrop_path) {
-        return <div className="slide-container fallback-bg"></div>;
-    }
-
-    const fullImageUrl = `${IMAGE_ORIGINAL_URL}${item.backdrop_path}`;
-    const posterImageUrl = `${IMAGE_W500_URL}${item.poster_path}`;
-    const videoUrl = item.media_type === "movie"
-        ? `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${TMDB_API_KEY}`
-        : `https://api.themoviedb.org/3/tv/${item.id}/videos?api_key=${TMDB_API_KEY}`;
-
-    const detailLink = `/${item.media_type}/${item.id}`
-
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         if (!item || !item.id) return;
 
         const fetchVideos = async () => {
             try {
+                const videoUrl = item.media_type === "movie"
+                    ? `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${TMDB_API_KEY}&language=${language}`
+                    : `https://api.themoviedb.org/3/tv/${item.id}/videos?api_key=${TMDB_API_KEY}&language=${language}`;
                 const response = await fetch(videoUrl);
                 const videoData = await response.json();
 
-                const filteredTrailer = videoData.results.find(video =>
+                const filteredTrailer = videoData.results?.find(video =>
                     video.site === "YouTube" &&
                     video.type === "Trailer"
                 );
@@ -49,7 +39,13 @@ export function ObjectSlide({item}) {
             }
         }
         fetchVideos();
-    }, [item, item.id, item.media_type, videoUrl]);
+    }, [item, language]);
+
+    if (!item || !item.backdrop_path) return <div className="slide-container fallback-bg"></div>;
+
+    const fullImageUrl = `${IMAGE_ORIGINAL_URL}${item.backdrop_path}`;
+    const posterImageUrl = item.poster_path ? `${IMAGE_W500_URL}${item.poster_path}` : null;
+    const detailLink = `/${item.media_type}/${item.id}`;
 
     return (
         <div
@@ -78,7 +74,7 @@ export function ObjectSlide({item}) {
                                 className="trailer-button"
                                 style={{pointerEvents: trailerUrl ? 'auto' : 'none', opacity: trailerUrl ? 1 : 0.5}}
                             >
-                                Ver tráiler
+                                {t("trailer")}
                             </a>
                         </div>
                     </FadeContent>

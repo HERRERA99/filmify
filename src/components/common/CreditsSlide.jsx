@@ -1,10 +1,13 @@
 import {Swiper, SwiperSlide} from "swiper/react";
 import {useEffect, useState} from "react";
 
+import {useLanguage} from "../Language/LanguageContext.jsx";
+
 import {PersonCard} from "./PersonCard.jsx";
 import "../../styles/CreditsSlide.css"
 
 export function CreditsSlide({url}) {
+    const {t} = useLanguage();
     const [persons, setPersons] = useState([]);
 
     useEffect(() => {
@@ -29,7 +32,7 @@ export function CreditsSlide({url}) {
                 {/* Cabecera de la Sección: Título y Botón Ver Más */}
                 <div className="cast-section-header flex justify-between items-center mb-4 px-4 sm:px-6">
                     <h2 className="cast-titulo-seccion text-2xl md:text-3xl text-white">
-                        Reparto
+                        {t("cast")}
                     </h2>
                 </div>
                 <div className="swiper-slide px-4 sm:px-6">

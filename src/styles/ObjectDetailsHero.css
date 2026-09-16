@@ -193,3 +193,10 @@
         font-size: 0.95em;
     }
 }
+/* Estados de carga y error de las fichas */
+.detail-status { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: .8rem; min-height: 68vh; padding: 2rem; background: radial-gradient(circle at top, #251318, #0d0d0d 55%); color: #aaa; text-align: center; }
+.detail-status h1 { margin: 0; font-size: clamp(1.5rem, 4vw, 2.5rem); }
+.detail-status p { max-width: 620px; margin: 0; line-height: 1.6; }
+.detail-status a, .detail-status button { margin-top: .5rem; padding: .65rem 1rem; border: 0; border-radius: 7px; background: #e50914; color: #fff; text-decoration: none; cursor: pointer; font-weight: 750; }
+.detail-spinner { width: 30px; height: 30px; border: 3px solid #3d3d3d; border-top-color: #e50914; border-radius: 50%; animation: detail-spin .75s linear infinite; }
+@keyframes detail-spin { to { transform: rotate(360deg); } }

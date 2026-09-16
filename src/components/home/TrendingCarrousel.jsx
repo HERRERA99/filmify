@@ -1,21 +1,23 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import {API_BASE_URL, TMDB_API_KEY} from '../../constants/api.js';
-
 import {ObjectSlide} from "../common/ObjectSlide.jsx";
+import {useLanguage} from "../Language/LanguageContext.jsx";
 import "../../styles/TrendingCarrousel.css"
 
 export function TrendingCarrousel() {
+    const {language, t} = useLanguage();
     const [items, setItems] = useState([]);
     const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const TRENDING_URL = `${API_BASE_URL}/trending/all/week?api_key=${TMDB_API_KEY}&language=es-ES`;
+    const TRENDING_URL = `${API_BASE_URL}/trending/all/week?api_key=${TMDB_API_KEY}&language=${language}`;
 
-    const nextSlide = () => {
+    const nextSlide = useCallback(() => {
+        if (!items.length) return;
         setCurrentMovieIndex((prevIndex) => (prevIndex + 1) % items.length);
-    };
+    }, [items.length]);
 
     const prevSlide = () => {
     setCurrentMovieIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
@@ -42,7 +44,7 @@ export function TrendingCarrousel() {
     useEffect(() => {
         // Comprobamos la clave API
         if (!TMDB_API_KEY) {
-            setError("Error: La clave TMDB no está configurada. Asegúrate de tener REACT_APP_TMDB_API_KEY en tu .env");
+            setError(t("credentialInvalid"));
             setLoading(false);
         }
 
@@ -54,25 +56,25 @@ export function TrendingCarrousel() {
                 setItems(filteredItems);
             } catch (err) {
                 console.error("Fallo al obtener datos de tendencia:", err);
-                setError("Lo sentimos, no pudimos cargar el contenido de tendencia.");
+                setError(t("catalogLoadError"));
             } finally {
                 setLoading(false);
             }
         }
 
         fetchTrendingData();
-    }, [TRENDING_URL])
+    }, [TRENDING_URL, t])
 
     useEffect(() => {
         const intervalId = setInterval(nextSlide, 10000);
         return () => clearInterval(intervalId);
-    }, [items, nextSlide, prevSlide]);
+    }, [nextSlide]);
 
     if (loading) {
         return (
             <div className="flex justify-center items-center h-64 bg-gray-900 text-white p-6 rounded-xl m-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mr-3"></div>
-                Cargando contenido…
+                {t("loadingContent")}
             </div>
         );
     }

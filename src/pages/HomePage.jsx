@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 
 import {TMDB_API_KEY, UPCOMING_MOVIES_URL, POPULAR_SERIES_URL, TOP_RATED_SERIES_URL, TOP_RATED_MOVIES_URL} from "../constants/api.js";
 import {TrendingCarrousel} from "../components/home/TrendingCarrousel.jsx";
 import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
 import {PageLoader} from "../components/tools/PageLoader.jsx";
+import {useLanguage} from "../components/Language/LanguageContext.jsx";
 
 export function HomePage() {
-    const NUM_ITEMS_SLIDER = 20;
+    const {language, t} = useLanguage();
     const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [popularSeries, setPopularSeries] = useState([]);
     const [topRatedSeries, setTopRatedSeries] = useState([]);
@@ -14,109 +15,41 @@ export function HomePage() {
     const [isPageLoading, setIsPageLoading] = useState(() => {
         return sessionStorage.getItem("hasSeenLoader") !== "true";
     });
-
-
-    const fetchUpcomingMovies = async () => {
-        try {
-            const url = `${UPCOMING_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            setUpcomingMovies(data.results.slice(0, NUM_ITEMS_SLIDER));
-
-        } catch (error) {
-            console.error("Error fetching upcoming movies:", error);
-        }
-    };
-
-    const fetchPopularSeries = async () => {
-        try {
-            const url = `${POPULAR_SERIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            setPopularSeries(data.results.slice(0, NUM_ITEMS_SLIDER));
-
-        } catch (error) {
-            console.error("Error fetching upcoming movies:", error);
-        }
-    }
-
-    const fetchTopRatedSeries = async () => {
-        try {
-            const url = `${TOP_RATED_SERIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            setTopRatedSeries(data.results.slice(0, NUM_ITEMS_SLIDER));
-
-        } catch (error) {
-            console.error("Error fetching upcoming movies:", error);
-        }
-    }
-
-    const fetchTopRatedMovies = async () => {
-        try {
-            const url = `${TOP_RATED_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            setTopRatedMovies(data.results.slice(0, NUM_ITEMS_SLIDER));
-
-        } catch (error) {
-            console.error("Error fetching upcoming movies:", error);
-        }
-    }
-
     useEffect(() => {
+        const controller = new AbortController();
+        let loaderTimeout;
+        const fetchList = async (endpoint, setter) => {
+            try {
+                const response = await fetch(`${endpoint}?api_key=${TMDB_API_KEY}&language=${language}`, {signal: controller.signal});
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                const data = await response.json();
+                setter((data.results || []).slice(0, 20));
+            } catch (error) {
+                if (error.name !== "AbortError") console.error("Error al cargar una sección del inicio:", error);
+            }
+        };
+
         const loadAllData = async () => {
             const start = Date.now();
-
             await Promise.all([
-                fetchUpcomingMovies(),
-                fetchPopularSeries(),
-                fetchTopRatedSeries(),
-                fetchTopRatedMovies()
+                fetchList(UPCOMING_MOVIES_URL, setUpcomingMovies),
+                fetchList(POPULAR_SERIES_URL, setPopularSeries),
+                fetchList(TOP_RATED_SERIES_URL, setTopRatedSeries),
+                fetchList(TOP_RATED_MOVIES_URL, setTopRatedMovies),
             ]);
-
             const elapsed = Date.now() - start;
-            const minDisplayTime = 1000;
-
-            // Asegura que el loader esté visible al menos el tiempo mínimo
-            const remaining = Math.max(0, minDisplayTime - elapsed);
-
-            setTimeout(() => {
+            loaderTimeout = setTimeout(() => {
                 setIsPageLoading(false);
-                sessionStorage.setItem("hasSeenLoader", "true"); // 👈 Guarda que ya lo vio
-            }, remaining);
+                sessionStorage.setItem("hasSeenLoader", "true");
+            }, Math.max(0, 1000 - elapsed));
         };
 
         loadAllData();
-    }, []);
+        return () => {
+            controller.abort();
+            clearTimeout(loaderTimeout);
+        };
+    }, [language]);
 
     useEffect(() => {
         if (!isPageLoading) {
@@ -137,7 +70,7 @@ export function HomePage() {
             <TrendingCarrousel/>
             {upcomingMovies.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Próximos estrenos"
+                    title={t("upcoming")}
                     mediaList={upcomingMovies}
                     viewMoreLink="/movies/upcoming"
                     mediaType="movie"
@@ -146,7 +79,7 @@ export function HomePage() {
 
             {popularSeries.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Series populares"
+                    title={t("popularSeries")}
                     mediaList={popularSeries}
                     viewMoreLink="/series/popular"
                     mediaType="tv"
@@ -155,7 +88,7 @@ export function HomePage() {
 
             {topRatedSeries.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Series mejor valoradas"
+                    title={t("topSeries")}
                     mediaList={topRatedSeries}
                     viewMoreLink="/series/topRated"
                     mediaType="tv"
@@ -164,7 +97,7 @@ export function HomePage() {
 
             {topRatedMovies.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Películas mejor valoradas"
+                    title={t("topMovies")}
                     mediaList={topRatedMovies}
                     viewMoreLink="/movies/topRated"
                     mediaType="movie"

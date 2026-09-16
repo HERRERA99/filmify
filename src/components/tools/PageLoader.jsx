@@ -1,11 +1,13 @@
-import React from "react";
+import {useLanguage} from "../Language/LanguageContext.jsx";
+
 import "../../styles/PageLoader.css";
 
 export function PageLoader() {
+    const {t} = useLanguage();
     return (
         <div className="page-loader">
             <div className="spinner"></div>
-            <p>Cargando contenido…</p>
+            <p>{t("loadingContent")}</p>
         </div>
     );
 }

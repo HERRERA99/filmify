@@ -16,9 +16,11 @@ import {PopularSeriesPage} from "./pages/PopularSeriesPage.jsx";
 import {TopRatedMoviesPage} from "./pages/TopRatedMoviesPage.jsx";
 import {TopRatedSeriesPage} from "./pages/TopRatedSeriesPage.jsx";
 import {AuthPage} from "./pages/AuthPage.jsx";
+import {LanguageProvider} from "./components/Language/LanguageContext.jsx";
 
 function App() {
   return (
+      <LanguageProvider>
       <Router>
           <ScrollToTop/>
           <div className="app-container">
@@ -40,6 +42,7 @@ function App() {
               <Footer />
           </div>
       </Router>
+      </LanguageProvider>
   );
 }
 

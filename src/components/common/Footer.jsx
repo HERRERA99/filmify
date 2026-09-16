@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconBrandTwitter, IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
+import {useLanguage} from "../Language/LanguageContext.jsx";
+
 import '../../styles/Footer.css';
 
 const SimpleAppLogo = ({ size }) => (
@@ -7,6 +7,7 @@ const SimpleAppLogo = ({ size }) => (
 );
 
 export function Footer() {
+    const {t} = useLanguage();
     // Obtener el año actual para el copyright
     const currentYear = new Date().getFullYear();
 
@@ -17,7 +18,7 @@ export function Footer() {
                 <div className="logo-copyright-group">
                     <SimpleAppLogo size={28} />
                     <span className="copyright">
-                        &copy; {currentYear} FILMIFY. Todos los derechos reservados.
+                        &copy; {currentYear} FILMIFY. {t("rights")}
                     </span>
                     <a
                         href="https://mit-license.org/"
@@ -25,7 +26,7 @@ export function Footer() {
                         rel="noopener noreferrer"
                         className="license-link"
                     >
-                        Licencia MIT
+                        {t("license")}
                     </a>
                 </div>
             </div>

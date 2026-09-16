@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import {useLanguage} from "../Language/LanguageContext.jsx";
+
 import { MediaCard } from "./MediaCard.jsx";
 
 import "../../styles/BasicCategorieCarrousel.css";
 import 'swiper/css';
 
 export function BasicCategorieCarrousel({ title, mediaList, viewMoreLink, mediaType }) {
+    const {t} = useLanguage();
     if (!mediaList || mediaList.length === 0) {
         return null;
     }
@@ -23,7 +26,7 @@ export function BasicCategorieCarrousel({ title, mediaList, viewMoreLink, mediaT
                         to={viewMoreLink}
                         className="view-more-button"
                     >
-                        Ver todo
+                        {t("viewAll")}
                     </Link>
                 )}
             </div>

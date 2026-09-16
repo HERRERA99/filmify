@@ -1,5 +1,5 @@
-import {useState} from "react";
-import {IoSearchSharp, IoMenu, IoClose, IoKeyOutline} from "react-icons/io5";
+import {useEffect, useState} from "react";
+import {IoSearchSharp, IoMenu, IoClose, IoKeyOutline, IoHomeOutline, IoFilmOutline, IoTvOutline} from "react-icons/io5";
 import {NavLink} from "react-router-dom";
 
 import {useAuth} from "../Auth/AuthContext.jsx";
@@ -14,6 +14,13 @@ export function Header() {
     const {hasAccess} = useAuth();
     const userPath = "/auth";
     const userLabel = hasAccess ? "Gestionar acceso" : "Introducir código de acceso";
+
+    useEffect(() => {
+        if (!isNavOpen) return;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = previousOverflow; };
+    }, [isNavOpen]);
 
     // Función para cerrar ambos modales, por ejemplo al hacer clic en el logo
     const closeAllModals = () => {
@@ -69,7 +76,7 @@ export function Header() {
             {/* El contenedor de la searchbar mantiene su clase para el CSS desktop */}
             {/* y gana una clase activa para el CSS móvil */}
             <div className={`search-bar-container ${isSearchOpen ? 'mobile-search-active' : ''}`}>
-                <SearchBar/>
+                <SearchBar autoFocus={isSearchOpen}/>
             </div>
 
             {/* La navegación también gana una clase activa para el CSS móvil */}
@@ -82,7 +89,8 @@ export function Header() {
                             className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
-                            Home
+                            <IoHomeOutline aria-hidden="true" />
+                            <span><strong>Inicio</strong><small>Descubre qué ver hoy</small></span>
                         </NavLink>
                     </li>
                     <li>
@@ -91,7 +99,8 @@ export function Header() {
                             className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
-                            Films
+                            <IoFilmOutline aria-hidden="true" />
+                            <span><strong>Películas</strong><small>Todos los largometrajes</small></span>
                         </NavLink>
                     </li>
                     <li>
@@ -100,7 +109,8 @@ export function Header() {
                             className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
                             onClick={closeNav} // Cerramos el menú al hacer clic
                         >
-                            Series
+                            <IoTvOutline aria-hidden="true" />
+                            <span><strong>Series</strong><small>Temporadas para maratonear</small></span>
                         </NavLink>
                     </li>
                 </ul>
@@ -119,7 +129,8 @@ export function Header() {
                 <button
                     className="mobile-toggle mobile-search-toggle"
                     onClick={toggleSearch}
-                    aria-label="Toggle search"
+                    aria-label={isSearchOpen ? "Cerrar búsqueda" : "Abrir búsqueda"}
+                    aria-expanded={isSearchOpen}
                 >
                     {/* Mostramos 'Cerrar' si está abierto, 'Buscar' si está cerrado */}
                     {isSearchOpen ? <IoClose/> : <IoSearchSharp/>}
@@ -128,7 +139,8 @@ export function Header() {
                 <button
                     className="mobile-toggle mobile-nav-toggle"
                     onClick={toggleNav}
-                    aria-label="Toggle navigation"
+                    aria-label={isNavOpen ? "Cerrar menú" : "Abrir menú"}
+                    aria-expanded={isNavOpen}
                 >
                     {/* Mostramos 'Cerrar' si está abierto, 'Menú' si está cerrado */}
                     {isNavOpen ? <IoClose/> : <IoMenu/>}

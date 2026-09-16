@@ -1,189 +1,40 @@
-/* ---------------------------------------------------- */
-/* MEDIA CONTAINER & TÍTULO (Base)                      */
-/* ---------------------------------------------------- */
-
 .media-container {
-    min-height: 100vh;
-    background-color: #141414; /* bg-gray-900 */
-    padding: 2rem 10%; /* 10% a los lados para escritorio */
-    box-sizing: border-box;
+    position: relative; min-height: 100vh; padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 5vw, 5rem) 5rem;
+    background: linear-gradient(180deg, #101010 0, #141414 22rem, #0d0d0d 100%); box-sizing: border-box;
+}
+.media-container::before { content: ''; position: absolute; inset: 0 0 auto; height: 22rem; pointer-events: none; background: radial-gradient(circle at 12% 0, rgba(229,9,20,.14), transparent 42%); }
+.media-header { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+.media-heading-copy { max-width: 660px; }
+.media-kicker { display: block; margin-bottom: .65rem; color: #e50914; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.media-title { margin: 0; color: #fff; font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -.055em; line-height: .98; }
+.media-subtitle { margin: .9rem 0 0; color: #929292; font-size: clamp(.86rem, 1.4vw, 1rem); line-height: 1.65; }
+.media-grid { position: relative; display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: clamp(1rem, 2.2vw, 1.65rem); width: 100%; align-items: start; }
+.media-grid .media-card-link { width: 100%; min-width: 0; }
+
+.sort-dropdown { position: relative; display: flex; align-items: center; flex: none; min-width: 238px; height: 46px; padding: 0 .85rem; border: 1px solid rgba(255,255,255,.16); border-radius: 7px; background: #1d1d1d; color: #a8a8a8; transition: border-color .2s, background .2s; }
+.sort-dropdown:hover, .sort-dropdown:focus-within { border-color: rgba(255,255,255,.42); background: #242424; }
+.sort-dropdown > svg:first-child { flex: none; margin-right: .55rem; font-size: 1rem; }
+.sort-label { flex: none; color: #868686; font-size: .72rem; font-weight: 600; }
+.sort-select { width: 100%; height: 100%; min-width: 0; appearance: none; border: 0; outline: 0; padding: 0 1.25rem 0 .45rem; background: transparent; color: #fff; font-size: .78rem; font-weight: 600; cursor: pointer; }
+.sort-select option { background: #202020; color: #fff; }
+.sort-chevron { position: absolute; right: .75rem; pointer-events: none; color: #888; font-size: .85rem; }
+
+.media-error { position: relative; margin-bottom: 1.5rem; padding: 1rem 1.15rem; border: 1px solid rgba(229,9,20,.35); border-radius: 8px; background: rgba(229,9,20,.08); color: #d2d2d2; font-size: .82rem; line-height: 1.55; }
+.media-error-title { margin: 0 0 .25rem; color: #fff; font-weight: 700; }
+.media-loading, .media-end, .media-empty { position: relative; padding: 3rem 0; color: #777; text-align: center; font-size: .82rem; }
+.media-loading-content { display: flex; align-items: center; justify-content: center; gap: .55rem; }
+.media-loading svg { width: 19px; height: 19px; color: #e50914; animation: spin 1s linear infinite; }
+.media-loading span { color: #aaa; font-weight: 600; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (min-width: 1440px) { .media-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); } }
+
+@media (max-width: 700px) {
+    .media-container { padding: 2.25rem 1rem 4rem; }
+    .media-header { align-items: stretch; flex-direction: column; gap: 1.4rem; margin-bottom: 1.75rem; }
+    .media-subtitle { max-width: 33rem; }
+    .sort-dropdown { width: 100%; min-width: 0; }
+    .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem .75rem; }
 }
 
-.media-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 2rem;
-    border-bottom: 4px solid #dc2626; /* rojo */
-    padding-bottom: 0.5rem;
-    display: inline-block;
-}
-
-.media-error {
-    background-color: #7f1d1d;
-    color: #fff;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-
-/* ---------------------------------------------------- */
-/* MEDIA GRID (Base / PC)                               */
-/* ---------------------------------------------------- */
-.media-grid {
-    display: grid;
-    /* Columnas flexibles: mínimo 180px para escritorio/tablet grande */
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    justify-items: center;
-    align-items: start;
-}
-
-/* ---------------------------------------------------- */
-/* MEDIA CARD (Base / PC)                               */
-/* ---------------------------------------------------- */
-
-.media-grid .media-card {
-    width: 100%;
-    max-width: 200px; /* Tamaño máximo para las tarjetas */
-    aspect-ratio: 2 / 3;
-    overflow: hidden;
-    border-radius: 0.75rem;
-    background-color: #1f2937;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.media-grid .media-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.media-grid .media-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-    z-index: 2;
-}
-
-/* ---------------------------------------------------- */
-/* ESTADOS (Loading, Error, etc.)                       */
-/* ---------------------------------------------------- */
-
-.media-loading,
-.media-end,
-.media-empty {
-    text-align: center;
-    color: #9ca3af;
-    padding: 2rem 0;
-}
-
-.media-loading span {
-    color: #ef4444;
-    font-weight: 600;
-}
-
-.media-loading svg {
-    animation: spin 1s linear infinite;
-    height: 20px;
-    width: 20px;
-    margin-right: 0.5rem;
-    color: #ef4444;
-}
-
-.media-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.sort-dropdown {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.sort-label {
-    font-weight: 600;
-    color: #fff;
-}
-
-.sort-select {
-    background-color: #141414; /* gris oscuro */
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    padding: 6px 10px;
-    font-size: 1em;
-    cursor: pointer;
-}
-
-.sort-select option {
-    background-color: #141414; /* fondo oscuro en el desplegable */
-    color: #fff; /* texto blanco */
-}
-
-.sort-select:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* ==================================================== */
-/* 💻 MEDIA QUERY: Mejor visualización en pantallas grandes */
-/* ==================================================== */
-@media (min-width: 1024px) {
-    .media-title {
-        font-size: 3rem;
-    }
-}
-
-/* ==================================================== */
-/* 📱 MEDIA QUERY: AJUSTES PARA MÓVILES (Max-width: 640px) */
-/* ==================================================== */
-@media (max-width: 640px) {
-    .media-container {
-        /* 💡 Reducimos el padding lateral para aprovechar el espacio en móvil */
-        padding: 1rem 5%;
-    }
-
-    .media-title {
-        /* 💡 Título más pequeño para pantallas compactas */
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .media-grid {
-        gap: 1rem; /* Espacio reducido entre los ítems */
-        /* 💡 Ajustamos el tamaño mínimo de columna. 
-           120px asegura que en un móvil de 320px quepan 2 tarjetas fácilmente. */
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-
-    /* 💡 Aseguramos que el tamaño máximo del card sea adecuado para las nuevas columnas */
-    .media-grid .media-card {
-        max-width: 150px;
-        border-radius: 0.5rem; /* Menos redondeado para más impacto */
-    }
-
-    .media-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .sort-dropdown {
-        width: 100%;
-    }
-    .sort-select {
-        width: 100%;
-    }
-}
+@media (min-width: 520px) and (max-width: 700px) { .media-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

@@ -1,5 +1,4 @@
 import {ALL_MOVIE_URL} from "../constants/api.js";
-
 import {InfiniteMediaGallery} from "../components/common/InfiniteMediaGallery.jsx";
 import {useScrollMemory} from "../utils/useScrollMemory.js";
 
@@ -9,7 +8,7 @@ export function MoviessPage() {
     return (
         <>
             <InfiniteMediaGallery
-                title={"Movies"}
+                title={"Películas"}
                 apiPath={ALL_MOVIE_URL}
                 mediaType={"movie"}
                 filter={true}

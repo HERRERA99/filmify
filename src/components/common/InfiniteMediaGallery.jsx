@@ -1,8 +1,10 @@
 import {useCallback, useEffect, useRef, useState} from "react";
+import {IoChevronDown, IoOptionsOutline} from "react-icons/io5";
 
 import {API_BASE_URL, TMDB_API_KEY} from "../../constants/api.js";
 
 import {MediaCard} from "./MediaCard.jsx";
+
 import "../../styles/MediaGrid.css"
 
 export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}) {
@@ -157,41 +159,38 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
     return (
         <div className="media-container">
             <div className="media-header">
-                <h1 className="media-title">{title}</h1>
+                <div className="media-heading-copy">
+                    <span className="media-kicker">Catálogo Filmify</span>
+                    <h1 className="media-title">{title}</h1>
+                    <p className="media-subtitle">Explora una selección actualizada y encuentra tu próxima historia.</p>
+                </div>
                 {filter && (
                     <div className="sort-dropdown">
-                        <label htmlFor="sort" className="sort-label">Ordenar por:</label>
+                        <IoOptionsOutline aria-hidden="true" />
+                        <label htmlFor="sort" className="sort-label">Ordenar</label>
                         <select
                             id="sort"
                             value={sortOption}
                             onChange={handleSortChange}
                             className="sort-select"
                         >
-                            <option value="original_title.asc">Original title (A–Z)</option>
-                            <option value="original_title.desc">Original title (Z–A)</option>
-                            <option value="popularity.asc">Popularity (ascending)</option>
-                            <option value="popularity.desc">Popularity (descending)</option>
-                            <option value="revenue.asc">Revenue (ascending)</option>
-                            <option value="revenue.desc">Revenue (descending)</option>
-                            <option value="primary_release_date.asc">Release date (oldest first)</option>
-                            <option value="primary_release_date.desc">Release date (newest first)</option>
-                            <option value="vote_average.asc">Rating (ascending)</option>
-                            <option value="vote_average.desc">Rating (descending)</option>
-                            <option value="vote_count.asc">Vote count (ascending)</option>
-                            <option value="vote_count.desc">Vote count (descending)</option>
+                            <option value="popularity.desc">Más populares</option>
+                            <option value="popularity.asc">Menos populares</option>
+                            <option value={mediaType === 'movie' ? 'primary_release_date.desc' : 'first_air_date.desc'}>Más recientes</option>
+                            <option value={mediaType === 'movie' ? 'primary_release_date.asc' : 'first_air_date.asc'}>Más antiguas</option>
+                            <option value="vote_average.desc">Mejor valoradas</option>
+                            <option value="vote_count.desc">Más votadas</option>
+                            <option value={mediaType === 'movie' ? 'original_title.asc' : 'original_name.asc'}>Título (A–Z)</option>
                         </select>
+                        <IoChevronDown className="sort-chevron" aria-hidden="true" />
                     </div>
                 )}
             </div>
 
             {error && (
                 <div className="media-error">
-                    <p className="font-bold">Error de Carga (401 No Autorizado):</p>
+                    <p className="media-error-title">No hemos podido cargar el catálogo</p>
                     <p>{error}</p>
-                    <p className="mt-2 text-sm">
-                        Por favor, verifica la constante TMDB_API_KEY en el código y asegúrate de que sea tu clave
-                        válida de la API de TMDB.
-                    </p>
                 </div>
             )}
 
@@ -211,16 +210,16 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
             {(!error && loading || page < totalPages) && (
                 <div ref={observerTarget} className="media-loading">
                     {loading ? (
-                        <div className="flex items-center justify-center">
+                        <div className="media-loading-content">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                         strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0..."/>
                             </svg>
-                            <span>Cargando más {mediaType === 'movie' ? 'películas' : 'series'}...</span>
+                            <span>Cargando más {mediaType === 'movie' ? 'películas' : 'series'}…</span>
                         </div>
                     ) : (
-                        <div>Desliza hacia abajo para continuar.</div>
+                        <div>Continúa para descubrir más</div>
                     )}
                 </div>
             )}

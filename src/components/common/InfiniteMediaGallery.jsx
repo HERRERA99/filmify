@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {IoChevronDown, IoOptionsOutline} from "react-icons/io5";
+import {IoChevronDown, IoOptionsOutline, IoRefreshOutline} from "react-icons/io5";
 
 import {API_BASE_URL, TMDB_API_KEY} from "../../constants/api.js";
 
@@ -7,155 +7,104 @@ import {MediaCard} from "./MediaCard.jsx";
 
 import "../../styles/MediaGrid.css"
 
+const FIRST_PAGE = 1;
+
+function getTmdbRequestOptions(token) {
+    if (/^[a-f\d]{32}$/i.test(token)) return {query: `&api_key=${token}`, headers: {accept: "application/json"}};
+    if (token.startsWith("eyJ")) return {query: "", headers: {accept: "application/json", Authorization: `Bearer ${token}`}};
+    return null;
+}
+
 export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}) {
     const [items, setItems] = useState([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(FIRST_PAGE);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [sortOption, setSortOption] = useState("popularity.desc");
-
-    // Referencia para el elemento "sentinela" que dispara la carga
     const observerTarget = useRef(null);
+    const activeRequest = useRef(null);
+    const loadingRef = useRef(false);
 
-    // Si la ruta o el título cambian, reseteamos la lista y la paginación.
-    useEffect(() => {
-        setItems([]);
-        setPage(1);
-        setTotalPages(1);
-        fetchData(1)
-        setError(null);
-        // La carga se disparará a través del fetchData en el siguiente useEffect.
-    }, [apiPath, title, sortOption]);
+    const fetchData = useCallback(async (pageToFetch, replace = false) => {
+        const token = TMDB_API_KEY?.trim() || "";
+        const auth = getTmdbRequestOptions(token);
 
-    // Función de carga de datos (usa useCallback para ser estable)
-    const fetchData = useCallback(async (pageToFetch) => {
-        // Obtenemos el token/clave V3 y eliminamos cualquier espacio en blanco accidental
-        const token = TMDB_API_KEY.trim();
-
-        // Validación de la clave API V3
-        if (!token || token === "TU_CLAVE_API_V3_AQUI") {
-            setError("Error de Autenticación: Debes reemplazar 'TU_CLAVE_API_V3_AQUI' con tu clave API V3 de TMDB.");
+        if (!auth) {
+            setError("La credencial de TMDB no tiene un formato válido. Añade una API Key v3 o un Read Access Token v4 en VITE_TMDB_API_KEY.");
             return;
         }
 
-        if (loading || pageToFetch > totalPages) return;
+        if (loadingRef.current && !replace) return;
+        if (replace) activeRequest.current?.abort();
 
+        const controller = new AbortController();
+        activeRequest.current = controller;
+        loadingRef.current = true;
         setLoading(true);
         setError(null);
 
-        // Normalización de la URL
-        const normalizedPath = apiPath.startsWith('/') ? apiPath : `/${apiPath}`;
-        const normalizedBase = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+        const normalizedPath = apiPath.startsWith("/") ? apiPath : `/${apiPath}`;
+        const normalizedBase = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+        const url = `${normalizedBase}${normalizedPath}?language=es-ES&page=${pageToFetch}&sort_by=${sortOption}&include_adult=false${auth.query}`;
 
-        // ** CLAVE V3: Construcción de la URL con api_key como parámetro **
-        const url = `${normalizedBase}${normalizedPath}?api_key=${token}&language=es-ES&page=${pageToFetch}&sort_by=${sortOption}`;
+        try {
+            const response = await fetch(url, {headers: auth.headers, signal: controller.signal});
+            if (!response.ok) {
+                if (response.status === 401) throw new Error("TMDB ha rechazado la credencial configurada (error 401). Revisa VITE_TMDB_API_KEY.");
+                throw new Error(`TMDB no ha podido responder (error ${response.status}).`);
+            }
 
-        console.log(`Cargando página: ${pageToFetch} de ${totalPages}. URL: ${url}`);
+            const data = await response.json();
+            const results = Array.isArray(data.results) ? data.results : [];
 
-        // Manejo de backoff para reintentar en caso de fallo (recomendado para APIs)
-        const maxRetries = 3;
-        for (let attempt = 0; attempt < maxRetries; attempt++) {
-            try {
-                // ** IMPORTANTE: No se pasa el header Authorization para V3 **
-                const response = await fetch(url);
-
-                // Leemos el cuerpo como texto para manejar mejor errores de JSON
-                const responseText = await response.text();
-
-                if (!response.ok) {
-                    let statusText = `Error HTTP ${response.status}`;
-
-                    // Si hay un error, adjuntamos la respuesta de TMDB
-                    if (responseText.length > 0) {
-                        statusText += `. Respuesta: ${responseText.substring(0, 150)}...`;
-                    }
-
-                    if (response.status === 401) {
-                        statusText = `Clave API V3 inválida (Error 401). Verifica tu clave. ${statusText}`;
-                    }
-
-                    throw new Error(statusText);
-                }
-
-                let data;
-                try {
-                    // Intentamos parsear el JSON
-                    data = JSON.parse(responseText);
-                    // eslint-disable-next-line no-unused-vars
-                } catch (jsonErr) {
-                    // Captura el 'Unexpected end of JSON input'
-                    throw new SyntaxError(`Respuesta inválida del servidor (JSON error). Texto recibido: ${responseText.substring(0, 150)}...`);
-                }
-
-
-                // Añadir los nuevos resultados a los existentes
-                setItems(prevItems => {
-                    // Prevenir duplicados si el scroll fue muy rápido
-                    const newUniqueResults = data.results.filter(
-                        newItem => !prevItems.some(existingItem => existingItem.id === newItem.id)
-                    );
-                    return [...prevItems, ...newUniqueResults];
-                });
-
-                setTotalPages(data.total_pages);
-                setPage(pageToFetch); // Solo actualizamos la página si la carga es exitosa
+            setItems((currentItems) => {
+                if (replace) return results;
+                const currentIds = new Set(currentItems.map((item) => item.id));
+                return [...currentItems, ...results.filter((item) => !currentIds.has(item.id))];
+            });
+            setTotalPages(Math.min(data.total_pages || 1, 500));
+            setPage(pageToFetch);
+        } catch (requestError) {
+            if (requestError.name !== "AbortError") setError(requestError.message || "No se ha podido cargar el catálogo.");
+        } finally {
+            if (activeRequest.current === controller) {
+                activeRequest.current = null;
+                loadingRef.current = false;
                 setLoading(false);
-                return; // Éxito, salimos del bucle de reintentos
-            } catch (err) {
-                console.error(`Error al cargar datos (Intento ${attempt + 1}):`, err);
-                if (attempt < maxRetries - 1) {
-                    // Espera exponencial antes de reintentar
-                    await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
-                } else {
-                    // Si falla el último intento, mostramos el error
-                    setError(`Error al cargar datos: ${err.message}.`);
-                    setLoading(false);
-                }
             }
         }
-    }, [apiPath, loading, totalPages, sortOption]); // Dependencias: path, estado de carga y totalPages
+    }, [apiPath, sortOption]);
 
-
-    // Efecto para la inicialización y el observador de intersección (Infinite Scroll)
     useEffect(() => {
-        // Carga inicial
-        if (items.length === 0 && page === 1 && !loading && !error) {
-            fetchData(1);
-        }
+        setItems([]);
+        setPage(FIRST_PAGE);
+        setTotalPages(1);
+        setError(null);
+        fetchData(FIRST_PAGE, true);
 
-        // Configuración de IntersectionObserver
-        const observer = new IntersectionObserver((entries) => {
-            // Solo cargamos si el sentinela está visible, no estamos cargando y aún hay páginas
-            if (entries[0].isIntersecting && !loading && page < totalPages) {
-                console.log("Sentinel intersectado. Cargando siguiente página...");
-                fetchData(page + 1);
-            }
-        }, {
-            // RootMargin puede ayudar a cargar antes de que el usuario llegue al final
-            rootMargin: '100px 0px',
-            threshold: 0.1
-        });
+        return () => activeRequest.current?.abort();
+    }, [fetchData]);
 
-        const currentTarget = observerTarget.current;
-        if (currentTarget) {
-            observer.observe(currentTarget);
-        }
+    useEffect(() => {
+        const target = observerTarget.current;
+        if (!target || error) return;
 
-        // Limpieza: importante para evitar fugas de memoria
-        return () => {
-            if (currentTarget) {
-                observer.unobserve(currentTarget);
-            }
-        };
-    }, [fetchData, loading, page, totalPages, items.length, error, sortOption]); // Incluimos 'error' para no intentar si hay un fallo de clave.
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting && !loadingRef.current && page < totalPages) fetchData(page + 1);
+        }, {rootMargin: "240px 0px", threshold: 0.1});
 
-    // 🔹 Función para cambiar el orden
-    const handleSortChange = (e) => {
-        setSortOption(e.target.value);
+        observer.observe(target);
+        return () => observer.disconnect();
+    }, [error, fetchData, page, totalPages]);
+
+    const retry = () => {
+        setItems([]);
+        setPage(FIRST_PAGE);
+        setTotalPages(1);
+        fetchData(FIRST_PAGE, true);
     };
 
-    // Contenido del componente
     return (
         <div className="media-container">
             <div className="media-header">
@@ -167,20 +116,15 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
                 {filter && (
                     <div className="sort-dropdown">
                         <IoOptionsOutline aria-hidden="true" />
-                        <label htmlFor="sort" className="sort-label">Ordenar</label>
-                        <select
-                            id="sort"
-                            value={sortOption}
-                            onChange={handleSortChange}
-                            className="sort-select"
-                        >
+                        <label htmlFor={`sort-${mediaType}`} className="sort-label">Ordenar</label>
+                        <select id={`sort-${mediaType}`} value={sortOption} onChange={(event) => setSortOption(event.target.value)} className="sort-select">
                             <option value="popularity.desc">Más populares</option>
                             <option value="popularity.asc">Menos populares</option>
-                            <option value={mediaType === 'movie' ? 'primary_release_date.desc' : 'first_air_date.desc'}>Más recientes</option>
-                            <option value={mediaType === 'movie' ? 'primary_release_date.asc' : 'first_air_date.asc'}>Más antiguas</option>
+                            <option value={mediaType === "movie" ? "primary_release_date.desc" : "first_air_date.desc"}>Más recientes</option>
+                            <option value={mediaType === "movie" ? "primary_release_date.asc" : "first_air_date.asc"}>Más antiguas</option>
                             <option value="vote_average.desc">Mejor valoradas</option>
                             <option value="vote_count.desc">Más votadas</option>
-                            <option value={mediaType === 'movie' ? 'original_title.asc' : 'original_name.asc'}>Título (A–Z)</option>
+                            <option value={mediaType === "movie" ? "original_title.asc" : "original_name.asc"}>Título (A–Z)</option>
                         </select>
                         <IoChevronDown className="sort-chevron" aria-hidden="true" />
                     </div>
@@ -188,54 +132,37 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
             </div>
 
             {error && (
-                <div className="media-error">
-                    <p className="media-error-title">No hemos podido cargar el catálogo</p>
-                    <p>{error}</p>
+                <div className="media-error" role="alert">
+                    <div>
+                        <p className="media-error-title">No hemos podido cargar {mediaType === "movie" ? "las películas" : "las series"}</p>
+                        <p>{error}</p>
+                    </div>
+                    <button type="button" className="media-retry" onClick={retry}><IoRefreshOutline />Reintentar</button>
                 </div>
             )}
 
             <div className="media-grid">
-                {items.map(item => (
-                    <MediaCard
-                        key={item.id}
-                        posterUrl={item.poster_path}
-                        title={item.title || item.name}
-                        mediaId={item.id}
-                        mediaType={mediaType}
-                    />
+                {items.map((item) => (
+                    <MediaCard key={item.id} posterUrl={item.poster_path} title={item.title || item.name} mediaId={item.id} mediaType={mediaType} />
                 ))}
             </div>
 
-            {/* Elemento Sentinel */}
-            {(!error && loading || page < totalPages) && (
+            {!error && (loading || page < totalPages) && (
                 <div ref={observerTarget} className="media-loading">
                     {loading ? (
                         <div className="media-loading-content">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0..."/>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity=".25" fill="none" />
+                                <path fill="currentColor" opacity=".75" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" />
                             </svg>
-                            <span>Cargando más {mediaType === 'movie' ? 'películas' : 'series'}…</span>
+                            <span>Cargando más {mediaType === "movie" ? "películas" : "series"}…</span>
                         </div>
-                    ) : (
-                        <div>Continúa para descubrir más</div>
-                    )}
+                    ) : <div>Continúa para descubrir más</div>}
                 </div>
             )}
 
-            {page >= totalPages && totalPages > 1 && !loading && !error && (
-                <div className="media-end">
-                    <p className="text-xl font-medium">¡Has llegado al final de la galería!</p>
-                </div>
-            )}
-
-            {items.length === 0 && !loading && !error && (
-                <div className="media-empty">
-                    <p className="text-xl font-medium">No se han encontrado resultados.</p>
-                </div>
-            )}
+            {page >= totalPages && totalPages > 1 && !loading && !error && <div className="media-end"><p>Has llegado al final de la galería</p></div>}
+            {items.length === 0 && !loading && !error && <div className="media-empty"><p>No se han encontrado resultados.</p></div>}
         </div>
     );
-
 }

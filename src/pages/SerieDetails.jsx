@@ -26,7 +26,7 @@ export function SerieDetails() {
 
     const fetchserie = async () => {
         try {
-            const url = `${SERIE_DETAILS_URL}${id}?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${SERIE_DETAILS_URL}${id}?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -45,7 +45,7 @@ export function SerieDetails() {
 
     const fetchVideos = async () => {
         try {
-            const url = `${SERIE_DETAILS_URL}${id}/videos?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${SERIE_DETAILS_URL}${id}/videos?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -63,7 +63,7 @@ export function SerieDetails() {
 
     const fetchSimilar = async () => {
         try {
-            const url = `${SERIE_DETAILS_URL}${id}/similar?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${SERIE_DETAILS_URL}${id}/similar?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -88,7 +88,7 @@ export function SerieDetails() {
     return (
         <>
             <ObjectDetailsHero
-                title={serie.original_name}
+                title={serie.name || serie.original_name}
                 overview={serie.overview}
                 genres={serie.genres}
                 posterUrl={`${IMAGE_W500_URL}${serie.poster_path}`}
@@ -100,23 +100,28 @@ export function SerieDetails() {
                 trailerUrl={`${YOUTUBE_URL}${trailer.key}`}
             />
 
-            {seasons
-                .filter(seasons => seasons.season_number !== 0)
-                .map((season) => (
+            <section className="seasons-section">
+                <div className="seasons-section-heading"><span>Episodios</span><h2>Temporadas</h2></div>
+                {seasons.filter(season => season.season_number !== 0).map((season) => (
                     <SeasonItem
                         key={season.id}
                         serieId={id}
                         seasonNumber={season.season_number}
-                        urlSeason={`${SERIE_DETAILS_URL}${id}/season/${season.season_number}?api_key=${TMDB_API_KEY}&language=en-US`}
+                        urlSeason={`${SERIE_DETAILS_URL}${id}/season/${season.season_number}?api_key=${TMDB_API_KEY}&language=es-ES`}
                         hasAccess={hasAccess}
+                        posterPath={season.poster_path}
+                        overview={season.overview}
+                        episodeCount={season.episode_count}
+                        airDate={season.air_date}
                     />
                 ))}
+            </section>
 
             <CreditsSlide
-                url={`${SERIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}
+                url={`${SERIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=es-ES`}
             />
             <BasicCategorieCarrousel
-                title={"Similar"}
+                title={"Series similares"}
                 mediaList={similar}
                 mediaType={"tv"}
             />

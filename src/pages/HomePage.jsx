@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import {TMDB_API_KEY, UPCOMING_MOVIES_URL, POPULAR_SERIES_URL, TOP_RATED_SERIES_URL, TOP_RATED_MOVIES_URL} from "../constants/api.js";
-
 import {TrendingCarrousel} from "../components/home/TrendingCarrousel.jsx";
 import {BasicCategorieCarrousel} from "../components/common/BasicCategorieCarrousel.jsx";
 import {PageLoader} from "../components/tools/PageLoader.jsx";
@@ -19,7 +18,7 @@ export function HomePage() {
 
     const fetchUpcomingMovies = async () => {
         try {
-            const url = `${UPCOMING_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${UPCOMING_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -38,7 +37,7 @@ export function HomePage() {
 
     const fetchPopularSeries = async () => {
         try {
-            const url = `${POPULAR_SERIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${POPULAR_SERIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -57,7 +56,7 @@ export function HomePage() {
 
     const fetchTopRatedSeries = async () => {
         try {
-            const url = `${TOP_RATED_SERIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${TOP_RATED_SERIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -76,7 +75,7 @@ export function HomePage() {
 
     const fetchTopRatedMovies = async () => {
         try {
-            const url = `${TOP_RATED_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${TOP_RATED_MOVIES_URL}?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -138,7 +137,7 @@ export function HomePage() {
             <TrendingCarrousel/>
             {upcomingMovies.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Upcoming movies"
+                    title="Próximos estrenos"
                     mediaList={upcomingMovies}
                     viewMoreLink="/movies/upcoming"
                     mediaType="movie"
@@ -147,7 +146,7 @@ export function HomePage() {
 
             {popularSeries.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Popular series"
+                    title="Series populares"
                     mediaList={popularSeries}
                     viewMoreLink="/series/popular"
                     mediaType="tv"
@@ -156,7 +155,7 @@ export function HomePage() {
 
             {topRatedSeries.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Top rated series"
+                    title="Series mejor valoradas"
                     mediaList={topRatedSeries}
                     viewMoreLink="/series/topRated"
                     mediaType="tv"
@@ -165,7 +164,7 @@ export function HomePage() {
 
             {topRatedMovies.length > 0 && (
                 <BasicCategorieCarrousel
-                    title="Top rated movies"
+                    title="Películas mejor valoradas"
                     mediaList={topRatedMovies}
                     viewMoreLink="/movies/topRated"
                     mediaType="movie"

@@ -16,12 +16,12 @@ export function AuthPage() {
         try { await unlock(code); navigate('/'); } catch (err) { setError(err.message); } finally { setLoading(false); }
     };
     if (hasAccess) return <main className="access-page"><section className="access-card access-active">
-        <IoShieldCheckmarkOutline className="access-icon" /><p className="eyebrow">ACCESO ACTIVO</p><h2>Tu sala está lista.</h2>
+        <IoShieldCheckmarkOutline className="access-icon" /><p className="eyebrow">ACCESO ACTIVO</p><h2>Tu sala está lista</h2>
         <p>El visualizador permanecerá desbloqueado hasta el {new Date(accessExpiresAt).toLocaleDateString('es-ES')}.</p>
         <button className="auth-submit-btn" onClick={() => navigate('/')}>Explorar catálogo</button><button className="text-action" onClick={lock}>Cerrar acceso en este dispositivo</button>
     </section></main>;
     return <main className="access-page"><section className="access-card">
-        <div className="access-icon-wrap"><IoKeyOutline className="access-icon" /></div><p className="eyebrow">FILMIFY ACCESS</p><h2>Desbloquea el visualizador</h2>
+        <div className="access-icon-wrap"><IoKeyOutline className="access-icon" /></div><p className="eyebrow">ACCESO FILMIFY</p><h2>Desbloquea el visualizador</h2>
         <p className="auth-subtitle">Introduce el código que te han facilitado para ver películas y episodios.</p>
         <form className="auth-form" onSubmit={handleSubmit}><label htmlFor="access-code">Código de acceso</label>
             <input id="access-code" value={code} onChange={(event) => setCode(event.target.value)} placeholder="Ej. FILMIFY-2026" autoComplete="one-time-code" required />

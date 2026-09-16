@@ -8,14 +8,14 @@ export function EpisodeItem({ episode }) {
     // Construir la cadena de duración
     const durationText = episode.runtime ? `(${episode.runtime} minutos)` : '';
     // Formatear la fecha de emisión
-    const airDate = episode.air_date ? new Date(episode.air_date).toLocaleDateString() : 'Fecha desconocida';
+    const airDate = episode.air_date ? new Date(episode.air_date).toLocaleDateString('es-ES') : 'Fecha desconocida';
     // Construir la ruta completa del poster o usar un placeholder
     const posterUrl = episode.still_path ? `${IMAGE_W500_URL}${episode.still_path}` : EPISODE_NO_IMAGE_URL;
 
     return (
         <div className="episode-item-container">
             <div className="episode-poster-wrapper">
-                <img src={posterUrl} alt={`Poster de ${episode.name}`} className="episode-poster" />
+                <img src={posterUrl} alt={`Fotograma de ${episode.name}`} className="episode-poster" />
             </div>
             <div className="episode-details">
                 <h4 className="episode-title">

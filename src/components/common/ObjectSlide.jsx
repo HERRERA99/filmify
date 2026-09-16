@@ -1,12 +1,11 @@
-import {IMAGE_ORIGINAL_URL, IMAGE_W500_URL, TMDB_API_KEY, YOUTUBE_URL} from "../../constants/api.js";
-
-import "../../styles/ObjectSlide.css"
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
+import {IMAGE_ORIGINAL_URL, IMAGE_W500_URL, TMDB_API_KEY} from "../../constants/api.js";
 import AnimatedContent from "../tools/AnimatedContent.jsx";
 import FadeContent from "../tools/FadeContent.jsx";
 
-import {Link} from "react-router-dom";
+import "../../styles/ObjectSlide.css"
 
 export function ObjectSlide({item}) {
     const [trailerUrl, setTrailerUrl] = useState(null);
@@ -79,7 +78,7 @@ export function ObjectSlide({item}) {
                                 className="trailer-button"
                                 style={{pointerEvents: trailerUrl ? 'auto' : 'none', opacity: trailerUrl ? 1 : 0.5}}
                             >
-                                Watch trailer
+                                Ver tráiler
                             </a>
                         </div>
                     </FadeContent>

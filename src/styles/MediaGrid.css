@@ -1,5 +1,5 @@
 .media-container {
-    position: relative; min-height: 100vh; padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 5vw, 5rem) 5rem;
+    position: relative; min-height: 100vh; scroll-margin-top: 68px; padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 5vw, 5rem) 5rem;
     background: linear-gradient(180deg, #101010 0, #141414 22rem, #0d0d0d 100%); box-sizing: border-box;
 }
 .media-container::before { content: ''; position: absolute; inset: 0 0 auto; height: 22rem; pointer-events: none; background: radial-gradient(circle at 12% 0, rgba(229,9,20,.14), transparent 42%); }
@@ -9,6 +9,7 @@
 .media-title { margin: 0; color: #fff; font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -.055em; line-height: .98; }
 .media-subtitle { margin: .9rem 0 0; color: #929292; font-size: clamp(.86rem, 1.4vw, 1rem); line-height: 1.65; }
 .media-grid { position: relative; display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: clamp(1rem, 2.2vw, 1.65rem); width: 100%; align-items: start; }
+.media-grid.is-loading { opacity: .38; pointer-events: none; transition: opacity .2s; }
 .media-grid .media-card-link { width: 100%; min-width: 0; }
 
 .sort-dropdown { position: relative; display: flex; align-items: center; flex: none; min-width: 238px; height: 46px; padding: 0 .85rem; border: 1px solid rgba(255,255,255,.16); border-radius: 7px; background: #1d1d1d; color: #a8a8a8; transition: border-color .2s, background .2s; }
@@ -27,6 +28,14 @@
 .media-loading-content { display: flex; align-items: center; justify-content: center; gap: .55rem; }
 .media-loading svg { width: 19px; height: 19px; color: #e50914; animation: spin 1s linear infinite; }
 .media-loading span { color: #aaa; font-weight: 600; }
+.media-pagination { position: relative; display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 3.5rem; }
+.media-pagination button { display: inline-grid; place-items: center; min-width: 40px; height: 40px; padding: 0 .65rem; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; background: #1c1c1c; color: #aaa; cursor: pointer; font-size: .78rem; font-weight: 700; transition: border-color .2s, background .2s, color .2s, transform .2s; }
+.media-pagination button:hover:not(:disabled) { border-color: rgba(255,255,255,.38); background: #292929; color: #fff; transform: translateY(-1px); }
+.media-pagination button.active { border-color: #e50914; background: #e50914; color: #fff; box-shadow: 0 6px 18px rgba(229,9,20,.22); }
+.media-pagination button:disabled { opacity: .35; cursor: not-allowed; }
+.pagination-pages { display: flex; align-items: center; gap: .4rem; }
+.pagination-pages > span { color: #686868; }
+.media-pagination .pagination-direction { display: inline-flex; gap: .35rem; min-width: 104px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (min-width: 1440px) { .media-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); } }
@@ -39,6 +48,12 @@
     .media-error { align-items: stretch; flex-direction: column; }
     .media-retry { align-self: flex-start; }
     .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem .75rem; }
+    .media-pagination { gap: .45rem; margin-top: 2.5rem; }
+    .media-pagination .pagination-direction { min-width: 42px; padding: 0; }
+    .pagination-direction span { display: none; }
+    .pagination-pages { gap: .25rem; }
+    .media-pagination button { min-width: 36px; height: 36px; padding: 0 .45rem; }
+    .pagination-pages button:first-of-type:not(.active), .pagination-pages button:last-of-type:not(.active) { display: none; }
 }
 
 @media (min-width: 520px) and (max-width: 700px) { .media-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

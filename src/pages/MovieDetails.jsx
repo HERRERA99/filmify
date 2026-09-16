@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-
 import {FaLock} from "react-icons/fa";
+
 import {useAuth} from "../components/Auth/AuthContext.jsx";
 import '../styles/StreamingContainer.css';
 import {
@@ -27,7 +27,7 @@ export function MovieDetails() {
 
     const fetchMovie = async () => {
         try {
-            const url = `${MOVIE_DETAILS_URL}${id}?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${MOVIE_DETAILS_URL}${id}?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -45,7 +45,7 @@ export function MovieDetails() {
 
     const fetchVideos = async () => {
         try {
-            const url = `${MOVIE_DETAILS_URL}${id}/videos?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${MOVIE_DETAILS_URL}${id}/videos?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -63,7 +63,7 @@ export function MovieDetails() {
 
     const fetchSimilar = async () => {
         try {
-            const url = `${MOVIE_DETAILS_URL}${id}/similar?api_key=${TMDB_API_KEY}&language=en-US`;
+            const url = `${MOVIE_DETAILS_URL}${id}/similar?api_key=${TMDB_API_KEY}&language=es-ES`;
 
             const response = await fetch(url);
 
@@ -92,7 +92,7 @@ export function MovieDetails() {
     return (
         <>
             <ObjectDetailsHero
-                title={movie.original_title}
+                title={movie.title || movie.original_title}
                 overview={movie.overview}
                 genres={movie.genres}
                 posterUrl={movie.poster_path ?
@@ -124,14 +124,14 @@ export function MovieDetails() {
                         frameBorder="0"
                         allowFullScreen
                         style={{width: '100%', height: '100%'}}
-                        title="Movie Player"
+                        title="Reproductor de película"
                     ></iframe>
                 ) : (
                     <div className="lock-screen">
                         <div className="lock-icon"><FaLock/></div>
-                        <h3>Exclusive Content</h3>
-                        <p>This movie is only available to invited users.</p>
-                        <p>You need guest access to watch this movie.</p>
+                        <h3>Contenido exclusivo</h3>
+                        <p>Esta película está disponible únicamente para usuarios invitados.</p>
+                        <p>Introduce tu código de acceso para reproducirla.</p>
                         <button onClick={handleLoginClick} className="btn-login">
                             Introducir código
                         </button>
@@ -139,10 +139,10 @@ export function MovieDetails() {
                 )}
             </div>
             <CreditsSlide
-                url={`${MOVIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`}
+                url={`${MOVIE_DETAILS_URL}${id}/credits?api_key=${TMDB_API_KEY}&language=es-ES`}
             />
             <BasicCategorieCarrousel
-                title={"Similar"}
+                title={"Películas similares"}
                 mediaList={similar}
                 mediaType={"movie"}
             />

@@ -11,7 +11,7 @@ export function TrendingCarrousel() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const TRENDING_URL = `${API_BASE_URL}/trending/all/week?api_key=${TMDB_API_KEY}&language=en-US`;
+    const TRENDING_URL = `${API_BASE_URL}/trending/all/week?api_key=${TMDB_API_KEY}&language=es-ES`;
 
     const nextSlide = () => {
         setCurrentMovieIndex((prevIndex) => (prevIndex + 1) % items.length);
@@ -72,7 +72,7 @@ export function TrendingCarrousel() {
         return (
             <div className="flex justify-center items-center h-64 bg-gray-900 text-white p-6 rounded-xl m-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mr-3"></div>
-                Cargando contenido...
+                Cargando contenido…
             </div>
         );
     }

@@ -1,150 +1,119 @@
-import {useEffect, useState} from "react";
+import {useEffect, useId, useState} from "react";
+import {FaLock} from "react-icons/fa";
+import {IoCalendarClearOutline, IoChevronDown, IoClose, IoPlay, IoTimeOutline} from "react-icons/io5";
+import {useNavigate} from "react-router-dom";
 
-// eslint-disable-next-line import/order
 import {IMAGE_W500_URL} from "../../constants/api";
 
 import "../../styles/SeasonsAndItems.css";
-import '../../styles/StreamingContainer.css';
-import { FaLock } from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import "../../styles/StreamingContainer.css";
 
-export function SeasonItem({urlSeason, serieId, seasonNumber, hasAccess}) {
+export function SeasonItem({urlSeason, serieId, seasonNumber, hasAccess, posterPath, overview, episodeCount, airDate}) {
     const navigate = useNavigate();
-
-    const [episodes, setEpisodes] = useState([]);
+    const panelId = useId();
+    const [episodes, setEpisodes] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
     const [playingEpisode, setPlayingEpisode] = useState(null);
 
     useEffect(() => {
-        fetch(urlSeason)
-            .then(res => res.json())
-            .then(data => setEpisodes(data.episodes || []))
-            .catch(err => console.error(err));
-    }, [urlSeason]);
+        if (!isOpen || episodes) return;
+        const controller = new AbortController();
+        setIsLoading(true);
+        setError("");
 
-    function handleLoginClick() {
-        navigate('/auth');
-    }
+        fetch(urlSeason, {signal: controller.signal})
+            .then((response) => {
+                if (!response.ok) throw new Error("No se han podido cargar los episodios.");
+                return response.json();
+            })
+            .then((data) => setEpisodes(data.episodes || []))
+            .catch((requestError) => {
+                if (requestError.name !== "AbortError") setError(requestError.message);
+            })
+            .finally(() => setIsLoading(false));
+
+        return () => controller.abort();
+    }, [episodes, isOpen, urlSeason]);
+
+    const formattedSeasonDate = airDate ? new Date(airDate).toLocaleDateString("es-ES", {year: "numeric"}) : null;
 
     return (
-        <div className="season-item-main">
-            <div className="season-header" onClick={() => setIsOpen(!isOpen)}>
-                <div className="season-details">
-                    <h3 className="season-title">Temporada {seasonNumber}</h3>
-                    <span className="season-info">{episodes.length} Episodios</span>
+        <section className={`season-item-main ${isOpen ? "is-open" : ""}`}>
+            <button className="season-header" type="button" onClick={() => setIsOpen((current) => !current)} aria-expanded={isOpen} aria-controls={panelId}>
+                <div className="season-cover">
+                    {posterPath ? <img src={`${IMAGE_W500_URL}${posterPath}`} alt="" /> : <span>T{seasonNumber}</span>}
                 </div>
-                <div className="toggle-icon">{isOpen ? '▲' : '▼'}</div>
-            </div>
+                <div className="season-details">
+                    <span className="season-eyebrow">Temporada {seasonNumber}</span>
+                    <h2 className="season-title">Temporada {seasonNumber}</h2>
+                    <div className="season-meta">
+                        <span>{episodeCount ?? episodes?.length ?? 0} episodios</span>
+                        {formattedSeasonDate && <span>{formattedSeasonDate}</span>}
+                    </div>
+                    {overview && <p className="season-overview">{overview}</p>}
+                </div>
+                <span className="toggle-icon" aria-hidden="true"><IoChevronDown /></span>
+            </button>
 
             {isOpen && (
-                <div className="episode-list-container">
-                    <ul className="episode-list">
+                <div className="episode-list-container" id={panelId}>
+                    {isLoading && <div className="season-state"><span className="season-spinner" />Cargando episodios…</div>}
+                    {error && <div className="season-state season-state-error">{error}</div>}
+                    {episodes && !episodes.length && <div className="season-state">Esta temporada todavía no tiene episodios disponibles.</div>}
+                    {episodes?.length > 0 && <ol className="episode-list">
                         {episodes.map((episode) => {
                             const isPlaying = playingEpisode === episode.episode_number;
+                            const hasImage = Boolean(episode.still_path);
+                            const formattedDate = episode.air_date ? new Date(episode.air_date).toLocaleDateString("es-ES", {day: "numeric", month: "short", year: "numeric"}) : null;
 
-                            // 🔒 CAMBIO 1: Verificamos si existe la imagen
-                            const hasImage = episode.still_path !== null && episode.still_path !== undefined;
-
-                            return (
-                                <li key={episode.id} className="episode-list-item">
-                                    <div className={`episode-item-container ${isPlaying ? 'active-video' : ''}`}>
-
-                                        {isPlaying ? (
-                                            /* ================================= */
-                                            /* 🎥 MODO VIDEO                     */
-                                            /* ================================= */
-                                            <>
-                                                <div className="episode-video-full">
-                                                    {hasAccess ? (
-                                                        <iframe
-                                                            //https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}
-                                                            //https://www.vidking.net/embed/tv/${serieId}/${seasonNumber}/${episode.episode_number}?color=e50914&autoPlay=true&episodeSelector=true
-                                                            src={`https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}`}
-                                                            frameBorder="0"
-                                                            allowFullScreen
-                                                            title={`Episode ${episode.episode_number}`}
-                                                        ></iframe>
-                                                    ) : (
-                                                        <div className="lock-screen">
-                                                            <div className="lock-icon"><FaLock /></div>
-                                                            <h3>Exclusive Content</h3>
-                                                            <p>This episode is only available to invited users.</p>
-                                                            <p>You need guest access to watch this episode.</p>
-                                                            <button onClick={handleLoginClick} className="btn-login">
-                                                                Introducir código
-                                                            </button>
-                                                        </div>
-                                                    )}
+                            return <li key={episode.id} className="episode-list-item">
+                                <article className={`episode-item-container ${isPlaying ? "active-video" : ""}`}>
+                                    {isPlaying ? <>
+                                        <div className="episode-video-full">
+                                            {hasAccess ? (
+                                                <iframe src={`https://multiembed.mov/?video_id=${serieId}&tmdb=1&s=${seasonNumber}&e=${episode.episode_number}`} frameBorder="0" allowFullScreen title={`Episodio ${episode.episode_number}`} />
+                                            ) : (
+                                                <div className="lock-screen">
+                                                    <div className="lock-icon"><FaLock /></div>
+                                                    <h3>Contenido exclusivo</h3>
+                                                    <p>Este episodio está disponible únicamente para usuarios invitados.</p>
+                                                    <p>Introduce tu código de acceso para reproducirlo.</p>
+                                                    <button onClick={() => navigate("/auth")} className="btn-login">Introducir código</button>
                                                 </div>
-                                                <div className="episode-details mt-video">
-                                                    <h4 className="episode-title">
-                                                        {episode.episode_number}. {episode.name}
-                                                    </h4>
-                                                    <p className="episode-overview">
-                                                        {episode.overview || "Sin descripción disponible."}
-                                                    </p>
-                                                    <button
-                                                        className="close-video-btn"
-                                                        onClick={() => setPlayingEpisode(null)}
-                                                    >
-                                                        Cerrar Video
-                                                    </button>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            /* ================================= */
-                                            /* 🖼️ MODO NORMAL                    */
-                                            /* ================================= */
-                                            <>
-                                                {/* 🔒 CAMBIO 2: Clase condicional y bloqueo del Click */}
-                                                <div
-                                                    className={`media-zone ${hasImage ? 'clickable' : 'disabled-zone'}`}
-                                                    onClick={() => {
-                                                        // Solo ejecuta el play si hay imagen
-                                                        if (hasImage) setPlayingEpisode(episode.episode_number);
-                                                    }}
-                                                >
-                                                    <div className="episode-poster-wrapper">
-                                                        <img
-                                                            src={hasImage ? `${IMAGE_W500_URL}${episode.still_path}` : "https://placehold.co/220x124/333/666?text=Proximamente"}
-                                                            alt={episode.name}
-                                                            className={`episode-poster ${!hasImage ? 'grayscale-poster' : ''}`}
-                                                        />
-
-                                                        {/* 🔒 CAMBIO 3: Solo mostramos el overlay de Play si hay imagen */}
-                                                        {hasImage && (
-                                                            <div className="play-overlay">
-                                                                <div className="play-circle">
-                                                                    <svg viewBox="0 0 24 24" fill="currentColor"
-                                                                         className="play-icon">
-                                                                        <path d="M8 5v14l11-7z"/>
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                <div className="episode-details">
-                                                    <h4 className="episode-title">
-                                                        {episode.episode_number}. {episode.name}
-                                                    </h4>
-                                                    <p className="episode-overview">
-                                                        {/* Mensaje alternativo si no hay imagen */}
-                                                        {!hasImage
-                                                            ? "Este episodio aún no está disponible."
-                                                            : (episode.overview || "Sin descripción disponible.")}
-                                                    </p>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                </li>
-                            );
+                                            )}
+                                        </div>
+                                        <div className="episode-details mt-video">
+                                            <span className="episode-number">Episodio {episode.episode_number}</span>
+                                            <h3 className="episode-title">{episode.name || `Episodio ${episode.episode_number}`}</h3>
+                                            <p className="episode-overview">{episode.overview || "Sin descripción disponible."}</p>
+                                            <button className="close-video-btn" type="button" onClick={() => setPlayingEpisode(null)}><IoClose />Cerrar reproductor</button>
+                                        </div>
+                                    </> : <>
+                                        <button className={`media-zone ${hasImage ? "clickable" : "disabled-zone"}`} type="button" disabled={!hasImage} onClick={() => setPlayingEpisode(episode.episode_number)} aria-label={hasImage ? `Reproducir episodio ${episode.episode_number}: ${episode.name}` : "Episodio no disponible"}>
+                                            <div className="episode-poster-wrapper">
+                                                <img src={hasImage ? `${IMAGE_W500_URL}${episode.still_path}` : "https://placehold.co/480x270/202020/777?text=Próximamente"} alt="" className={`episode-poster ${!hasImage ? "grayscale-poster" : ""}`} />
+                                                {hasImage && <div className="play-overlay"><span className="play-circle"><IoPlay /></span></div>}
+                                                <span className="episode-index">{episode.episode_number}</span>
+                                            </div>
+                                        </button>
+                                        <div className="episode-details">
+                                            <span className="episode-number">Episodio {episode.episode_number}</span>
+                                            <h3 className="episode-title">{episode.name || `Episodio ${episode.episode_number}`}</h3>
+                                            <div className="episode-meta">
+                                                {formattedDate && <span><IoCalendarClearOutline />{formattedDate}</span>}
+                                                {episode.runtime && <span><IoTimeOutline />{episode.runtime} min</span>}
+                                            </div>
+                                            <p className="episode-overview">{hasImage ? (episode.overview || "Sin descripción disponible.") : "Este episodio todavía no está disponible."}</p>
+                                        </div>
+                                    </>}
+                                </article>
+                            </li>;
                         })}
-                    </ul>
+                    </ol>}
                 </div>
             )}
-        </div>
+        </section>
     );
 }

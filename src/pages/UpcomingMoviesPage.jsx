@@ -1,5 +1,4 @@
 import {UPCOMING_MOVIES_SHORT_URL} from "../constants/api.js";
-
 import {InfiniteMediaGallery} from "../components/common/InfiniteMediaGallery.jsx";
 import {useScrollMemory} from "../utils/useScrollMemory.js";
 
@@ -9,7 +8,7 @@ export function UpcomingMoviesPage() {
     return (
         <>
             <InfiniteMediaGallery
-                title={"Upcoming Movies"}
+                title={"Próximos estrenos"}
                 apiPath={UPCOMING_MOVIES_SHORT_URL}
                 mediaType={"movie"}
             />

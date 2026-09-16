@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {IoChevronDown, IoOptionsOutline, IoRefreshOutline} from "react-icons/io5";
+import {IoChevronBack, IoChevronDown, IoChevronForward, IoOptionsOutline, IoRefreshOutline} from "react-icons/io5";
 
 import {API_BASE_URL, TMDB_API_KEY} from "../../constants/api.js";
 
@@ -22,7 +22,7 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [sortOption, setSortOption] = useState("popularity.desc");
-    const observerTarget = useRef(null);
+    const containerRef = useRef(null);
     const activeRequest = useRef(null);
     const loadingRef = useRef(false);
 
@@ -86,18 +86,6 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
         return () => activeRequest.current?.abort();
     }, [fetchData]);
 
-    useEffect(() => {
-        const target = observerTarget.current;
-        if (!target || error) return;
-
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting && !loadingRef.current && page < totalPages) fetchData(page + 1);
-        }, {rootMargin: "240px 0px", threshold: 0.1});
-
-        observer.observe(target);
-        return () => observer.disconnect();
-    }, [error, fetchData, page, totalPages]);
-
     const retry = () => {
         setItems([]);
         setPage(FIRST_PAGE);
@@ -105,8 +93,19 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
         fetchData(FIRST_PAGE, true);
     };
 
+    const goToPage = (nextPage) => {
+        if (nextPage === page || nextPage < 1 || nextPage > totalPages || loadingRef.current) return;
+        fetchData(nextPage, true);
+        containerRef.current?.scrollIntoView({behavior: "smooth", block: "start"});
+    };
+
+    const paginationItems = [];
+    const startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
+    const endPage = Math.min(totalPages, Math.max(5, page + 2));
+    for (let pageNumber = startPage; pageNumber <= endPage; pageNumber += 1) paginationItems.push(pageNumber);
+
     return (
-        <div className="media-container">
+        <div className="media-container" ref={containerRef}>
             <div className="media-header">
                 <div className="media-heading-copy">
                     <span className="media-kicker">Catálogo Filmify</span>
@@ -141,27 +140,25 @@ export function InfiniteMediaGallery({title, apiPath, mediaType, filter = false}
                 </div>
             )}
 
-            <div className="media-grid">
+            <div className={`media-grid ${loading && items.length ? "is-loading" : ""}`} aria-busy={loading}>
                 {items.map((item) => (
                     <MediaCard key={item.id} posterUrl={item.poster_path} title={item.title || item.name} mediaId={item.id} mediaType={mediaType} />
                 ))}
             </div>
 
-            {!error && (loading || page < totalPages) && (
-                <div ref={observerTarget} className="media-loading">
-                    {loading ? (
-                        <div className="media-loading-content">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity=".25" fill="none" />
-                                <path fill="currentColor" opacity=".75" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" />
-                            </svg>
-                            <span>Cargando más {mediaType === "movie" ? "películas" : "series"}…</span>
-                        </div>
-                    ) : <div>Continúa para descubrir más</div>}
-                </div>
-            )}
+            {loading && !items.length && <div className="media-loading"><div className="media-loading-content"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity=".25" fill="none" /><path fill="currentColor" opacity=".75" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" /></svg><span>Cargando {mediaType === "movie" ? "películas" : "series"}…</span></div></div>}
 
-            {page >= totalPages && totalPages > 1 && !loading && !error && <div className="media-end"><p>Has llegado al final de la galería</p></div>}
+            {totalPages > 1 && !error && (
+                <nav className="media-pagination" aria-label="Paginación del catálogo">
+                    <button type="button" className="pagination-direction" onClick={() => goToPage(page - 1)} disabled={page === 1 || loading} aria-label="Página anterior"><IoChevronBack /><span>Anterior</span></button>
+                    <div className="pagination-pages">
+                        {startPage > 1 && <><button type="button" onClick={() => goToPage(1)}>1</button>{startPage > 2 && <span>…</span>}</>}
+                        {paginationItems.map((pageNumber) => <button type="button" key={pageNumber} className={pageNumber === page ? "active" : ""} onClick={() => goToPage(pageNumber)} aria-current={pageNumber === page ? "page" : undefined}>{pageNumber}</button>)}
+                        {endPage < totalPages && <>{endPage < totalPages - 1 && <span>…</span>}<button type="button" onClick={() => goToPage(totalPages)}>{totalPages}</button></>}
+                    </div>
+                    <button type="button" className="pagination-direction" onClick={() => goToPage(page + 1)} disabled={page === totalPages || loading} aria-label="Página siguiente"><span>Siguiente</span><IoChevronForward /></button>
+                </nav>
+            )}
             {items.length === 0 && !loading && !error && <div className="media-empty"><p>No se han encontrado resultados.</p></div>}
         </div>
     );
